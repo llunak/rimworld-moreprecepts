@@ -78,6 +78,22 @@
     </stages>
   </ThoughtDef>
 
+  <ThoughtDef>
+    <defName>Elderly_Revered_Social_Young</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Social_Young</workerClass>
+    <stages>
+      <li>
+        <label>Too young</label>
+        <baseOpinionOffset>-5</baseOpinionOffset>
+      </li>
+      <li>
+        <label>Teenager</label>
+        <baseOpinionOffset>-10</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+
   <!-- Respected -->
 
   <ThoughtDef>

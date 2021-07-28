@@ -31,6 +31,9 @@
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Revered_NoYoung</thought>
       </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Revered_Social_Young</thought>
+      </li>
     </comps>
   </PreceptDef>
 

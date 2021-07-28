@@ -120,6 +120,21 @@ namespace MorePrecepts
         }
     }
 
+    // Disrespect young people a bit, teenagers more.
+    public class ThoughtWorker_Precept_Elderly_Social_Young : ThoughtWorker_Precept_Social
+    {
+        protected override ThoughtState ShouldHaveThought(Pawn pawn, Pawn otherPawn)
+        {
+            if( pawn.ageTracker.AgeBiologicalYears < 50 ) // only elders view young ones a bit poorly
+                return ThoughtState.Inactive;
+            if( otherPawn.ageTracker.AgeBiologicalYears < 18 )
+                return ThoughtState.ActiveAtStage( 1 );
+            if( otherPawn.ageTracker.AgeBiologicalYears < 25 )
+                return ThoughtState.ActiveAtStage( 0 );
+            return ThoughtState.Inactive;
+        }
+    }
+
     // Generic bad-opinion class.
     public class ThoughtWorker_Precept_Elderly_Minus : ThoughtWorker_Precept
     {
