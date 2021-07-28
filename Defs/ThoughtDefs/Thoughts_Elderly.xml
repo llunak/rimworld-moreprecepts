@@ -50,6 +50,19 @@
   </ThoughtDef>
 
   <ThoughtDef>
+    <defName>Elderly_Revered_NoYoung</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_NoYoung</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <stages>
+      <li>
+        <label>No younger people</label>
+        <description>There are no younger people I could share my wisdom with.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
     <defName>Elderly_Revered_Social</defName>
     <thoughtClass>Thought_SituationalSocial</thoughtClass>
     <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Social_Plus</workerClass>
@@ -94,6 +107,19 @@
         <label>Respected as very elderly</label>
         <description>I feel others treat me with respect because of my high age.</description>
         <baseMoodEffect>4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Respected_NoYoung</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_NoYoung</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <stages>
+      <li>
+        <label>No younger people</label>
+        <description>There are no younger people I could share my wisdom with.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
       </li>
     </stages>
   </ThoughtDef>

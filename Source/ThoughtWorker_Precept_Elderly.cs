@@ -97,6 +97,28 @@ namespace MorePrecepts
         }
     }
 
+    public class ThoughtWorker_Precept_Elderly_NoYoung : ThoughtWorker_Precept
+    {
+        protected override ThoughtState ShouldHaveThought(Pawn pawn)
+        {
+            if (pawn.Faction == null || !pawn.IsColonist)
+                return false;
+            List< Pawn > list = pawn.Map.mapPawns.SpawnedPawnsInFaction(pawn.Faction);
+            for (int i = 0; i < list.Count; ++i)
+            {
+                Pawn other = list[i];
+                // Make even quest lodgers count here.
+                if (other != pawn && other.RaceProps.Humanlike && !other.IsSlave)
+                {
+                    if( other.ageTracker.AgeBiologicalYears < 50 )
+                        return ThoughtState.Inactive;
+                }
+            }
+            return ThoughtState.ActiveAtStage( 0 ); // no young people exist
+        }
+    }
+
+    // Generic bad-opinion class.
     public class ThoughtWorker_Precept_Elderly_Minus : ThoughtWorker_Precept
     {
         protected override ThoughtState ShouldHaveThought(Pawn pawn)
