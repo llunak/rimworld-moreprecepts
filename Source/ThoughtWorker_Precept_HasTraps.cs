@@ -76,9 +76,9 @@ namespace MorePrecepts
         [HarmonyPatch(new Type[] { typeof(Thing), typeof(Pawn), typeof(bool), typeof(bool) } )]
         public static void CanConstruct(ref bool __result, Thing t, Pawn p, bool checkSkills = true, bool forced = false)
         {
-		if (t.def.building != null && t.def.building.isTrap && !new HistoryEvent(HistoryEventDefOf.BuiltTrap, p.Named(HistoryEventArgsNames.Doer)).Notify_PawnAboutToDo_Job())
+		ThingDef thingDef;
+		if ((t.def.IsBlueprint || t.def.IsFrame) && (thingDef = t.def.entityDefToBuild as ThingDef) != null && thingDef.building != null && thingDef.building.isTrap && !new HistoryEvent(HistoryEventDefOf.BuiltTrap, p.Named(HistoryEventArgsNames.Doer)).Notify_PawnAboutToDo_Job())
 		{
-		        // TODO does this work?
 		        __result = false;
 		}
 	}
