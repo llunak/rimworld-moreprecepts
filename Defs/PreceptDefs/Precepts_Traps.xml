@@ -78,42 +78,4 @@
     </comps>
   </PreceptDef>
 
-  <!-- Related: Has traps -->
-
-  <ThoughtDef>
-    <defName>HasTraps_Prohibited</defName>
-    <workerClass>MorePrecepts.ThoughtWorker_Precept_HasTraps</workerClass>
-    <stages>
-      <li>
-        <label>traps</label>
-        <description>We use traps. It's absolutely abhorrent to risk lives of possibly innocent people.</description>
-        <baseMoodEffect>-9</baseMoodEffect>
-      </li>
-    </stages>
-  </ThoughtDef>
-
-  <ThoughtDef>
-    <defName>HasTraps_Horrible</defName>
-    <workerClass>MorePrecepts.ThoughtWorker_Precept_HasTraps</workerClass>
-    <stages>
-      <li>
-        <label>traps</label>
-        <description>We use traps. It's horrible to risk lives of possibly innocent people.</description>
-        <baseMoodEffect>-6</baseMoodEffect>
-      </li>
-    </stages>
-  </ThoughtDef>
-
-  <ThoughtDef>
-    <defName>HasTraps_Disapproved</defName>
-    <workerClass>MorePrecepts.ThoughtWorker_Precept_HasTraps</workerClass>
-    <stages>
-      <li>
-        <label>traps</label>
-        <description>We use traps. It's really ugly to risk lives of possibly innocent people.</description>
-        <baseMoodEffect>-3</baseMoodEffect>
-      </li>
-    </stages>
-  </ThoughtDef>
-
 </Defs>
