@@ -87,8 +87,10 @@ namespace MorePrecepts
 
     public class ThoughtWorker_Precept_Elderly_Social_Plus : ThoughtWorker_Precept_Social
     {
-        protected override ThoughtState ShouldHaveThought(Pawn p, Pawn otherPawn)
+        protected override ThoughtState ShouldHaveThought(Pawn pawn, Pawn otherPawn)
         {
+            if( otherPawn.ageTracker.AgeBiologicalYears < pawn.ageTracker.AgeBiologicalYears )
+                return ThoughtState.Inactive; // give social bonus only to older than the pawn
             if( otherPawn.ageTracker.AgeBiologicalYears >= 80 )
                 return ThoughtState.ActiveAtStage( 1 );
             if( otherPawn.ageTracker.AgeBiologicalYears >= 50 )
@@ -164,8 +166,10 @@ namespace MorePrecepts
 
     public class ThoughtWorker_Precept_Elderly_Social_Minus : ThoughtWorker_Precept_Social
     {
-        protected override ThoughtState ShouldHaveThought(Pawn p, Pawn otherPawn)
+        protected override ThoughtState ShouldHaveThought(Pawn pawn, Pawn otherPawn)
         {
+            if( otherPawn.ageTracker.AgeBiologicalYears < pawn.ageTracker.AgeBiologicalYears )
+                return ThoughtState.Inactive; // give social penaly only to older than the pawn
             if( otherPawn.ageTracker.AgeBiologicalYears >= 60 )
                 return ThoughtState.ActiveAtStage( 1 );
             if( otherPawn.ageTracker.AgeBiologicalYears >= 50 )
