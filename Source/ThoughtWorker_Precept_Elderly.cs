@@ -105,6 +105,8 @@ namespace MorePrecepts
         {
             if (pawn.Faction == null || !pawn.IsColonist)
                 return false;
+            if(pawn.ageTracker.AgeBiologicalYears < 50)
+                return ThoughtState.Inactive;
             List< Pawn > list = pawn.Map.mapPawns.SpawnedPawnsInFaction(pawn.Faction);
             for (int i = 0; i < list.Count; ++i)
             {
