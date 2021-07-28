@@ -9,23 +9,23 @@
     <thoughtClass>Thought_Situational</thoughtClass>
     <stages>
       <li>
-        <label>No elderly</label>
-        <description>We have no elderly to share wisdom with us.</description>
+        <label>No elders</label>
+        <description>We have no elders to share wisdom with us.</description>
         <baseMoodEffect>-10</baseMoodEffect>
       </li>
       <li>
-        <label>An elderly</label>
-        <description>We have a wise elderly.</description>
+        <label>One elder</label>
+        <description>We have a wise elder.</description>
         <baseMoodEffect>2</baseMoodEffect>
       </li>
       <li>
-        <label>Two elderly</label>
-        <description>We have two wise elderly.</description>
+        <label>Two elders</label>
+        <description>We have two wise elders.</description>
         <baseMoodEffect>4</baseMoodEffect>
       </li>
       <li>
-        <label>Several elderly</label>
-        <description>We have some wise elderly.</description>
+        <label>Several elders</label>
+        <description>We have several wise elders.</description>
         <baseMoodEffect>6</baseMoodEffect>
       </li>
     </stages>
@@ -37,12 +37,12 @@
     <thoughtClass>Thought_Situational</thoughtClass>
     <stages>
       <li>
-        <label>Respected as elderly</label>
+        <label>Respected as an elder</label>
         <description>I feel others treat me with high respect because of my age.</description>
         <baseMoodEffect>5</baseMoodEffect>
       </li>
       <li>
-        <label>Respected as very elderly</label>
+        <label>Respected as a very old elder</label>
         <description>I feel others treat me with very high respect because of my high age.</description>
         <baseMoodEffect>10</baseMoodEffect>
       </li>
@@ -104,11 +104,11 @@
     <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Social_Plus</workerClass>
     <stages>
       <li>
-        <label>Elderly</label>
+        <label>Elder</label>
         <baseOpinionOffset>20</baseOpinionOffset>
       </li>
       <li>
-        <label>Very elderly</label>
+        <label>Very old elder</label>
         <baseOpinionOffset>50</baseOpinionOffset>
       </li>
     </stages>
@@ -138,8 +138,8 @@
     <thoughtClass>Thought_Situational</thoughtClass>
     <stages>
       <li>
-        <label>An elderly</label>
-        <description>We have a wise elderly.</description>
+        <label>An elder</label>
+        <description>We have a wise elder.</description>
         <baseMoodEffect>1</baseMoodEffect>
       </li>
     </stages>
@@ -151,12 +151,12 @@
     <thoughtClass>Thought_Situational</thoughtClass>
     <stages>
       <li>
-        <label>Respected as elderly</label>
+        <label>Respected as an elder</label>
         <description>I feel others treat me with respect because of my age.</description>
         <baseMoodEffect>2</baseMoodEffect>
       </li>
       <li>
-        <label>Respected as very elderly</label>
+        <label>Respected as a very old elder</label>
         <description>I feel others treat me with respect because of my high age.</description>
         <baseMoodEffect>4</baseMoodEffect>
       </li>
@@ -208,11 +208,11 @@
     <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Social_Plus</workerClass>
     <stages>
       <li>
-        <label>Elderly</label>
+        <label>Elder</label>
         <baseOpinionOffset>10</baseOpinionOffset>
       </li>
       <li>
-        <label>Very elderly</label>
+        <label>Very old elder</label>
         <baseOpinionOffset>20</baseOpinionOffset>
       </li>
     </stages>
