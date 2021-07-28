@@ -6,12 +6,9 @@ using Verse;
 
 // TODO:
 // use xml for blocking thoughts, like comfort:ignored blocks atewithouttable?
-// je potreba mit thoughts zvlast, at je tooltip pro precept ukaze vsechny (neukazuje stages)
-// slight disrespect of teenagers when elders respected a lot
-// disrespect of young leaders
+// when using thoughts stages, the precept tooltip does not show them all
 // constants instead of hardcoded values
 // todo: disable for npc factions? or modify them to not spawn "wrong" pawns
-// when respected, have a debuf when there are no younger people
 // when respected, disrespected somebody too young with royalty title
 
 namespace MorePrecepts
