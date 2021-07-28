@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Issue -->
+
+  <IssueDef>
+    <defName>Traps</defName>
+    <label>traps</label>
+    <iconPath>UI/Issues/Traps</iconPath>
+  </IssueDef>
+
+  <HistoryEventDef>
+    <defName>BuiltTrap</defName>
+    <label>built trap</label>
+  </HistoryEventDef>
+
+  <!-- Precepts -->
+
+  <PreceptDef>
+    <defName>Traps_Prohibited</defName>
+    <issue>Traps</issue>
+    <label>prohibited</label>
+    <description>Building traps to kill random people is an absolutely inhuman thing to do.</description>
+    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <impact>High</impact>
+    <displayOrderInIssue>20</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <associatedMemes>
+      <li>NaturePrimacy</li>
+    </associatedMemes>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>HasTraps_Prohibited</thought>
+        <description>Trap in colony</description>
+      </li>
+      <li Class="PreceptComp_UnwillingToDo">
+        <eventDef>BuiltTrap</eventDef>
+        <description>Build trap</description>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Traps_Horrible</defName>
+    <issue>Traps</issue>
+    <label>horrible</label>
+    <description>Building traps kill random people is a terrible thing.</description>
+    <impact>High</impact>
+    <displayOrderInIssue>10</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <associatedMemes>
+      <li>NaturePrimacy</li>
+    </associatedMemes>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>HasTraps_Horrible</thought>
+        <description>Trap in colony</description>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Traps_Disapproved</defName>
+    <issue>Traps</issue>
+    <label>disapproved</label>
+    <description>Building traps to kill random people is an ugly thing.</description>
+    <impact>Medium</impact>
+    <displayOrderInIssue>0</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <associatedMemes>
+      <li>NaturePrimacy</li>
+    </associatedMemes>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>HasTraps_Disapproved</thought>
+        <description>Trap in colony</description>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <!-- Related: Has traps -->
+
+  <ThoughtDef>
+    <defName>HasTraps_Prohibited</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_HasTraps</workerClass>
+    <stages>
+      <li>
+        <label>traps</label>
+        <description>We use traps. It's absolutely abhorrent to risk lives of possibly innocent people.</description>
+        <baseMoodEffect>-9</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>HasTraps_Horrible</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_HasTraps</workerClass>
+    <stages>
+      <li>
+        <label>traps</label>
+        <description>We use traps. It's horrible to risk lives of possibly innocent people.</description>
+        <baseMoodEffect>-6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>HasTraps_Disapproved</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_HasTraps</workerClass>
+    <stages>
+      <li>
+        <label>traps</label>
+        <description>We use traps. It's really ugly to risk lives of possibly innocent people.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>
