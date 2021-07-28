@@ -63,6 +63,42 @@
   </ThoughtDef>
 
   <ThoughtDef>
+    <defName>Elderly_Revered_Role</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Role</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <stages>
+      <li>
+        <label>Extremely young expert</label>
+        <description>I don't like it when very inexperienced people have important roles.</description>
+        <baseMoodEffect>-20</baseMoodEffect>
+      </li>
+      <li>
+        <label>Too young expert</label>
+        <description>I don't like it when inexperienced people have important roles.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Revered_Role_Self</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Role_Self</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <stages>
+      <li>
+        <label>Extremely young for role</label>
+        <description>Why do I have all this responsibility?</description>
+        <baseMoodEffect>-20</baseMoodEffect>
+      </li>
+      <li>
+        <label>Too young for role</label>
+        <description>I don't feel experienced enough for the responsibility I have.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
     <defName>Elderly_Revered_Social</defName>
     <thoughtClass>Thought_SituationalSocial</thoughtClass>
     <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Social_Plus</workerClass>
@@ -136,6 +172,32 @@
         <label>No younger people</label>
         <description>There are no younger people I could share my wisdom with.</description>
         <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Respected_Role</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Role_Single</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <stages>
+      <li>
+        <label>Too young expert</label>
+        <description>I don't like it when inexperienced people have important roles.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Respected_Role_Self</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Role_Self_Single</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <stages>
+      <li>
+        <label>Too young for role</label>
+        <description>I don't feel experienced enough for the responsibility I have.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
       </li>
     </stages>
   </ThoughtDef>

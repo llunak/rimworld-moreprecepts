@@ -12,6 +12,7 @@ using Verse;
 // constants instead of hardcoded values
 // todo: disable for npc factions? or modify them to not spawn "wrong" pawns
 // when respected, have a debuf when there are no younger people
+// when respected, disrespected somebody too young with royalty title
 
 namespace MorePrecepts
 {
@@ -119,6 +120,76 @@ namespace MorePrecepts
                 }
             }
             return ThoughtState.ActiveAtStage( 0 ); // no young people exist
+        }
+    }
+
+    // Somebody else too young for a role.
+    public class ThoughtWorker_Precept_Elderly_Role : ThoughtWorker_Precept
+    {
+        protected enum YoungType { NoYoung, HasYoung, HasVeryYoung };
+        protected static YoungType hasYoungWithRole(Pawn pawn)
+        {
+            if (pawn.Faction == null || !pawn.IsColonist || !ModsConfig.IdeologyActive)
+                return YoungType.NoYoung;
+            List< Pawn > list = pawn.Map.mapPawns.SpawnedPawnsInFaction(pawn.Faction);
+            for (int i = 0; i < list.Count; ++i)
+            {
+                Pawn other = list[i];
+                if (other != pawn && other.RaceProps.Humanlike && !other.IsSlave && !other.IsQuestLodger()
+                    && other.Ideo != null && other.Ideo.GetRole(other) != null)
+                {
+                    if( other.ageTracker.AgeBiologicalYears < 18 )
+                        return YoungType.HasVeryYoung;
+                    if( other.ageTracker.AgeBiologicalYears < 25 )
+                        return YoungType.HasYoung;
+                }
+            }
+            return YoungType.NoYoung;
+        }
+        protected override ThoughtState ShouldHaveThought(Pawn pawn)
+        {
+            YoungType young = hasYoungWithRole( pawn );
+            if( young == YoungType.NoYoung )
+                return ThoughtState.Inactive;
+            return ThoughtState.ActiveAtStage( young == YoungType.HasVeryYoung ? 0 : 1 );
+        }
+    }
+
+    public class ThoughtWorker_Precept_Elderly_Role_Single : ThoughtWorker_Precept_Elderly_Role
+    {
+        protected override ThoughtState ShouldHaveThought(Pawn pawn)
+        {
+            YoungType young = hasYoungWithRole( pawn );
+            if( young == YoungType.NoYoung )
+                return ThoughtState.Inactive;
+            return ThoughtState.ActiveAtStage( 0 );
+        }
+    }
+
+    // "I feel too young for the role"
+    public class ThoughtWorker_Precept_Elderly_Role_Self : ThoughtWorker_Precept
+    {
+        protected override ThoughtState ShouldHaveThought(Pawn pawn)
+        {
+            if (pawn.Faction == null || !pawn.IsColonist || !ModsConfig.IdeologyActive || pawn.Ideo == null || pawn.Ideo.GetRole(pawn) == null)
+                return false;
+            if( pawn.ageTracker.AgeBiologicalYears < 18 )
+                return ThoughtState.ActiveAtStage( 0 );
+            if( pawn.ageTracker.AgeBiologicalYears < 25 )
+                return ThoughtState.ActiveAtStage( 1 );
+            return ThoughtState.Inactive;
+        }
+    }
+
+    public class ThoughtWorker_Precept_Elderly_Role_Self_Single : ThoughtWorker_Precept
+    {
+        protected override ThoughtState ShouldHaveThought(Pawn pawn)
+        {
+            if (pawn.Faction == null || !pawn.IsColonist || !ModsConfig.IdeologyActive || pawn.Ideo == null || pawn.Ideo.GetRole(pawn) == null)
+                return false;
+            if( pawn.ageTracker.AgeBiologicalYears < 25 )
+                return ThoughtState.ActiveAtStage( 0 );
+            return ThoughtState.Inactive;
         }
     }
 

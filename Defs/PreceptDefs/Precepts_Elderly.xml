@@ -32,6 +32,12 @@
         <thought>Elderly_Revered_NoYoung</thought>
       </li>
       <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Revered_Role</thought>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Revered_Role_Self</thought>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Revered_Social_Young</thought>
       </li>
     </comps>
@@ -56,6 +62,12 @@
       </li>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Revered_NoYoung</thought>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Revered_Role</thought>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Revered_Role_Self</thought>
       </li>
     </comps>
   </PreceptDef>
