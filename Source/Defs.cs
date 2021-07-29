@@ -9,6 +9,11 @@ namespace MorePrecepts
         public static PreceptDef Superstition_Strong;
 
         public static PreceptDef Superstition_Weak;
+
+        static PreceptDefOf()
+        {
+            DefOfHelper.EnsureInitializedInCtor(typeof(PreceptDefOf));
+        }
     }
 
     [DefOf]
@@ -21,6 +26,11 @@ namespace MorePrecepts
         public static ThoughtDef Superstition_Superstitious_Weak_Plus;
 
         public static ThoughtDef Superstition_Superstitious_Weak_Minus;
+
+        static ThoughtDefOf()
+        {
+            DefOfHelper.EnsureInitializedInCtor(typeof(ThoughtDefOf));
+        }
     }
 
     [DefOf]
@@ -38,6 +48,11 @@ namespace MorePrecepts
 
         [MayRequireIdeology]
         public static HistoryEventDef BuiltTrap;
+
+        static HistoryEventDefOf()
+        {
+            DefOfHelper.EnsureInitializedInCtor(typeof(HistoryEventDefOf));
+        }
     }
 
 }
