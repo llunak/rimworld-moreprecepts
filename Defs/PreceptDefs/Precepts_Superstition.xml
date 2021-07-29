@@ -58,8 +58,12 @@
     <displayOrderInIssue>40</displayOrderInIssue>
     <comps>
       <li Class="PreceptComp_KnowsMemoryThought">
-        <eventDef>Superstition_Superstitious_Strong_Plus</eventDef>
+        <eventDef>Superstition_Superstitious_Generic</eventDef>
         <thought>Superstition_Disgusted</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>Superstition_Superstitious_Generic</eventDef>
+        <thought>Superstition_Disgusted_Social</thought>
       </li>
     </comps>
   </PreceptDef>

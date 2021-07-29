@@ -68,11 +68,27 @@
 
   <ThoughtDef>
     <defName>Superstition_Disgusted</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>1</durationDays>
+    <stackLimit>10</stackLimit>
+    <stackedEffectMultiplier>0.7</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>Superstitious people</label>
+        <description>Some people are so ignorant.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- A separate one, so that the mood ones are merged into one mood debuff. -->
+  <ThoughtDef>
+    <defName>Superstition_Disgusted_Social</defName>
     <thoughtClass>Thought_MemorySocial</thoughtClass>
     <durationDays>1</durationDays>
     <stackLimit>10</stackLimit>
     <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
-    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stackLimitForSameOtherPawn>5</stackLimitForSameOtherPawn>
     <stages>
       <li>
         <labelSocial>superstitious</labelSocial>
