@@ -7,7 +7,7 @@ using Verse;
 // TODO: The following also might be implemented as superstitions:
 // - meteorite, some like gold good, others bad
 // - animal migration?
-// Maybe have separate list of superstitions for strong and weak.
+// Maybe have separate list of superstitions for strong and mild.
 
 namespace MorePrecepts
 {
@@ -67,11 +67,11 @@ namespace MorePrecepts
                         wasEvent = wasEvent || historyEvent.DoerWillingToDo();
                         Find.HistoryEventsManager.RecordEvent(historyEvent);
                     }
-                    if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Superstition_Weak))
+                    if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Superstition_Mild))
                     {
                         HistoryEvent historyEvent = new HistoryEvent(type == SuperstitionType.Good
-                            ? HistoryEventDefOf.Superstition_Superstitious_Weak_Plus
-                            : HistoryEventDefOf.Superstition_Superstitious_Weak_Minus,
+                            ? HistoryEventDefOf.Superstition_Superstitious_Mild_Plus
+                            : HistoryEventDefOf.Superstition_Superstitious_Mild_Minus,
                             pawn.Named(HistoryEventArgsNames.Doer));
                         wasEvent = wasEvent || historyEvent.DoerWillingToDo();
                         Find.HistoryEventsManager.RecordEvent(historyEvent);

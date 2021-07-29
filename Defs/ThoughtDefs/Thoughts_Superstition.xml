@@ -32,10 +32,10 @@
     </stages>
   </ThoughtDef>
 
-  <!-- Weak -->
+  <!-- Mild -->
 
   <ThoughtDef>
-    <defName>Superstition_Superstitious_Weak_Plus</defName>
+    <defName>Superstition_Superstitious_Mild_Plus</defName>
     <durationDays>1</durationDays>
     <stackLimit>3</stackLimit>
     <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
@@ -50,7 +50,7 @@
   </ThoughtDef>
 
   <ThoughtDef>
-    <defName>Superstition_Superstitious_Weak_Minus</defName>
+    <defName>Superstition_Superstitious_Mild_Minus</defName>
     <durationDays>1</durationDays>
     <stackLimit>3</stackLimit>
     <stackedEffectMultiplier>0.5</stackedEffectMultiplier>

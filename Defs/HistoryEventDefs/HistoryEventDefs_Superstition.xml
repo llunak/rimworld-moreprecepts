@@ -17,12 +17,12 @@
   </HistoryEventDef>
 
   <HistoryEventDef>
-    <defName>Superstition_Superstitious_Weak_Plus</defName>
+    <defName>Superstition_Superstitious_Mild_Plus</defName>
     <label>Watched an event with superstitious terror</label>
   </HistoryEventDef>
 
   <HistoryEventDef>
-    <defName>Superstition_Superstitious_Weak_Minus</defName>
+    <defName>Superstition_Superstitious_Mild_Minus</defName>
     <label>Watched an event with superstitious fear</label>
   </HistoryEventDef>
 

@@ -8,7 +8,7 @@ namespace MorePrecepts
     {
         public static PreceptDef Superstition_Strong;
 
-        public static PreceptDef Superstition_Weak;
+        public static PreceptDef Superstition_Mild;
 
         static PreceptDefOf()
         {
@@ -23,9 +23,9 @@ namespace MorePrecepts
 
         public static ThoughtDef Superstition_Superstitious_Strong_Minus;
 
-        public static ThoughtDef Superstition_Superstitious_Weak_Plus;
+        public static ThoughtDef Superstition_Superstitious_Mild_Plus;
 
-        public static ThoughtDef Superstition_Superstitious_Weak_Minus;
+        public static ThoughtDef Superstition_Superstitious_Mild_Minus;
 
         static ThoughtDefOf()
         {
@@ -42,9 +42,9 @@ namespace MorePrecepts
 
         public static HistoryEventDef Superstition_Superstitious_Strong_Minus;
 
-        public static HistoryEventDef Superstition_Superstitious_Weak_Plus;
+        public static HistoryEventDef Superstition_Superstitious_Mild_Plus;
 
-        public static HistoryEventDef Superstition_Superstitious_Weak_Minus;
+        public static HistoryEventDef Superstition_Superstitious_Mild_Minus;
 
         [MayRequireIdeology]
         public static HistoryEventDef BuiltTrap;
