@@ -4,6 +4,11 @@ using System;
 using RimWorld;
 using Verse;
 
+// TODO: The following also might be implemented as superstitions:
+// - meteorite, some like gold good, others bad
+// - animal migration?
+// Maybe have separate list of superstitions for strong and weak.
+
 namespace MorePrecepts
 {
     public class PreceptComp_SuperstitionGood : PreceptComp
@@ -46,14 +51,12 @@ namespace MorePrecepts
         public static void RegisterCondition(GameCondition cond)
         {
             SuperstitionType type = GetSuperstitionType(cond);
-            Log.Message("XX:" + cond.def + "/" + type);
             if( type == SuperstitionType.None )
                 return;
             foreach( Map map in cond.AffectedMaps )
             {
                 foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
                 {
-                    Log.Message("P:" + pawn);
                     bool wasEvent = false;
                     if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Superstition_Strong))
                     {
@@ -78,7 +81,6 @@ namespace MorePrecepts
                     // TODO: Fix this in Core?
                     if(wasEvent)
                     {
-                        Log.Message("P2");
                         HistoryEvent historyEvent = new HistoryEvent(HistoryEventDefOf.Superstition_Superstitious_Generic,
                             pawn.Named(HistoryEventArgsNames.Doer));
                         Find.HistoryEventsManager.RecordEvent(historyEvent);
