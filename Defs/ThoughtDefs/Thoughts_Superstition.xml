@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Strong -->
+
+  <ThoughtDef>
+    <defName>Superstition_WasSuperstitious_Strong_Plus</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_Superstition_WasSuperstitious_Plus</workerClass>
+    <durationDays>1</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>Good omen</label>
+        <description>I saw a good omen. It is a promise of good things to come.</description>
+        <baseMoodEffect>10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Superstition_WasSuperstitious_Strong_Minus</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_Superstition_WasSuperstitious_Minus</workerClass>
+    <durationDays>1</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
+    <gameCondition>Eclipse</gameCondition>
+    <stages>
+      <li>
+        <label>Bad omen</label>
+        <description>I saw a bad omen. Terrible things are going to happen!</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Weak -->
+
+  <ThoughtDef>
+    <defName>Superstition_WasSuperstitious_Weak_Plus</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_Superstition_WasSuperstitious_Plus</workerClass>
+    <durationDays>1</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
+    <gameCondition>Aurora</gameCondition>
+    <stages>
+      <li>
+        <label>Good omen</label>
+        <description>I saw a good omen.</description>
+        <baseMoodEffect>3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Superstition_WasSuperstitious_Weak_Minus</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_Superstition_WasSuperstitious_Minus</workerClass>
+    <durationDays>1</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
+    <gameCondition>Flashstorm</gameCondition>
+    <stages>
+      <li>
+        <label>Bad omen</label>
+        <description>I saw a bad omen.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Contempt -->
+
+  <ThoughtDef>
+    <defName>Superstition_WasDisgusted</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>1</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
+    <showBubble>true</showBubble>
+    <symbol>Things/Mote/SpeechSymbols/Insult</symbol>
+    <stages>
+      <li>
+        <label>Was disgusted by superstition</label>
+        <description>Was superstitious.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

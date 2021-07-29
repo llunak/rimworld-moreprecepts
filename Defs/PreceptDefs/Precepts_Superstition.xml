@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Issue -->
+
+  <IssueDef>
+    <defName>Superstition</defName>
+    <label>superstition</label>
+    <iconPath>UI/Issues/Superstition</iconPath>
+  </IssueDef>
+
+  <HistoryEventDef>
+    <defName>Superstition_WasSuperstitious_Strong_Plus</defName>
+    <label>Watched an event with superstitious awe</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>Superstition_WasSuperstitious_Strong_Minus</defName>
+    <label>Watched an event with superstitious respect</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>Superstition_WasSuperstitious_Weak_Plus</defName>
+    <label>Watched an event with superstitious terror</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>Superstition_WasSuperstitious_Weak_Minus</defName>
+    <label>Watched an event with superstitious fear</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>Superstition_WasDisgusted</defName>
+    <label>Was disgusted by superstition</label>
+  </HistoryEventDef>
+
+  <!-- Precepts -->
+
+  <PreceptDef>
+    <defName>Superstition_Strong</defName>
+    <issue>Superstition</issue>
+    <label>strong</label>
+    <description>There are signs guiding our life, we must pay attention to them.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>20</displayOrderInIssue>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Superstition_WasSuperstitious_Strong_Plus</thought>
+        <description>I saw a good omen.</description>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Superstition_WasSuperstitious_Strong_Minus</thought>
+        <description>I saw a bad omen.</description>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Superstition_Weak</defName>
+    <issue>Superstition</issue>
+    <label>weak</label>
+    <description>There may be signs in life.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>30</displayOrderInIssue>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Superstition_WasSuperstitious_Weak_Plus</thought>
+        <description>I saw a good omen.</description>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Superstition_WasSuperstitious_Weak_Minus</thought>
+        <description>I saw a bad omen.</description>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Superstition_Contempt</defName>
+    <issue>Superstition</issue>
+    <label>contempt</label>
+    <description>Random natural events are perfectly logical and assigning them a meaning is ignorant.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>40</displayOrderInIssue>
+    <comps>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>Superstition_WasSuperstitious_Strong_Plus</eventDef>
+        <thought>Superstition_WasDisgusted</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>Superstition_WasSuperstitious_Strong_Minus</eventDef>
+        <thought>Superstition_WasDisgusted</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>Superstition_WasSuperstitious_Weak_Plus</eventDef>
+        <thought>Superstition_WasDisgusted</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>Superstition_WasSuperstitious_Weak_Minus</eventDef>
+        <thought>Superstition_WasDisgusted</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+</Defs>
