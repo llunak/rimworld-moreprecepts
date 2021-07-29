@@ -46,6 +46,10 @@ namespace MorePrecepts
 
         public static HistoryEventDef Superstition_Superstitious_Mild_Minus;
 
+        public static HistoryEventDef IngestedAlcohol;
+
+        public static HistoryEventDef AdministeredAlcohol;
+
         [MayRequireIdeology]
         public static HistoryEventDef BuiltTrap;
 
