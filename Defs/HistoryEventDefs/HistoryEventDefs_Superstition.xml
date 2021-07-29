@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <HistoryEventDef>
+    <defName>Superstition_Superstitious_Generic</defName>
+    <label>Was superstitious</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>Superstition_Superstitious_Strong_Plus</defName>
+    <label>Watched an event with superstitious awe</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>Superstition_Superstitious_Strong_Minus</defName>
+    <label>Watched an event with superstitious respect</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>Superstition_Superstitious_Weak_Plus</defName>
+    <label>Watched an event with superstitious terror</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>Superstition_Superstitious_Weak_Minus</defName>
+    <label>Watched an event with superstitious fear</label>
+  </HistoryEventDef>
+
+</Defs>

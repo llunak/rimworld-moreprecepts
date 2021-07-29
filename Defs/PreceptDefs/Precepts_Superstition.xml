@@ -9,31 +9,6 @@
     <iconPath>UI/Issues/Superstition</iconPath>
   </IssueDef>
 
-  <HistoryEventDef>
-    <defName>Superstition_WasSuperstitious_Strong_Plus</defName>
-    <label>Watched an event with superstitious awe</label>
-  </HistoryEventDef>
-
-  <HistoryEventDef>
-    <defName>Superstition_WasSuperstitious_Strong_Minus</defName>
-    <label>Watched an event with superstitious respect</label>
-  </HistoryEventDef>
-
-  <HistoryEventDef>
-    <defName>Superstition_WasSuperstitious_Weak_Plus</defName>
-    <label>Watched an event with superstitious terror</label>
-  </HistoryEventDef>
-
-  <HistoryEventDef>
-    <defName>Superstition_WasSuperstitious_Weak_Minus</defName>
-    <label>Watched an event with superstitious fear</label>
-  </HistoryEventDef>
-
-  <HistoryEventDef>
-    <defName>Superstition_WasDisgusted</defName>
-    <label>Was disgusted by superstition</label>
-  </HistoryEventDef>
-
   <!-- Precepts -->
 
   <PreceptDef>
@@ -44,13 +19,13 @@
     <impact>Low</impact>
     <displayOrderInIssue>20</displayOrderInIssue>
     <comps>
-      <li Class="PreceptComp_SituationalThought">
-        <thought>Superstition_WasSuperstitious_Strong_Plus</thought>
-        <description>I saw a good omen.</description>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Superstition_Superstitious_Strong_Plus</eventDef>
+        <thought>Superstition_Superstitious_Strong_Plus</thought>
       </li>
-      <li Class="PreceptComp_SituationalThought">
-        <thought>Superstition_WasSuperstitious_Strong_Minus</thought>
-        <description>I saw a bad omen.</description>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Superstition_Superstitious_Strong_Minus</eventDef>
+        <thought>Superstition_Superstitious_Strong_Minus</thought>
       </li>
     </comps>
   </PreceptDef>
@@ -63,13 +38,13 @@
     <impact>Low</impact>
     <displayOrderInIssue>30</displayOrderInIssue>
     <comps>
-      <li Class="PreceptComp_SituationalThought">
-        <thought>Superstition_WasSuperstitious_Weak_Plus</thought>
-        <description>I saw a good omen.</description>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Superstition_Superstitious_Weak_Plus</eventDef>
+        <thought>Superstition_Superstitious_Weak_Plus</thought>
       </li>
-      <li Class="PreceptComp_SituationalThought">
-        <thought>Superstition_WasSuperstitious_Weak_Minus</thought>
-        <description>I saw a bad omen.</description>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Superstition_Superstitious_Weak_Minus</eventDef>
+        <thought>Superstition_Superstitious_Weak_Minus</thought>
       </li>
     </comps>
   </PreceptDef>
@@ -83,20 +58,8 @@
     <displayOrderInIssue>40</displayOrderInIssue>
     <comps>
       <li Class="PreceptComp_KnowsMemoryThought">
-        <eventDef>Superstition_WasSuperstitious_Strong_Plus</eventDef>
-        <thought>Superstition_WasDisgusted</thought>
-      </li>
-      <li Class="PreceptComp_KnowsMemoryThought">
-        <eventDef>Superstition_WasSuperstitious_Strong_Minus</eventDef>
-        <thought>Superstition_WasDisgusted</thought>
-      </li>
-      <li Class="PreceptComp_KnowsMemoryThought">
-        <eventDef>Superstition_WasSuperstitious_Weak_Plus</eventDef>
-        <thought>Superstition_WasDisgusted</thought>
-      </li>
-      <li Class="PreceptComp_KnowsMemoryThought">
-        <eventDef>Superstition_WasSuperstitious_Weak_Minus</eventDef>
-        <thought>Superstition_WasDisgusted</thought>
+        <eventDef>Superstition_Superstitious_Strong_Plus</eventDef>
+        <thought>Superstition_Disgusted</thought>
       </li>
     </comps>
   </PreceptDef>

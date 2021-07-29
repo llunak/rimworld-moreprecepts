@@ -9,13 +9,6 @@ using Verse;
 
 namespace MorePrecepts
 {
-	[DefOf]
-	public static class HistoryEventDefOf
-	{
-		[MayRequireIdeology]
-		public static HistoryEventDef BuiltTrap;
-	}
-
 	public class ThoughtWorker_Precept_HasTraps : ThoughtWorker_Precept
 	{
 		private static List<ThingDef> trapDefs = new List<ThingDef>();

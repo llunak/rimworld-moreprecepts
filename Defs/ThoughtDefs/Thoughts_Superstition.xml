@@ -4,9 +4,7 @@
   <!-- Strong -->
 
   <ThoughtDef>
-    <defName>Superstition_WasSuperstitious_Strong_Plus</defName>
-    <thoughtClass>Thought_Memory</thoughtClass>
-    <workerClass>MorePrecepts.ThoughtWorker_Superstition_WasSuperstitious_Plus</workerClass>
+    <defName>Superstition_Superstitious_Strong_Plus</defName>
     <durationDays>1</durationDays>
     <stackLimit>3</stackLimit>
     <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
@@ -20,9 +18,7 @@
   </ThoughtDef>
 
   <ThoughtDef>
-    <defName>Superstition_WasSuperstitious_Strong_Minus</defName>
-    <thoughtClass>Thought_Memory</thoughtClass>
-    <workerClass>MorePrecepts.ThoughtWorker_Superstition_WasSuperstitious_Minus</workerClass>
+    <defName>Superstition_Superstitious_Strong_Minus</defName>
     <durationDays>1</durationDays>
     <stackLimit>3</stackLimit>
     <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
@@ -39,9 +35,7 @@
   <!-- Weak -->
 
   <ThoughtDef>
-    <defName>Superstition_WasSuperstitious_Weak_Plus</defName>
-    <thoughtClass>Thought_Memory</thoughtClass>
-    <workerClass>MorePrecepts.ThoughtWorker_Superstition_WasSuperstitious_Plus</workerClass>
+    <defName>Superstition_Superstitious_Weak_Plus</defName>
     <durationDays>1</durationDays>
     <stackLimit>3</stackLimit>
     <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
@@ -56,9 +50,7 @@
   </ThoughtDef>
 
   <ThoughtDef>
-    <defName>Superstition_WasSuperstitious_Weak_Minus</defName>
-    <thoughtClass>Thought_Memory</thoughtClass>
-    <workerClass>MorePrecepts.ThoughtWorker_Superstition_WasSuperstitious_Minus</workerClass>
+    <defName>Superstition_Superstitious_Weak_Minus</defName>
     <durationDays>1</durationDays>
     <stackLimit>3</stackLimit>
     <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
@@ -75,18 +67,16 @@
   <!-- Contempt -->
 
   <ThoughtDef>
-    <defName>Superstition_WasDisgusted</defName>
+    <defName>Superstition_Disgusted</defName>
     <thoughtClass>Thought_MemorySocial</thoughtClass>
     <durationDays>1</durationDays>
-    <stackLimit>3</stackLimit>
+    <stackLimit>10</stackLimit>
     <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
-    <showBubble>true</showBubble>
-    <symbol>Things/Mote/SpeechSymbols/Insult</symbol>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
     <stages>
       <li>
-        <label>Was disgusted by superstition</label>
-        <description>Was superstitious.</description>
-        <baseMoodEffect>-10</baseMoodEffect>
+        <labelSocial>superstitious</labelSocial>
+        <baseOpinionOffset>-10</baseOpinionOffset>
       </li>
     </stages>
   </ThoughtDef>

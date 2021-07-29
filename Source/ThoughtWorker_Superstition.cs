@@ -6,26 +6,6 @@ using Verse;
 
 namespace MorePrecepts
 {
-    [DefOf]
-    public static class PreceptDefOf
-    {
-        public static PreceptDef Superstition_Strong;
-
-        public static PreceptDef Superstition_Weak;
-    }
-
-    [DefOf]
-    public static class ThoughtDefOf
-    {
-        public static ThoughtDef Superstition_WasSuperstitious_Strong_Plus;
-
-        public static ThoughtDef Superstition_WasSuperstitious_Strong_Minus;
-
-        public static ThoughtDef Superstition_WasSuperstitious_Weak_Plus;
-
-        public static ThoughtDef Superstition_WasSuperstitious_Weak_Minus;
-    }
-
     [HarmonyPatch(typeof(GameConditionManager))]
     public static class GameConditionManager_Patch
     {
@@ -42,17 +22,30 @@ namespace MorePrecepts
                     foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned)
                     {
                         Log.Message("P:" + pawn);
+                        bool wasEvent = false;
                         if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Superstition_Strong))
                         {
-                            Thought_Memory thought = (Thought_Memory)ThoughtMaker.MakeThought(ThoughtDefOf.Superstition_WasSuperstitious_Strong_Plus);
-                            if (pawn.needs.mood != null)
-                                pawn.needs.mood.thoughts.memories.TryGainMemory(thought);
+                            HistoryEvent historyEvent = new HistoryEvent(HistoryEventDefOf.Superstition_Superstitious_Strong_Plus,
+                                pawn.Named(HistoryEventArgsNames.Doer));
+                            wasEvent = wasEvent || historyEvent.DoerWillingToDo();
+                            Find.HistoryEventsManager.RecordEvent(historyEvent);
                         }
                         if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Superstition_Weak))
                         {
-                            Thought_Memory thought = (Thought_Memory)ThoughtMaker.MakeThought(ThoughtDefOf.Superstition_WasSuperstitious_Weak_Plus);
-                            if (pawn.needs.mood != null)
-                                pawn.needs.mood.thoughts.memories.TryGainMemory(thought);
+                            HistoryEvent historyEvent = new HistoryEvent(HistoryEventDefOf.Superstition_Superstitious_Weak_Plus,
+                                pawn.Named(HistoryEventArgsNames.Doer));
+                            wasEvent = wasEvent || historyEvent.DoerWillingToDo();
+                            Find.HistoryEventsManager.RecordEvent(historyEvent);
+                        }
+                        // Need a separate event for notifying pawns disgusted by superstition, using several PreceptComp_KnowsMemoryThought
+                        // in PreceptDef each reacting to the specific events would list each of them in the tooltip.
+                        // TODO: Fix this in Core?
+                        if(wasEvent)
+                        {
+                            Log.Message("P2");
+                            HistoryEvent historyEvent = new HistoryEvent(HistoryEventDefOf.Superstition_Superstitious_Generic,
+                                pawn.Named(HistoryEventArgsNames.Doer));
+                            Find.HistoryEventsManager.RecordEvent(historyEvent);
                         }
                     }
                 }
