@@ -84,6 +84,10 @@
     <defName>Elderly_Revered_Role_Self</defName>
     <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Role_Self</workerClass>
     <thoughtClass>Thought_Situational</thoughtClass>
+    <nullifyingTraitDegrees>
+      <Nerves>2</Nerves>
+      <Nerves>1</Nerves>
+    </nullifyingTraitDegrees>
     <stages>
       <li>
         <label>Extremely young for role</label>
@@ -118,6 +122,9 @@
     <defName>Elderly_Revered_Social_Young</defName>
     <thoughtClass>Thought_SituationalSocial</thoughtClass>
     <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Social_Young</workerClass>
+    <nullifyingTraits>
+      <li>Kind</li>
+    </nullifyingTraits>
     <stages>
       <li>
         <label>Too young</label>
@@ -193,6 +200,10 @@
     <defName>Elderly_Respected_Role_Self</defName>
     <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Role_Self_Single</workerClass>
     <thoughtClass>Thought_Situational</thoughtClass>
+    <nullifyingTraitDegrees>
+      <Nerves>2</Nerves>
+      <Nerves>1</Nerves>
+    </nullifyingTraitDegrees>
     <stages>
       <li>
         <label>Too young for role</label>
@@ -224,6 +235,9 @@
     <defName>Elderly_Disrespected</defName>
     <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Minus</workerClass>
     <thoughtClass>Thought_Situational</thoughtClass>
+    <nullifyingTraits>
+      <li>Kind</li>
+    </nullifyingTraits>
     <stages>
       <li>
         <label>Old person present</label>
@@ -265,6 +279,9 @@
     <defName>Elderly_Disrespected_Social</defName>
     <thoughtClass>Thought_SituationalSocial</thoughtClass>
     <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Social_Minus</workerClass>
+    <nullifyingTraits>
+      <li>Kind</li>
+    </nullifyingTraits>
     <stages>
       <li>
         <label>Old</label>
@@ -283,6 +300,9 @@
     <defName>Elderly_Abhorred</defName>
     <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Minus</workerClass>
     <thoughtClass>Thought_Situational</thoughtClass>
+    <nullifyingTraits>
+      <li>Kind</li>
+    </nullifyingTraits>
     <stages>
       <li>
         <label>Old person present</label>
@@ -324,6 +344,9 @@
     <defName>Elderly_Abhorred_Social</defName>
     <thoughtClass>Thought_SituationalSocial</thoughtClass>
     <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Social_Minus</workerClass>
+    <nullifyingTraits>
+      <li>Kind</li>
+    </nullifyingTraits>
     <stages>
       <li>
         <label>Old</label>
