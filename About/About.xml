@@ -17,10 +17,11 @@
     <loadAfter>
         <li>brrainz.harmony</li>
     </loadAfter>
-    <description>This mod provides additional precepts for ideoligions in the Ideology DLC. This is work in progress, currently 2 are provided, more are planned.
+    <description>This mod provides additional precepts for ideoligions in the Ideology DLC. This is work in progress, currently 3 are provided, more are planned.
 
 - Elderly - Old people may be viewed with respect or contempt. Results in mood and social buffs and debuffs. When elders are respected, too young pawns are considered inexperienced for important roles.
 - Traps - Use of traps may be disapproved. Analogous to the 'Autonomous weapons' precept, but for traps.
+- Superstition - Strong, mild or contempt. Superstitious pawns will get mood changes from some events, pawns with contempt will dislike others being superstitious.
 
 GitHub: https://github.com/llunak/rimworld-moreprecepts
 </description>
