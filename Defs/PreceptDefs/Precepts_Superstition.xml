@@ -27,6 +27,22 @@
         <eventDef>Superstition_Superstitious_Strong_Minus</eventDef>
         <thought>Superstition_Superstitious_Strong_Minus</thought>
       </li>
+      <!-- Since it doesn't seem possible to extend GameConditionDef to add a flag saying the superstition type,
+           let's cheat and store the list here. -->
+      <li Class="MorePrecepts.PreceptComp_SuperstitionGood">
+        <gameConditionDefs>
+          <li>Aurora</li>
+        </gameConditionDefs>
+      </li>
+      <li Class="MorePrecepts.PreceptComp_SuperstitionBad">
+        <gameConditionDefs>
+          <li>SolarFlare</li>
+          <li>Eclipse</li>
+          <li>ToxicFallout</li>
+          <li>VolcanicWinter</li>
+          <li>Flashstorm</li>
+        </gameConditionDefs>
+      </li>
     </comps>
   </PreceptDef>
 
