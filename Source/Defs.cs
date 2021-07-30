@@ -52,6 +52,8 @@ namespace MorePrecepts
 
         public static HistoryEventDef AdministeredAlcohol;
 
+        public static HistoryEventDef AttackedPerson;
+
         [MayRequireIdeology]
         public static HistoryEventDef BuiltTrap;
 
