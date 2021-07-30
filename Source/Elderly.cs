@@ -13,6 +13,50 @@ using Verse;
 
 namespace MorePrecepts
 {
+    // Helper to calculate age limits. For humans old should be 50+, very old 80+,
+    // teenager below 18 and young adult below 25. Basing it on race properties
+    // is more friendly to other mods.
+    // Default human lifeExpectancy is 80, teenager age is 18.
+    // Use of these functions should be ordered by age (somebody very old counts also as old).
+    public static class Ages
+    {
+        public static bool IsOld(Pawn pawn)
+        {
+            return pawn.ageTracker.AgeBiologicalYears >= pawn.RaceProps.lifeExpectancy * 50 / 80;
+        }
+        public static bool IsVeryOld(Pawn pawn)
+        {
+            return pawn.ageTracker.AgeBiologicalYears >= pawn.RaceProps.lifeExpectancy;
+        }
+        public static bool IsVeryOldMinus(Pawn pawn)
+        {   // When elders are dispespected, a pawn is seen as very old sooner.
+            return pawn.ageTracker.AgeBiologicalYears >= pawn.RaceProps.lifeExpectancy * 60 / 80;
+        }
+        public static bool IsVeryYoung(Pawn pawn)
+        {
+            foreach(LifeStageAge stage in pawn.RaceProps.lifeStageAges)
+            {
+                Log.Message("Y1:" + stage.def.defName );
+                if( stage.def.defName.EndsWith("Adult"))
+                {
+                    return pawn.ageTracker.AgeBiologicalYears < stage.minAge;
+                }
+            }
+            return false;
+        }
+        public static bool IsYoung(Pawn pawn)
+        {
+            foreach(LifeStageAge stage in pawn.RaceProps.lifeStageAges)
+            {
+                if( stage.def.defName.EndsWith("Adult"))
+                {
+                    return pawn.ageTracker.AgeBiologicalYears < stage.minAge * 25 / 18;
+                }
+            }
+            return false;
+        }
+    }
+
     // Generic good-opinion class.
     public class ThoughtWorker_Precept_Elderly_Plus : ThoughtWorker_Precept
     {
@@ -28,11 +72,8 @@ namespace MorePrecepts
                 if (other != pawn && other.RaceProps.Humanlike && !other.IsSlave && !other.IsQuestLodger())
                 {
                     // Count old enough pawns. If the pawn counts as old, count only older pawns.
-                    if( other.ageTracker.AgeBiologicalYears >= 50
-                        && other.ageTracker.AgeBiologicalYears > pawn.ageTracker.AgeBiologicalYears )
-                    {
+                    if( Ages.IsOld(other) && other.ageTracker.AgeBiologicalYears > pawn.ageTracker.AgeBiologicalYears )
                         ++num;
-                    }
                 }
             }
             return num;
@@ -45,7 +86,7 @@ namespace MorePrecepts
                 return false;
             if( num == 0 )
             {
-                if(pawn.ageTracker.AgeBiologicalYears < 50)
+                if(!Ages.IsOld(pawn))
                     return ThoughtState.ActiveAtStage( 0 ); // no elder => penalty
                 else
                     return ThoughtState.Inactive; // this pawn is an elder, no penalty
@@ -75,9 +116,9 @@ namespace MorePrecepts
     {
         protected override ThoughtState ShouldHaveThought(Pawn pawn)
         {
-            if( pawn.ageTracker.AgeBiologicalYears >= 80 )
+            if( Ages.IsVeryOld(pawn))
                 return ThoughtState.ActiveAtStage( 1 );
-            if( pawn.ageTracker.AgeBiologicalYears >= 50 )
+            if( Ages.IsOld(pawn))
                 return ThoughtState.ActiveAtStage( 0 );
             return ThoughtState.Inactive;
         }
@@ -89,9 +130,9 @@ namespace MorePrecepts
         {
             if( otherPawn.ageTracker.AgeBiologicalYears < pawn.ageTracker.AgeBiologicalYears )
                 return ThoughtState.Inactive; // give social bonus only to older than the pawn
-            if( otherPawn.ageTracker.AgeBiologicalYears >= 80 )
+            if( Ages.IsVeryOld(otherPawn))
                 return ThoughtState.ActiveAtStage( 1 );
-            if( otherPawn.ageTracker.AgeBiologicalYears >= 50 )
+            if( Ages.IsOld(otherPawn))
                 return ThoughtState.ActiveAtStage( 0 );
             return ThoughtState.Inactive;
         }
@@ -103,7 +144,7 @@ namespace MorePrecepts
         {
             if (pawn.Faction == null || !pawn.IsColonist)
                 return false;
-            if(pawn.ageTracker.AgeBiologicalYears < 50)
+            if(!Ages.IsOld(pawn))
                 return ThoughtState.Inactive;
             List< Pawn > list = pawn.Map.mapPawns.SpawnedPawnsInFaction(pawn.Faction);
             for (int i = 0; i < list.Count; ++i)
@@ -112,7 +153,7 @@ namespace MorePrecepts
                 // Make even quest lodgers count here.
                 if (other != pawn && other.RaceProps.Humanlike && !other.IsSlave)
                 {
-                    if( other.ageTracker.AgeBiologicalYears < 50 )
+                    if( !Ages.IsOld(other))
                         return ThoughtState.Inactive;
                 }
             }
@@ -135,9 +176,9 @@ namespace MorePrecepts
                 if (other != pawn && other.RaceProps.Humanlike && !other.IsSlave && !other.IsQuestLodger()
                     && other.Ideo != null && other.Ideo.GetRole(other) != null)
                 {
-                    if( other.ageTracker.AgeBiologicalYears < 18 )
+                    if( Ages.IsVeryYoung(other))
                         return YoungType.HasVeryYoung;
-                    if( other.ageTracker.AgeBiologicalYears < 25 )
+                    if( Ages.IsYoung(other))
                         return YoungType.HasYoung;
                 }
             }
@@ -170,9 +211,9 @@ namespace MorePrecepts
         {
             if (pawn.Faction == null || !pawn.IsColonist || !ModsConfig.IdeologyActive || pawn.Ideo == null || pawn.Ideo.GetRole(pawn) == null)
                 return false;
-            if( pawn.ageTracker.AgeBiologicalYears < 18 )
+            if( Ages.IsVeryYoung(pawn))
                 return ThoughtState.ActiveAtStage( 0 );
-            if( pawn.ageTracker.AgeBiologicalYears < 25 )
+            if( Ages.IsYoung(pawn))
                 return ThoughtState.ActiveAtStage( 1 );
             return ThoughtState.Inactive;
         }
@@ -184,7 +225,7 @@ namespace MorePrecepts
         {
             if (pawn.Faction == null || !pawn.IsColonist || !ModsConfig.IdeologyActive || pawn.Ideo == null || pawn.Ideo.GetRole(pawn) == null)
                 return false;
-            if( pawn.ageTracker.AgeBiologicalYears < 25 )
+            if( Ages.IsYoung(pawn))
                 return ThoughtState.ActiveAtStage( 0 );
             return ThoughtState.Inactive;
         }
@@ -195,11 +236,11 @@ namespace MorePrecepts
     {
         protected override ThoughtState ShouldHaveThought(Pawn pawn, Pawn otherPawn)
         {
-            if( pawn.ageTracker.AgeBiologicalYears < 50 ) // only elders view young ones a bit poorly
+            if( !Ages.IsOld(pawn)) // only elders view young ones a bit poorly
                 return ThoughtState.Inactive;
-            if( otherPawn.ageTracker.AgeBiologicalYears < 18 )
+            if( Ages.IsVeryYoung(otherPawn))
                 return ThoughtState.ActiveAtStage( 1 );
-            if( otherPawn.ageTracker.AgeBiologicalYears < 25 )
+            if( Ages.IsYoung(otherPawn))
                 return ThoughtState.ActiveAtStage( 0 );
             return ThoughtState.Inactive;
         }
@@ -221,11 +262,8 @@ namespace MorePrecepts
                 if (other != pawn && other.RaceProps.Humanlike)
                 {
                     // Count other old people even for old pawns, as long as the other one is older.
-                    if( other.ageTracker.AgeBiologicalYears >= 50
-                        && other.ageTracker.AgeBiologicalYears > pawn.ageTracker.AgeBiologicalYears )
-                    {
+                    if( Ages.IsOld(other) && other.ageTracker.AgeBiologicalYears > pawn.ageTracker.AgeBiologicalYears )
                         ++num;
-                    }
                 }
             }
             if( num == 0 )
@@ -241,9 +279,9 @@ namespace MorePrecepts
     {
         protected override ThoughtState ShouldHaveThought(Pawn pawn)
         {
-            if( pawn.ageTracker.AgeBiologicalYears >= 60 )
+            if( Ages.IsVeryOldMinus(pawn))
                 return ThoughtState.ActiveAtStage( 1 );
-            if( pawn.ageTracker.AgeBiologicalYears >= 50 )
+            if( Ages.IsOld(pawn))
                 return ThoughtState.ActiveAtStage( 0 );
             return ThoughtState.Inactive;
         }
@@ -255,9 +293,9 @@ namespace MorePrecepts
         {
             if( otherPawn.ageTracker.AgeBiologicalYears < pawn.ageTracker.AgeBiologicalYears )
                 return ThoughtState.Inactive; // give social penaly only to older than the pawn
-            if( otherPawn.ageTracker.AgeBiologicalYears >= 60 )
+            if( Ages.IsVeryOldMinus(otherPawn))
                 return ThoughtState.ActiveAtStage( 1 );
-            if( otherPawn.ageTracker.AgeBiologicalYears >= 50 )
+            if( Ages.IsOld(otherPawn))
                 return ThoughtState.ActiveAtStage( 0 );
             return ThoughtState.Inactive;
         }
