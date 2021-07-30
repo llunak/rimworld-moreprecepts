@@ -36,7 +36,6 @@ namespace MorePrecepts
         {
             foreach(LifeStageAge stage in pawn.RaceProps.lifeStageAges)
             {
-                Log.Message("Y1:" + stage.def.defName );
                 if( stage.def.defName.EndsWith("Adult"))
                 {
                     return pawn.ageTracker.AgeBiologicalYears < stage.minAge;
