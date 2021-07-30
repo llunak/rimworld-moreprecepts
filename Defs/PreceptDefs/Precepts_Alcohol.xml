@@ -3,14 +3,17 @@
 
   <!-- Issue -->
 
+<!--
   <IssueDef>
     <defName>Alcohol</defName>
     <label>alcohol</label>
     <iconPath>UI/Issues/Alcohol</iconPath>
   </IssueDef>
+-->
 
   <!-- Precepts -->
 
+<!--
   <PreceptDef>
     <defName>Alcohol_Prohibited</defName>
     <issue>Alcohol</issue>
@@ -147,5 +150,6 @@
       </li>
     </comps>
   </PreceptDef>
+-->
 
 </Defs>

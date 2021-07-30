@@ -10,6 +10,8 @@ namespace MorePrecepts
 
         public static PreceptDef Superstition_Mild;
 
+//        public static PreceptDef Alcohol_Prohibited;
+
         static PreceptDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(PreceptDefOf));

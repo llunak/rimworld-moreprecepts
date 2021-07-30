@@ -4,15 +4,22 @@ using System;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
+using Verse.AI;
 using UnityEngine;
 
 namespace MorePrecepts
 {
 
-// TODO decide what to do when drugs vs alcohol conflict (such as drugs totaly disabled, alcohol allowed)
+// this is complicated, disbable for now
+#if false
 
-// Alcohol is normally considered to be a drug, and HistoryEventDef events include it. Patch code that sends
-// those and duplicate them for our alcohol-specific events. They'll be duplicated, which should be fine.
+/*
+Alcohol is normally considered to be a drug, and HistoryEventDef events include it. Patch code that sends
+those and duplicate them for our alcohol-specific events. This means the events will be duplicated, so
+it must be ensured that handling of those events does not conflict. For that reason, alcohol precept
+should completely override the drug precept (i.e. it's possible to set alcohol as neutral even if
+drug use is set to medical only).
+*/
 
     [HarmonyPatch(typeof(Bill_Medical))]
     public static class Bill_Medical_Patch
@@ -68,6 +75,7 @@ namespace MorePrecepts
         [HarmonyPatch(nameof(CanEatForNutritionEver))]
         public static void CanEatForNutritionEver(ref bool __result, ThingDef food, Pawn pawn)
         {
+// TODO: strange? why true below?
             if( !__result )
                 return;
             if (food.IsNutritionGivingIngestible && pawn.WillEat(food, null, careIfNotAcceptableForTitle: false)
@@ -85,7 +93,7 @@ namespace MorePrecepts
         }
     }
 
-    [HarmonyPatch(typeof(PawnUtility))]
+/*    [HarmonyPatch(typeof(PawnUtility))]
     public static class PawnUtility_Patch
     {
         [HarmonyPostfix]
@@ -98,7 +106,7 @@ namespace MorePrecepts
             }
         }
     }
-
+*/
     [HarmonyPatch(typeof(CompDrug))]
     public static class CompDrug_Patch
     {
@@ -112,7 +120,96 @@ namespace MorePrecepts
         }
     }
 
-// TODO FloatMenuMakerMap.AddHumanlikeOrders()
+    [HarmonyPatch(typeof(FloatMenuMakerMap))]
+    public static class FloatMenuMakerMap_Patch
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(AddHumanlikeOrders))]
+        public static void AddHumanlikeOrders(Vector3 clickPos, Pawn pawn, List<FloatMenuOption> opts)
+        {
+            // The functions may block the menu entry for drinking alcohol. It's quite nested in the function, making it hard(?)
+            // to replace, so just post-process the menu entries.
+            List<Pair<string,Thing>> alcoholItems = new List<Pair<string,Thing>>();
+            IntVec3 c = IntVec3.FromVector3(clickPos);
+            foreach (Thing thing7 in c.GetThingList(pawn.Map))
+            {
+                Thing t2 = thing7;
+                CompProperties_Drug compDrug = (CompProperties_Drug)t2.def.CompDefFor<CompDrug>();
+                if (compDrug == null || compDrug.chemical != ChemicalDefOf.Alcohol)
+                    continue; // not alcohol, ignore
+                if (t2.def.ingestible == null || !pawn.RaceProps.CanEverEat(t2) || !t2.IngestibleNow)
+                    continue;
+                string text = ((!t2.def.ingestible.ingestCommandString.NullOrEmpty()) ? string.Format(t2.def.ingestible.ingestCommandString, t2.LabelShort) : ((string)"ConsumeThing".Translate(t2.LabelShort, t2)));
+                alcoholItems.Add(new Pair<String,Thing>(text, t2));
+            }
+            if(alcoholItems.Count == 0)
+                return;
+            Log.Message("M1:" + alcoholItems.Count);
+            for( int i = 0; i < opts.Count; ++i )
+            {
+                Log.Message("M2:" + opts[i].Label);
+                for( int j = 0; j < alcoholItems.Count; ++j )
+                {
+                    string text = alcoholItems[j].First;
+                    if(opts[i].Label == text || opts[i].Label.StartsWith(text + ":"))
+                    {
+                        Thing t2 = alcoholItems[j].Second;
+                        // Big scary copy&paste&modify from the function. Only the one if statement is modified and the alcohol block is added.
+				if (!t2.IsSociallyProper(pawn))
+				{
+					text = text + ": " + "ReservedForPrisoners".Translate().CapitalizeFirst();
+				}
+				Log.Message("M21:" + text);
+				if (!t2.def.IsDrug || !ModsConfig.IdeologyActive || new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).Notify_PawnAboutToDo(out var opt, text))
+				{
+					if (t2.def.IsNonMedicalDrug && pawn.IsTeetotaler())
+					{
+					    Log.Message("M221");
+						opt = new FloatMenuOption(text + ": " + TraitDefOf.DrugDesire.DataAtDegree(-1).GetLabelCapFor(pawn), null);
+					}
+					else if (FoodUtility.InappropriateForTitle(t2.def, pawn, allowIfStarving: true))
+					{
+					    Log.Message("M223");
+						opt = new FloatMenuOption(text + ": " + "FoodBelowTitleRequirements".Translate(pawn.royalty.MostSeniorTitle.def.GetLabelFor(pawn).CapitalizeFirst()), null);
+					}
+					else if (!pawn.CanReach(t2, PathEndMode.OnCell, Danger.Deadly))
+					{
+					    Log.Message("M224");
+						opt = new FloatMenuOption(text + ": " + "NoPath".Translate().CapitalizeFirst(), null);
+					}
+					else
+					{
+					    Log.Message("M225");
+						MenuOptionPriority priority = ((t2 is Corpse) ? MenuOptionPriority.Low : MenuOptionPriority.Default);
+						int maxAmountToPickup = FoodUtility.GetMaxAmountToPickup(t2, pawn, FoodUtility.WillIngestStackCountOf(pawn, t2.def, t2.GetStatValue(StatDefOf.Nutrition)));
+						opt = FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(text, delegate
+						{
+							int maxAmountToPickup2 = FoodUtility.GetMaxAmountToPickup(t2, pawn, FoodUtility.WillIngestStackCountOf(pawn, t2.def, t2.GetStatValue(StatDefOf.Nutrition)));
+							if (maxAmountToPickup2 != 0)
+							{
+								t2.SetForbidden(value: false);
+								Job job23 = JobMaker.MakeJob(JobDefOf.Ingest, t2);
+								job23.count = maxAmountToPickup2;
+								pawn.jobs.TryTakeOrderedJob(job23, JobTag.Misc);
+							}
+						}, priority), pawn, t2);
+						if (maxAmountToPickup == 0)
+						{
+							opt.action = null;
+						}
+					}
+				}
+				else
+				    Log.Message("M22X");
+                        // End of big scary copy&paste&modify from the function.
+                        // Now replace the menu option.
+                        Log.Message("M3:" + alcoholItems[j].First + "->" + opt.Label);
+                        opts[i] = opt;
+                    }
+                }
+            }
+        }
+    }
 
 // These are basically copy&paste&modify of HighLife classes, split into two classes based on the constants.
 // The wanted class more or less matches HighLife settings, the Essential gets unhappy more quickly.
@@ -248,5 +345,7 @@ namespace MorePrecepts
 			}
 		}
 	}
+
+#endif
 
 }
