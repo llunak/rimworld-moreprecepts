@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+  <Operation Class="PatchOperationInsert">
+    <xpath>/Defs/MemeDef[defName="Cannibal"]</xpath>
+    <value>
+      <exclusionTags>
+        <li>Pacifism</li>
+      </exclusionTags>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationInsert">
+    <xpath>/Defs/MemeDef[defName="Raider"]</xpath>
+    <value>
+      <exclusionTags>
+        <li>Pacifism</li>
+      </exclusionTags>
+    </value>
+  </Operation>
+
+</Patch>
