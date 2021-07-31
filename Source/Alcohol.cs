@@ -16,54 +16,155 @@ drug, so it gets handled by the druguse precept. That means that having DrugUse:
 with Alcohol:Wanted would normally conflict, as core game would forbid alcohol based on the first precept.
 
 So the most code here tries to disable core from including alcohol in recreational drugs, which is not
-trivial, as even IsTeetotaler() returns true if DrugUse:Medical is set.
-
+trivial, as even IsTeetotaler() returns true if DrugUse:MedicalOnly is set, thus normally blocking beer use.
+So patch all drug-related code to follow the alcohol precept instead of the drug use one. This includes
+avoiding drug HistoryEventDef events and sending alcohol ones, otherwise pawns would get thoughts
+from both alcohol and drugs precepts. That may possibly break mods that react to those events, but oh well.
 */
+
+    public static class AlcoholHelper
+    {
+        public static bool NeedsAlcoholOverride(ThingDef thing, Pawn pawn)
+        {
+            if(!HasAlcoholPrecept(pawn))
+                return false;
+            if(!IsAlcohol(thing))
+                return false;
+            return true;
+        }
+        public static bool HasAlcoholPrecept(Pawn pawn)
+        {
+            // Override DrugUse only if Alcohol precept is actually active.
+            if(pawn.Ideo == null )
+                return false;
+            return pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Prohibited)
+                || pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Disapproved)
+                || pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Neutral)
+                || pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Wanted)
+                || pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Essential);
+        }
+        // This only checks if the thing is alcohol, normally we need to call NeedsAlcoholOverride()
+        // to also check if alcohol should be treated specially.
+        public static bool IsAlcohol(ThingDef thing)
+        {
+            if (thing.IsDrug)
+            {
+                CompProperties_Drug compDrug = (CompProperties_Drug)thing.CompDefFor<CompDrug>();
+                if (compDrug != null && compDrug.chemical == ChemicalDefOf.Alcohol)
+                    return true;
+            }
+            return false;
+        }
+        // See PawnUtility_Patch below.
+        public static int overrideCounter = 0;
+        public static void AddOverride( bool doIt = true )
+        {
+            if(!doIt)
+                return;
+            ++overrideCounter;
+            if(overrideCounter > 10)
+                Log.Error("MorePrecepts: IsTeetotaler() broken override add");
+        }
+        public static void RemoveOverride(bool doIt = true)
+        {
+            if(!doIt)
+                return;
+            --overrideCounter;
+            if(overrideCounter < 0)
+                Log.Error("MorePrecepts: IsTeetotaler() broken override remove");
+        }
+    }
+
+// We need to patch IsTeetotaler() to not return true if only DrugUse:MedicalOnly is set (in which
+// the case function would normally return true). That means we also need to check all calls
+// to IsTeetotaler() and add a drug use check if needed. If the item is actually alcohol, we'll
+// temporarily tell IsTeetotaler() to return false if drug use would be the only reason it would
+// return true.
+    [HarmonyPatch(typeof(PawnUtility))]
+    public static class PawnUtility_Patch
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(IsTeetotaler))]
+        public static bool IsTeetotaler(ref bool __result, Pawn pawn)
+        {
+            if(AlcoholHelper.overrideCounter == 0)
+                return true; // proceed normally
+            // Our functionality that ignores drug settings.
+            if (!new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+                __result = true;
+            if (pawn.story != null)
+                __result = pawn.story.traits.DegreeOfTrait(TraitDefOf.DrugDesire) < 0;
+            return false;
+        }
+    }
 
     [HarmonyPatch(typeof(Bill_Medical))]
     public static class Bill_Medical_Patch
     {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(PawnAllowedToStartAnew))]
+        public static void PawnAllowedToStartAnew(ref bool __result, out RecipeDef __state, Bill_Medical __instance, Pawn pawn)
+        {
+            __state = null;
+            ThingDef singleDef = __instance.recipe.ingredients[0].filter.BestThingRequest.singleDef;
+            if(!AlcoholHelper.NeedsAlcoholOverride(singleDef, pawn))
+                return; // normal processing
+            // We need to also call base.PawnAllowedToStartAnew(), which is complicated with patching.
+            // So temporarily unset the recipe and call the original version, which will then just call
+            // the base function.
+            __state = __instance.recipe;
+            __instance.recipe = null;
+        }
         [HarmonyPostfix]
         [HarmonyPatch(nameof(PawnAllowedToStartAnew))]
-        public static void PawnAllowedToStartAnew(ref bool __result, Bill_Medical __instance, Pawn pawn)
+        public static void PawnAllowedToStartAnew(ref bool __result, RecipeDef __state, Bill_Medical __instance, Pawn pawn)
         {
-            if( __result )
+            if(__state == null)
+                return;
+            __instance.recipe = __state;
+            if (__instance.recipe.Worker is Recipe_AdministerIngestible)
             {
-                if (__instance.recipe.Worker is Recipe_AdministerIngestible)
+                ThingDef singleDef = __instance.recipe.ingredients[0].filter.BestThingRequest.singleDef;
+                if(AlcoholHelper.NeedsAlcoholOverride(singleDef, pawn))
                 {
-                    ThingDef singleDef = __instance.recipe.ingredients[0].filter.BestThingRequest.singleDef;
-                    if (singleDef.IsDrug)
-                    {
-                        CompProperties_Drug compDrug = (CompProperties_Drug)singleDef.CompDefFor<CompDrug>();
-                        // Disallow also if alcohol is prohibited.
-                        if (compDrug != null && compDrug.chemical == ChemicalDefOf.Alcohol
-                            && !new HistoryEvent(HistoryEventDefOf.AdministeredAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).Notify_PawnAboutToDo_Job())
-                        {
-                            __result = false;
-                        }
-                    }
+                    __result = new HistoryEvent(HistoryEventDefOf.AdministeredAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).Notify_PawnAboutToDo_Job();
                 }
             }
         }
     }
 
+// These places to patch are those that have 'IngestedDrug', 'AdministeredDrug' or 'IsTeetotaler'.
+
     [HarmonyPatch(typeof(Recipe_AdministerIngestible))]
     public static class Recipe_AdministerIngestible_Patch
     {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(ApplyOnPawn))]
+        public static void ApplyOnPawn(Pawn pawn, BodyPartRecord part, ref Pawn billDoer, List<Thing> ingredients, Bill bill)
+        {
+            if (AlcoholHelper.NeedsAlcoholOverride(ingredients[0].def, billDoer))
+            {
+                // If alcohol, send alcohol event.
+                if(billDoer != null)
+                    Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.AdministeredAlcohol, billDoer.Named(HistoryEventArgsNames.Doer)));
+                // And block sending drug events, which is inside 'billDoer' check, but rest of the original function will still do its work.
+                billDoer = null;
+            }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(ApplyOnPawn))]
+        public static void GetLabelWhenUsedOn(out bool __state, Recipe_AdministerIngestible __instance, Pawn pawn, BodyPartRecord part)
+        {
+            ThingDef singleDef = __instance.recipe.ingredients[0].filter.BestThingRequest.singleDef;
+            __state = AlcoholHelper.NeedsAlcoholOverride(singleDef, pawn);
+            AlcoholHelper.AddOverride( __state );
+        }
         [HarmonyPostfix]
         [HarmonyPatch(nameof(ApplyOnPawn))]
-        public static void ApplyOnPawn(Pawn pawn, BodyPartRecord part, Pawn billDoer, List<Thing> ingredients, Bill bill)
+        public static void GetLabelWhenUsedOn(bool __state, Pawn pawn, BodyPartRecord part)
         {
-            if(billDoer != null)
-            {
-                if (ingredients[0].def.IsDrug)
-                {
-                    CompProperties_Drug compDrug = (CompProperties_Drug)ingredients[0].def.CompDefFor<CompDrug>();
-                    // Send also the notification about administering alcohol.
-                    if (compDrug != null && compDrug.chemical == ChemicalDefOf.Alcohol)
-                        Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.AdministeredAlcohol, billDoer.Named(HistoryEventArgsNames.Doer)));
-                }
-            }
+            AlcoholHelper.RemoveOverride( __state );
         }
     }
 
@@ -74,48 +175,66 @@ trivial, as even IsTeetotaler() returns true if DrugUse:Medical is set.
         [HarmonyPatch(nameof(CanEatForNutritionEver))]
         public static void CanEatForNutritionEver(ref bool __result, ThingDef food, Pawn pawn)
         {
-// TODO: strange? why true below?
-            if( !__result )
-                return;
-            if (food.IsNutritionGivingIngestible && pawn.WillEat(food, null, careIfNotAcceptableForTitle: false)
-                && (int)food.ingestible.preferability > 1 && (!food.IsDrug || !pawn.IsTeetotaler())
-                && food.ingestible.canAutoSelectAsFoodForCaravan && food.IsDrug)
+            if(AlcoholHelper.NeedsAlcoholOverride(food, pawn))
             {
-                CompProperties_Drug compDrug = (CompProperties_Drug)food.CompDefFor<CompDrug>();
-                // Allow also drinking alcohol unless prohibited.
-                if (compDrug != null && compDrug.chemical == ChemicalDefOf.Alcohol
-                    && new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+                // Override return value for alcohol.
+                AlcoholHelper.AddOverride();
+                if (food.IsNutritionGivingIngestible && pawn.WillEat(food, null, careIfNotAcceptableForTitle: false)
+                    && (int)food.ingestible.preferability > 1 && !pawn.IsTeetotaler() && food.ingestible.canAutoSelectAsFoodForCaravan)
                 {
-                    __result = true;
+                    __result = new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo();
                 }
+                AlcoholHelper.RemoveOverride();
             }
         }
     }
 
-/*    [HarmonyPatch(typeof(PawnUtility))]
-    public static class PawnUtility_Patch
-    {
-        [HarmonyPostfix]
-        [HarmonyPatch(nameof(IsTeetotaler))]
-        public static void IsTeetotaler(ref bool __result, Pawn pawn)
-        {
-            if (!new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
-            {
-                __result = true;
-            }
-        }
-    }
-*/
     [HarmonyPatch(typeof(CompDrug))]
     public static class CompDrug_Patch
     {
-        [HarmonyPostfix]
+        [HarmonyPrefix]
         [HarmonyPatch(nameof(PostIngested))]
-        public static void PostIngested(CompDrug __instance, Pawn ingester)
+        public static bool PostIngested(CompDrug __instance, Pawn ingester)
         {
-            CompProperties_Drug compDrug = (CompProperties_Drug)__instance.parent.def.CompDefFor<CompDrug>();
-            if (compDrug != null && compDrug.chemical == ChemicalDefOf.Alcohol)
-                Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, ingester.Named(HistoryEventArgsNames.Doer)));
+            if(!AlcoholHelper.NeedsAlcoholOverride(__instance.parent.def, ingester))
+                return true; // original processing
+            // Big scary copy&paste&modify to remove drug events and use alcohol event instead.
+			if (__instance.Props.Addictive && ingester.RaceProps.IsFlesh)
+			{
+				float num = ingester.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.DrugOverdose)?.Severity ?? 0f;
+				if (num < 0.9f && Rand.Value < __instance.Props.largeOverdoseChance)
+				{
+					float num2 = Rand.Range(0.85f, 0.99f);
+					HealthUtility.AdjustSeverity(ingester, HediffDefOf.DrugOverdose, num2 - num);
+					if (ingester.Faction == Faction.OfPlayer)
+					{
+						Messages.Message("MessageAccidentalOverdose".Translate(ingester.Named("INGESTER"), __instance.parent.LabelNoCount, __instance.parent.Named("DRUG")), ingester, MessageTypeDefOf.NegativeHealthEvent);
+					}
+				}
+				else
+				{
+					float num3 = __instance.Props.overdoseSeverityOffset.RandomInRange / ingester.BodySize;
+					if (num3 > 0f)
+					{
+						HealthUtility.AdjustSeverity(ingester, HediffDefOf.DrugOverdose, num3);
+					}
+				}
+			}
+			if (__instance.Props.isCombatEnhancingDrug && !ingester.Dead)
+			{
+				ingester.mindState.lastTakeCombatEnhancingDrugTick = Find.TickManager.TicksGame;
+			}
+			if (__instance.parent.def.ingestible.drugCategory != DrugCategory.Medical && !ingester.Dead)
+			{
+				ingester.mindState.lastTakeRecreationalDrugTick = Find.TickManager.TicksGame;
+			}
+			if (ingester.drugs != null)
+			{
+				ingester.drugs.Notify_DrugIngested(__instance.parent);
+			}
+			Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, ingester.Named(HistoryEventArgsNames.Doer)));
+            // End of big scary copy&paste&modify.
+            return false; // no original processing
         }
     }
 
@@ -133,8 +252,7 @@ trivial, as even IsTeetotaler() returns true if DrugUse:Medical is set.
             foreach (Thing thing7 in c.GetThingList(pawn.Map))
             {
                 Thing t2 = thing7;
-                CompProperties_Drug compDrug = (CompProperties_Drug)t2.def.CompDefFor<CompDrug>();
-                if (compDrug == null || compDrug.chemical != ChemicalDefOf.Alcohol)
+                if(!AlcoholHelper.NeedsAlcoholOverride(t2.def, pawn))
                     continue; // not alcohol, ignore
                 if (t2.def.ingestible == null || !pawn.RaceProps.CanEverEat(t2) || !t2.IngestibleNow)
                     continue;
@@ -143,10 +261,9 @@ trivial, as even IsTeetotaler() returns true if DrugUse:Medical is set.
             }
             if(alcoholItems.Count == 0)
                 return;
-            Log.Message("M1:" + alcoholItems.Count);
+            AlcoholHelper.AddOverride();
             for( int i = 0; i < opts.Count; ++i )
             {
-                Log.Message("M2:" + opts[i].Label);
                 for( int j = 0; j < alcoholItems.Count; ++j )
                 {
                     string text = alcoholItems[j].First;
@@ -154,31 +271,27 @@ trivial, as even IsTeetotaler() returns true if DrugUse:Medical is set.
                     {
                         Thing t2 = alcoholItems[j].Second;
                         // Big scary copy&paste&modify from the function. Only the one if statement is modified and the alcohol block is added.
+                        // Some of the code is useless, because we know the thing is a drug.
 				if (!t2.IsSociallyProper(pawn))
 				{
 					text = text + ": " + "ReservedForPrisoners".Translate().CapitalizeFirst();
 				}
-				Log.Message("M21:" + text);
 				if (!t2.def.IsDrug || !ModsConfig.IdeologyActive || new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).Notify_PawnAboutToDo(out var opt, text))
 				{
 					if (t2.def.IsNonMedicalDrug && pawn.IsTeetotaler())
 					{
-					    Log.Message("M221");
 						opt = new FloatMenuOption(text + ": " + TraitDefOf.DrugDesire.DataAtDegree(-1).GetLabelCapFor(pawn), null);
 					}
 					else if (FoodUtility.InappropriateForTitle(t2.def, pawn, allowIfStarving: true))
 					{
-					    Log.Message("M223");
 						opt = new FloatMenuOption(text + ": " + "FoodBelowTitleRequirements".Translate(pawn.royalty.MostSeniorTitle.def.GetLabelFor(pawn).CapitalizeFirst()), null);
 					}
 					else if (!pawn.CanReach(t2, PathEndMode.OnCell, Danger.Deadly))
 					{
-					    Log.Message("M224");
 						opt = new FloatMenuOption(text + ": " + "NoPath".Translate().CapitalizeFirst(), null);
 					}
 					else
 					{
-					    Log.Message("M225");
 						MenuOptionPriority priority = ((t2 is Corpse) ? MenuOptionPriority.Low : MenuOptionPriority.Default);
 						int maxAmountToPickup = FoodUtility.GetMaxAmountToPickup(t2, pawn, FoodUtility.WillIngestStackCountOf(pawn, t2.def, t2.GetStatValue(StatDefOf.Nutrition)));
 						opt = FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(text, delegate
@@ -198,17 +311,80 @@ trivial, as even IsTeetotaler() returns true if DrugUse:Medical is set.
 						}
 					}
 				}
-				else
-				    Log.Message("M22X");
                         // End of big scary copy&paste&modify from the function.
                         // Now replace the menu option.
-                        Log.Message("M3:" + alcoholItems[j].First + "->" + opt.Label);
                         opts[i] = opt;
                     }
                 }
             }
+            AlcoholHelper.RemoveOverride();
         }
     }
+
+    [HarmonyPatch(typeof(Pawn_DrugPolicyTracker))]
+    public static class Pawn_DrugPolicyTracker_Patch
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(AllowedToTakeScheduledEver))]
+        public static void AllowedToTakeScheduledEver(out bool __state, Pawn_DrugPolicyTracker __instance, ThingDef thingDef)
+        {
+            __state = AlcoholHelper.NeedsAlcoholOverride(thingDef, __instance.pawn);
+            AlcoholHelper.AddOverride( __state );
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(AllowedToTakeScheduledEver))]
+        public static void AllowedToTakeScheduledEver(bool __state, ThingDef thingDef)
+        {
+            AlcoholHelper.RemoveOverride( __state );
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(AllowedToTakeToInventory))]
+        public static void AllowedToTakeToInventory(out bool __state, Pawn_DrugPolicyTracker __instance, ThingDef thingDef)
+        {
+            __state = AlcoholHelper.NeedsAlcoholOverride(thingDef, __instance.pawn);
+            AlcoholHelper.AddOverride( __state );
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(AllowedToTakeToInventory))]
+        public static void AllowedToTakeToInventory(bool __state, ThingDef thingDef)
+        {
+            AlcoholHelper.RemoveOverride( __state );
+        }
+    }
+
+    [HarmonyPatch(typeof(ThoughtWorker_Drunk))]
+    public static class ThoughtWorker_Drunk_Patch
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CurrentSocialStateInternal))]
+        public static void CurrentSocialStateInternal(out bool __state, Pawn p, Pawn other)
+        {
+            // We don't know the thing, but this is about being drunk, so our functionality if precept is active.
+            __state = AlcoholHelper.HasAlcoholPrecept(p);
+            AlcoholHelper.AddOverride( __state );
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(CurrentSocialStateInternal))]
+        public static void CurrentSocialStateInternal(bool __state, Pawn p, Pawn other)
+        {
+            AlcoholHelper.RemoveOverride( __state );
+        }
+    }
+
+    // ThoughtWorker_TeetotalerVsAddict and ThoughtWorker_TeetotalerVsChemicalInterest have
+    // no thing involved, but let's say that since this is about drugs, we do not count alcohol
+    // in there. TODO: This is possibly wrong.
+
+    // PawnInventoryGenerator and JobGiver_TakeCombatEnhancingDrug are about combat enhancing drugs,
+    // which alcohol is not, so let's ignore it.
+
+// TODO Pawn_InventoryTracker
+// TODO CaravanPawnsNeedsUtility
+// TODO JoyGiver_SocialRelax
+// TODO JobGiver_GetFood
+// TODO PawnAddictionHediffsGenerator
+// TODO FoodUtility
 
 // These are basically copy&paste&modify of HighLife classes, split into two classes based on the constants.
 // The wanted class more or less matches HighLife settings, the Essential gets unhappy more quickly.

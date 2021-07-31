@@ -20,7 +20,15 @@ namespace MorePrecepts
 
         public static PreceptDef Violence_Essential;
 
-//        public static PreceptDef Alcohol_Prohibited;
+        public static PreceptDef Alcohol_Prohibited;
+
+        public static PreceptDef Alcohol_Disapproved;
+
+        public static PreceptDef Alcohol_Neutral;
+
+        public static PreceptDef Alcohol_Wanted;
+
+        public static PreceptDef Alcohol_Essential;
 
         static PreceptDefOf()
         {

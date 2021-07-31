@@ -3,7 +3,6 @@
 
   <!-- Prohibited -->
 
-<!--
   <ThoughtDef>
     <defName>IngestedAlcohol_Prohibited</defName>
     <durationDays>3</durationDays>
@@ -71,11 +70,9 @@
       <DrugDesire>1</DrugDesire>
     </nullifyingTraitDegrees>
   </ThoughtDef>
--->
 
   <!-- Disapproved -->
 
-<!--
   <ThoughtDef>
     <defName>IngestedAlcohol_Disapproved</defName>
     <durationDays>3</durationDays>
@@ -143,13 +140,11 @@
       <DrugDesire>1</DrugDesire>
     </nullifyingTraitDegrees>
   </ThoughtDef>
--->
 
   <!-- Neutral -->
 
   <!-- Wanted -->
 
-<!--
   <ThoughtDef>
     <defName>Alcohol_Wanted</defName>
     <thoughtClass>MorePrecepts.Thought_Situational_Precept_Alcohol_Wanted</thoughtClass>
@@ -178,11 +173,9 @@
       </li>
     </stages>
   </ThoughtDef>
--->
 
   <!-- Essential -->
 
-<!--
   <ThoughtDef>
     <defName>Alcohol_Essential</defName>
     <thoughtClass>MorePrecepts.Thought_Situational_Precept_Alcohol_Essential</thoughtClass>
@@ -212,6 +205,5 @@
       </li>
     </stages>
   </ThoughtDef>
--->
 
 </Defs>
