@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- Precepts -->
+
+  <Traps_Prohibited.label>금지함</Traps_Prohibited.label>
+  <Traps_Prohibited.description>아무나 죽도록 함정을 설치하는 것은 전적으로 비인도적인 행위이다.</Traps_Prohibited.description>
+  <Traps_Prohibited.comps.0.description>정착지에 함정 있음</Traps_Prohibited.comps.0.description>
+  <Traps_Prohibited.comps.1.description>함정 건설</Traps_Prohibited.comps.1.description>
+
+  <Traps_Horrible.label>끔찍함</Traps_Horrible.label>
+  <Traps_Horrible.description>아무나 죽도록 함정을 설치하는 것은 끔찍한 일이다.</Traps_Horrible.description>
+  <Traps_Horrible.comps.0.description>정착지에 함정 있음</Traps_Horrible.comps.0.description>
+
+  <Traps_Disapproved.label>못마땅함</Traps_Disapproved.label>
+  <Traps_Disapproved.description>아무나 죽도록 함정을 설치하는 것은 추잡한 일이다.</Traps_Disapproved.description>
+  <Traps_Disapproved.comps.0.description>정착지에 함정 있음</Traps_Disapproved.comps.0.description>
+
+
+</LanguageData>
