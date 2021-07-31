@@ -10,6 +10,10 @@ namespace MorePrecepts
 
         public static PreceptDef Superstition_Mild;
 
+        public static PreceptDef Violence_Wanted;
+
+        public static PreceptDef Violence_Essential;
+
 //        public static PreceptDef Alcohol_Prohibited;
 
         static PreceptDefOf()

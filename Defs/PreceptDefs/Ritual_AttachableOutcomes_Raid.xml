@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <RitualAttachableOutcomeEffectDef>
+    <defName>Raid</defName>
+    <workerClass>MorePrecepts.RitualAttachableOutcomeEffectWorker_Raid</workerClass>
+    <label>raid</label>
+    <effectDesc>your colony may get attacked by raiders.</effectDesc>
+    <letterInfoText>Raiders are approaching your colony, attracted by the commotion.</letterInfoText>
+    <allowedRituals>
+      <li>SacrificePrisoner</li>
+      <li>CelebrationPartyDanceDrum</li>
+      <li>BurnCircle</li>
+    </allowedRituals>
+  </RitualAttachableOutcomeEffectDef>
+
+</Defs>
