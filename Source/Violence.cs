@@ -87,15 +87,17 @@ namespace MorePrecepts
     [HarmonyPatch(typeof(AttackTargetFinder))]
     public static class AttackTargetFinder_Patch
     {
-        [HarmonyPostfix]
+        [HarmonyPrefix]
         [HarmonyPatch(nameof(BestAttackTarget))]
         public static void BestAttackTarget(IAttackTargetSearcher searcher, TargetScanFlags flags, ref Predicate<Thing> validator,
             float minDist, float maxDist, IntVec3 locus, float maxTravelRadiusFromLocus, bool canBashDoors, bool canTakeTargetsCloserThanEffectiveMinRange,
             bool canBashFences = false)
         {
             Pawn pawn = searcher as Pawn;
-            if( pawn.RaceProps.Humanlike && !new HistoryEvent(HistoryEventDefOf.AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+            if( pawn != null && pawn.RaceProps.Humanlike
+                && !new HistoryEvent(HistoryEventDefOf.AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
             {
+                // Use a wrapper validator that'll also ignore other pawns and pass that to the actual function.
                 Predicate<Thing> oldValidator = validator;
                 Predicate<Thing> validatorWrapper = delegate(Thing thing)
                 {
