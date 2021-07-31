@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- Related: Has traps -->
+
+  <HasTraps_Prohibited.stages.0.label>함정</HasTraps_Prohibited.stages.0.label>
+  <HasTraps_Prohibited.stages.0.description>우리는 함정을 사용해. 무고할지도 모르는 사람을 죽일 위험을 감수하는 건 정말 끔찍해.</HasTraps_Prohibited.stages.0.description>
+
+  <HasTraps_Horrible.stages.0.label>함정</HasTraps_Horrible.stages.0.label>
+  <HasTraps_Horrible.stages.0.description>우리는 함정을 사용해. 무고할지도 모르는 사람을 죽일 위험을 감수하는 건 끔찍해.</HasTraps_Horrible.stages.0.description>
+
+  <HasTraps_Disapproved.stages.0.label>함정</HasTraps_Disapproved.stages.0.label>
+  <HasTraps_Disapproved.stages.0.description>우리는 함정을 사용해. 무고할지도 모르는 사람을 죽일 위험을 감수하는 건 정말 추잡해.</HasTraps_Disapproved.stages.0.description>
+
+
+</LanguageData>
