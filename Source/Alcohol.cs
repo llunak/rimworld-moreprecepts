@@ -43,6 +43,13 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                 || pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Wanted)
                 || pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Essential);
         }
+        public static bool HasDislikingAlcoholPrecept(Pawn pawn)
+        {
+            if(pawn.Ideo == null )
+                return false;
+            return pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Prohibited)
+                || pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Disapproved);
+        }
         // This only checks if the thing is alcohol, normally we need to call NeedsAlcoholOverride()
         // to also check if alcohol should be treated specially.
         public static bool IsAlcohol(ThingDef thing)
@@ -372,9 +379,45 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         }
     }
 
-    // ThoughtWorker_TeetotalerVsAddict and ThoughtWorker_TeetotalerVsChemicalInterest have
-    // no thing involved, but let's say that since this is about drugs, we do not count alcohol
-    // in there. TODO: This is possibly wrong.
+    [HarmonyPatch(typeof(ThoughtWorker_TeetotalerVsAddict))]
+    public static class ThoughtWorker_TeetotalerVsAddict_Patch
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(CurrentSocialStateInternal))]
+        public static void CurrentSocialStateInternal(ref bool __result, Pawn p, Pawn other)
+        {
+            if(__result)
+                return;
+            // A pawn with precept that dislikes alcohol will dislike pawn that has an alcohol addiction (and not others).
+            // Mostly copy&paste&modify from the original function.
+            if (!p.RaceProps.Humanlike)
+                return;
+            if( !AlcoholHelper.HasDislikingAlcoholPrecept(p))   // (!p.IsTeetotaler())
+                return;
+            if (!other.RaceProps.Humanlike)
+                return;
+            if (!RelationsUtility.PawnsKnowEachOther(p, other))
+                return;
+            List<Hediff> hediffs = other.health.hediffSet.hediffs;
+            for (int i = 0; i < hediffs.Count; i++)
+            {
+                if (hediffs[i].def.IsAddiction)
+                {
+                    Hediff_Addiction addiction = hediffs[i] as Hediff_Addiction;
+                    if( addiction.Chemical == ChemicalDefOf.Alcohol )
+                    {
+                        __result = true;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    // ThoughtWorker_TeetotalerVsChemicalInterest is primarily about the traits, but precepts
+    // also set IsTeetotaler(). The only case when we'd need to patch would be the somewhat
+    // unusual case of drug precept being fine with drugs but alcohol precept not being fine with alcohol.
+    // But let's say that people who don't like only alcohol are fine with chemical interest.
 
     // PawnInventoryGenerator and JobGiver_TakeCombatEnhancingDrug are about combat enhancing drugs,
     // which alcohol is not, so let's ignore it.
