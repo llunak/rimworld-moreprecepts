@@ -218,6 +218,7 @@
       <li Class="PreceptComp_SituationalThought">
         <thought>Violence_Wanted</thought>
         <description>Somebody harmed every {DAYSSATISIFED} days</description>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
       <li Class="PreceptComp_KnowsMemoryThought">
         <eventDef>AttackedPerson</eventDef>
@@ -254,6 +255,7 @@
       <li Class="PreceptComp_SituationalThought">
         <thought>Violence_Essential</thought>
         <description>Somebody harmed every {DAYSSATISIFED} days</description>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
       <li Class="PreceptComp_KnowsMemoryThought">
         <eventDef>AttackedPerson</eventDef>

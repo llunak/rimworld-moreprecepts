@@ -215,6 +215,7 @@ drug use is set to medical only).
 // The wanted class more or less matches HighLife settings, the Essential gets unhappy more quickly.
 	public class ThoughtWorker_Precept_Alcohol_Wanted : ThoughtWorker_Precept, IPreceptCompDescriptionArgs
 	{
+		// The values are also hardcoded in the XML.
 		private const float DaysSatisfied = 0.75f;
 
 		private const float DaysNoBonus = 1f;
@@ -265,6 +266,7 @@ drug use is set to medical only).
 
 	public class ThoughtWorker_Precept_Alcohol_Essential : ThoughtWorker_Precept, IPreceptCompDescriptionArgs
 	{
+		// The values are also hardcoded in the XML.
 		private const float DaysSatisfied = 0.75f;
 
 		private const float DaysNoBonus = 1f;

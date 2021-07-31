@@ -208,6 +208,7 @@
       <li>
         <label>alcohol missing</label>
         <description>I want some alcohol. It's not right to be sober so long.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
       </li>
     </stages>
   </ThoughtDef>

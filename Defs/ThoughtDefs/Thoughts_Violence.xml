@@ -132,14 +132,17 @@
       <li>
         <label>violence</label>
         <visible>false</visible>
+        <baseMoodEffect>0</baseMoodEffect>
       </li>
       <li>
         <label>violence missing</label>
         <description>I want to harm somebody. It makes me feel good.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
       </li>
       <li>
         <label>violence missing</label>
         <description>I want to harm somebody. It makes me feel good.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
       </li>
     </stages>
   </ThoughtDef>
@@ -181,14 +184,17 @@
       <li>
         <label>violence</label>
         <visible>false</visible>
+        <baseMoodEffect>0</baseMoodEffect>
       </li>
       <li>
         <label>violence missing</label>
         <description>I want to harm somebody. Violence is my life.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
       </li>
       <li>
         <label>violence missing</label>
         <description>I want to harm somebody. Violence is my life.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
       </li>
     </stages>
   </ThoughtDef>

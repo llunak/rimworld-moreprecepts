@@ -22,9 +22,11 @@
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Revered</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Revered_Self</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Revered_Social</thought>
@@ -34,9 +36,11 @@
       </li>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Revered_Role</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Revered_Role_Self</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Revered_Social_Young</thought>
@@ -57,6 +61,7 @@
       </li>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Respected_Self</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Respected_Social</thought>
@@ -66,9 +71,11 @@
       </li>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Revered_Role</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Revered_Role_Self</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
     </comps>
   </PreceptDef>
@@ -83,9 +90,11 @@
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Disrespected</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Disrespected_Self</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Disrespected_Social</thought>
@@ -104,9 +113,11 @@
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Abhorred</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Abhorred_Self</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Abhorred_Social</thought>

@@ -165,6 +165,7 @@ namespace MorePrecepts
     // The Wanted class is less demanding, the Essential gets unhappy more quickly.
     public class ThoughtWorker_Precept_Violence_Wanted : ThoughtWorker_Precept, IPreceptCompDescriptionArgs
     {
+        // The values are also hardcoded in the XML.
         private const float DaysSatisfied = 5f;
         private const float DaysNoBonus = 7f;
         private const float DaysMissing = 8f;
@@ -206,6 +207,7 @@ namespace MorePrecepts
 
     public class ThoughtWorker_Precept_Violence_Essential : ThoughtWorker_Precept, IPreceptCompDescriptionArgs
     {
+        // The values are also hardcoded in the XML.
         private const float DaysSatisfied = 2f;
         private const float DaysNoBonus = 5f;
         private const float DaysMissing = 7f;
