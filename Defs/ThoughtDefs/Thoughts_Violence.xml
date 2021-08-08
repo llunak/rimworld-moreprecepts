@@ -136,12 +136,12 @@
       </li>
       <li>
         <label>violence missing</label>
-        <description>I want to harm somebody. It makes me feel good.</description>
+        <description>I want to fight somebody. It makes me feel good.</description>
         <baseMoodEffect>-2</baseMoodEffect>
       </li>
       <li>
         <label>violence missing</label>
-        <description>I want to harm somebody. It makes me feel good.</description>
+        <description>I want to fight somebody. It makes me feel good.</description>
         <baseMoodEffect>-10</baseMoodEffect>
       </li>
     </stages>
@@ -155,7 +155,7 @@
     <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
     <stages>
       <li>
-        <label>harmed somebody</label>
+        <label>fought somebody</label>
         <baseOpinionOffset>5</baseOpinionOffset>
       </li>
     </stages>
@@ -188,12 +188,12 @@
       </li>
       <li>
         <label>violence missing</label>
-        <description>I want to harm somebody. Violence is my life.</description>
+        <description>I want to fight somebody. Violence is my life.</description>
         <baseMoodEffect>-2</baseMoodEffect>
       </li>
       <li>
         <label>violence missing</label>
-        <description>I want to harm somebody. Violence is my life.</description>
+        <description>I want to fight somebody. Violence is my life.</description>
         <baseMoodEffect>-10</baseMoodEffect>
       </li>
     </stages>
@@ -207,7 +207,7 @@
     <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
     <stages>
       <li>
-        <label>harmed somebody</label>
+        <label>fought somebody</label>
         <baseOpinionOffset>3</baseOpinionOffset>
       </li>
     </stages>

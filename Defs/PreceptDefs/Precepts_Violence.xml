@@ -224,17 +224,12 @@
         <eventDef>AttackedPerson</eventDef>
         <thought>Violence_Know_Wanted</thought>
       </li>
-      <!-- QuestPawnArrested intentionally left out here -->
       <li Class="PreceptComp_KnowsMemoryThought">
         <eventDef>UsedHarmfulAbility</eventDef>
         <thought>Violence_Know_Wanted</thought>
       </li>
       <li Class="PreceptComp_KnowsMemoryThought">
         <eventDef>UsedHarmfulItem</eventDef>
-        <thought>Violence_Know_Wanted</thought>
-      </li>
-      <li Class="PreceptComp_KnowsMemoryThought">
-        <eventDef>PerformedHarmfulSurgery</eventDef>
         <thought>Violence_Know_Wanted</thought>
       </li>
     </comps>
@@ -261,17 +256,12 @@
         <eventDef>AttackedPerson</eventDef>
         <thought>Violence_Know_Essential</thought>
       </li>
-      <!-- QuestPawnArrested intentionally left out here -->
       <li Class="PreceptComp_KnowsMemoryThought">
         <eventDef>UsedHarmfulAbility</eventDef>
         <thought>Violence_Know_Essential</thought>
       </li>
       <li Class="PreceptComp_KnowsMemoryThought">
         <eventDef>UsedHarmfulItem</eventDef>
-        <thought>Violence_Know_Essential</thought>
-      </li>
-      <li Class="PreceptComp_KnowsMemoryThought">
-        <eventDef>PerformedHarmfulSurgery</eventDef>
         <thought>Violence_Know_Essential</thought>
       </li>
     </comps>
