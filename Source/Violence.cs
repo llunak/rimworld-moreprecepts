@@ -44,6 +44,24 @@ namespace MorePrecepts
             if( __result && !new HistoryEvent(HistoryEventDefOf.AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
                 __result = false;
         }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(SocialFightChance))]
+        public static void SocialFightChance(ref float __result, Pawn_InteractionsTracker __instance, InteractionDef interaction, Pawn initiator)
+        {
+            if( __result > 0 )
+            {
+                FieldInfo fi = AccessTools.Field(typeof(Pawn_InteractionsTracker),"pawn");
+                Pawn pawn = (Pawn)fi.GetValue(__instance);
+                // Reduce social fight chance for violence-avoiding pawns, but still keep at least a small chance.
+                if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Violence_Pacifism))
+                    __result = Mathf.Max( 0.01f, __result / 8 );
+                else if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Violence_Horrible))
+                    __result = Mathf.Max( 0.01f, __result / 4 );
+                else if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Violence_Disapproved))
+                    __result = Mathf.Max( 0.01f, __result / 2 );
+            }
+        }
     }
 
     [HarmonyPatch(typeof(JobGiver_ReactToCloseMeleeThreat))]
