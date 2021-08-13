@@ -216,4 +216,30 @@
     </nullifyingTraits>
   </ThoughtDef>
 
+  <ThoughtDef>
+    <defName>Violence_Know_NoViolence</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_NoViolence</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <!-- first group is for wanted, second group is for essential -->
+      <li>
+        <label>no recent violence</label>
+        <baseOpinionOffset>-10</baseOpinionOffset>
+      </li>
+      <li>
+        <label>no violence for a long time</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+      <li>
+        <label>no recent violence</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+      <li>
+        <label>no violence for a long time</label>
+        <baseOpinionOffset>-50</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+
 </Defs>

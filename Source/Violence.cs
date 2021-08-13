@@ -344,4 +344,40 @@ namespace MorePrecepts
         }
     }
 
+    // Give pro-violence pawns a negative social thought against pawns that don't have a recent violence.
+    public class ThoughtWorker_NoViolence : ThoughtWorker
+    {
+        private const float DaysShortWanted = 7f;
+        private const float DaysLongWanted = 15f;
+        private const float DaysShortEssential = 5f;
+        private const float DaysLongEssential = 10f;
+        protected override ThoughtState CurrentSocialStateInternal(Pawn pawn, Pawn other)
+        {
+            if(!pawn.RaceProps.Humanlike || !other.RaceProps.Humanlike)
+                return false;
+            if(!RelationsUtility.PawnsKnowEachOther(pawn, other))
+                return false;
+            if(pawn.Ideo == null)
+                return false;
+            bool wanted = pawn.Ideo.HasPrecept(PreceptDefOf.Violence_Wanted);
+            bool essential = pawn.Ideo.HasPrecept(PreceptDefOf.Violence_Essential);
+            if(!wanted && !essential)
+                return false;
+            if(def.minExpectationForNegativeThought != null && pawn.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(pawn.MapHeld).order < def.minExpectationForNegativeThought.order)
+                return false;
+            float num = (float)(Find.TickManager.TicksGame - LastViolenceTick.Get(other)) / 60000f;
+            if(wanted)
+            {
+                if(num < DaysShortWanted)
+                    return false;
+                return ThoughtState.ActiveAtStage(num < DaysLongWanted ? 0 : 1);
+            }
+            else // essential
+            {
+                if(num < DaysShortEssential)
+                    return false;
+                return ThoughtState.ActiveAtStage(num < DaysLongEssential ? 2 : 3);
+            }
+        }
+    }
 }
