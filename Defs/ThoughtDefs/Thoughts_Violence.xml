@@ -152,11 +152,11 @@
     <thoughtClass>Thought_MemorySocial</thoughtClass>
     <durationDays>1</durationDays>
     <stackLimit>100</stackLimit>
-    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stackLimitForSameOtherPawn>5</stackLimitForSameOtherPawn>
     <stages>
       <li>
         <label>fought somebody</label>
-        <baseOpinionOffset>5</baseOpinionOffset>
+        <baseOpinionOffset>3</baseOpinionOffset>
       </li>
     </stages>
     <nullifyingTraits>
@@ -204,11 +204,11 @@
     <thoughtClass>Thought_MemorySocial</thoughtClass>
     <durationDays>1</durationDays>
     <stackLimit>100</stackLimit>
-    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stackLimitForSameOtherPawn>5</stackLimitForSameOtherPawn>
     <stages>
       <li>
         <label>fought somebody</label>
-        <baseOpinionOffset>3</baseOpinionOffset>
+        <baseOpinionOffset>5</baseOpinionOffset>
       </li>
     </stages>
     <nullifyingTraits>
