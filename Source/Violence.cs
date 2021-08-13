@@ -49,7 +49,7 @@ namespace MorePrecepts
                 return;
             Pawn victim = target.Thing as Pawn;
             if( victim != null && pawn.RaceProps.Humanlike && victim.RaceProps.Humanlike
-                && !new HistoryEvent(HistoryEventDefOf.AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+                && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
             {
                 failStr = "IdeoligionForbids".Translate();
                 __result = null;
@@ -66,7 +66,7 @@ namespace MorePrecepts
         {
             FieldInfo fi = AccessTools.Field(typeof(Pawn_InteractionsTracker),"pawn");
             Pawn pawn = (Pawn)fi.GetValue(__instance);
-            if( __result && !new HistoryEvent(HistoryEventDefOf.AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+            if( __result && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
                 __result = false;
         }
 
@@ -100,7 +100,7 @@ namespace MorePrecepts
             {
                 Pawn meleeThreat = pawn.mindState.meleeThreat;
                 if( pawn.RaceProps.Humanlike && meleeThreat.RaceProps.Humanlike
-                     && !new HistoryEvent(HistoryEventDefOf.AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+                     && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
                 {
                     __result = null;
                 }
@@ -119,7 +119,7 @@ namespace MorePrecepts
             {
                 Pawn otherPawn = ((MentalState_SocialFighting)pawn.MentalState).otherPawn;
                 if( pawn.RaceProps.Humanlike && otherPawn.RaceProps.Humanlike
-                     && !new HistoryEvent(HistoryEventDefOf.AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+                     && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
                 {
                     __result = null;
                 }
@@ -138,7 +138,7 @@ namespace MorePrecepts
         {
             Pawn pawn = searcher as Pawn;
             if( pawn != null && pawn.RaceProps.Humanlike
-                && !new HistoryEvent(HistoryEventDefOf.AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+                && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
             {
                 // Use a wrapper validator that'll also ignore other pawns and pass that to the actual function.
                 Predicate<Thing> oldValidator = validator;
@@ -164,7 +164,7 @@ namespace MorePrecepts
         public static void AppliesToPawn(ref bool __result, Pawn p, ref string reason, LordJob_Ritual ritual, RitualRoleAssignments assignments,
             Precept_Ritual precept, bool skipReason)
         {
-            if( !new HistoryEvent(HistoryEventDefOf.AttackedPerson, p.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+            if( !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, p.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
             {
                 if (!skipReason)
                     reason = "MessageRitualRoleMustBeCapableOfFighting".Translate(p);
@@ -183,7 +183,7 @@ namespace MorePrecepts
             Pawn pawn = __instance;
             Pawn otherPawn = targ.Thing as Pawn;
             if( otherPawn != null && pawn.RaceProps.Humanlike && otherPawn.RaceProps.Humanlike
-                 && !new HistoryEvent(HistoryEventDefOf.AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+                 && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
             {
                 __result = false;
                 return false;
@@ -199,7 +199,7 @@ namespace MorePrecepts
             Pawn otherPawn = __instance;
             if(pawn != null && pawn.RaceProps.Humanlike && otherPawn.RaceProps.Humanlike)
             {
-                HistoryEvent historyEvent = new HistoryEvent(HistoryEventDefOf.AttackedPerson,
+                HistoryEvent historyEvent = new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson,
                     pawn.Named(HistoryEventArgsNames.Doer));
                 Find.HistoryEventsManager.RecordEvent(historyEvent);
             }

@@ -2,7 +2,7 @@
 <Defs>
 
   <HistoryEventDef>
-    <defName>AttackedPerson</defName>
+    <defName>Violence_AttackedPerson</defName>
     <label>attacked person</label>
   </HistoryEventDef>
 

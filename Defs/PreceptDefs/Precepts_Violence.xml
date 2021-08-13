@@ -25,7 +25,7 @@
     </conflictingMemes>
     <comps>
       <li Class="PreceptComp_UnwillingToDo">
-        <eventDef>AttackedPerson</eventDef>
+        <eventDef>Violence_AttackedPerson</eventDef>
         <description>attacked person</description>
         <nullifyingTraits>
           <li>Psychopath</li>
@@ -89,11 +89,11 @@
     </conflictingMemes>
     <comps>
       <li Class="PreceptComp_SelfTookMemoryThought">
-        <eventDef>AttackedPerson</eventDef>
+        <eventDef>Violence_AttackedPerson</eventDef>
         <thought>Violence_Horrible</thought>
       </li>
       <li Class="PreceptComp_KnowsMemoryThought">
-        <eventDef>AttackedPerson</eventDef>
+        <eventDef>Violence_AttackedPerson</eventDef>
         <thought>Violence_Know_Horrible</thought>
       </li>
       <li Class="PreceptComp_SelfTookMemoryThought">
@@ -153,11 +153,11 @@
     </conflictingMemes>
     <comps>
       <li Class="PreceptComp_SelfTookMemoryThought">
-        <eventDef>AttackedPerson</eventDef>
+        <eventDef>Violence_AttackedPerson</eventDef>
         <thought>Violence_Disapproved</thought>
       </li>
       <li Class="PreceptComp_KnowsMemoryThought">
-        <eventDef>AttackedPerson</eventDef>
+        <eventDef>Violence_AttackedPerson</eventDef>
         <thought>Violence_Disapproved</thought>
       </li>
       <li Class="PreceptComp_SelfTookMemoryThought">
@@ -221,7 +221,7 @@
         <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
       <li Class="PreceptComp_KnowsMemoryThought">
-        <eventDef>AttackedPerson</eventDef>
+        <eventDef>Violence_AttackedPerson</eventDef>
         <thought>Violence_Know_Wanted</thought>
       </li>
       <li Class="PreceptComp_KnowsMemoryThought">
@@ -253,7 +253,7 @@
         <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
       <li Class="PreceptComp_KnowsMemoryThought">
-        <eventDef>AttackedPerson</eventDef>
+        <eventDef>Violence_AttackedPerson</eventDef>
         <thought>Violence_Know_Essential</thought>
       </li>
       <li Class="PreceptComp_KnowsMemoryThought">
