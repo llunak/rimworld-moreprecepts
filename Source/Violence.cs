@@ -13,7 +13,7 @@ namespace MorePrecepts
 
     // We track last violence as the tick from the last time the pawn killed somebody.
     // Causing damage to a pawn increases the tick somewhat.
-    public class CompLastViolenceTick : ThingComp
+    public class LastViolenceTickComp : ThingComp
     {
         public int lastViolenceTick;
 
@@ -30,30 +30,22 @@ namespace MorePrecepts
 
         public static int Get(Pawn pawn)
         {
-            CompLastViolenceTick comp = pawn.GetComp<CompLastViolenceTick>();
+            LastViolenceTickComp comp = pawn.GetComp<LastViolenceTickComp>();
             return comp.lastViolenceTick;
         }
 
         public static void SetToNow(Pawn pawn)
         {
-            CompLastViolenceTick comp = pawn.GetComp<CompLastViolenceTick>();
+            LastViolenceTickComp comp = pawn.GetComp<LastViolenceTickComp>();
             comp.lastViolenceTick = Find.TickManager.TicksGame;
         }
 
         public static void Add(Pawn pawn, float add)
         {
-            CompLastViolenceTick comp = pawn.GetComp<CompLastViolenceTick>();
+            LastViolenceTickComp comp = pawn.GetComp<LastViolenceTickComp>();
             // There are 60000 ticks in a day. Body parts usually have 25-30 hp, so killing a pawn could
             // average let's say 100-200 damage? Add 100 ticks per damage, so that 600 damage postpones by one day.
             comp.lastViolenceTick = Math.Min(comp.lastViolenceTick + (int)(add * 100), Find.TickManager.TicksGame);
-        }
-    }
-
-    public class CompProperties_LastViolenceTick : CompProperties
-    {
-        public CompProperties_LastViolenceTick()
-        {
-            this.compClass = typeof(CompLastViolenceTick);
         }
     }
 
@@ -233,7 +225,7 @@ namespace MorePrecepts
             Pawn pawn = dinfo.Instigator as Pawn;
             Pawn otherPawn = __instance;
             if(pawn != null && pawn.RaceProps.Humanlike && otherPawn.RaceProps.Humanlike)
-                CompLastViolenceTick.Add(pawn, totalDamageDealt);
+                LastViolenceTickComp.Add(pawn, totalDamageDealt);
         }
 
         [HarmonyPostfix]
@@ -245,7 +237,7 @@ namespace MorePrecepts
                 Pawn pawn = dinfo.Value.Instigator as Pawn;
                 Pawn otherPawn = __instance;
                 if(pawn != null && pawn.RaceProps.Humanlike && otherPawn.RaceProps.Humanlike)
-                    CompLastViolenceTick.SetToNow(pawn);
+                    LastViolenceTickComp.SetToNow(pawn);
             }
         }
     }
@@ -274,7 +266,7 @@ namespace MorePrecepts
                 return false;
             if (!ThoughtUtility.ThoughtNullified(p, def))
             {
-                float num = (float)(Find.TickManager.TicksGame - CompLastViolenceTick.Get(p)) / 60000f;
+                float num = (float)(Find.TickManager.TicksGame - LastViolenceTickComp.Get(p)) / 60000f;
                 if (num > DaysSatisfied && def.minExpectationForNegativeThought != null && p.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(p.MapHeld).order < def.minExpectationForNegativeThought.order)
                     return false;
                 if (num < DaysSatisfied)
@@ -316,7 +308,7 @@ namespace MorePrecepts
                 return false;
             if (!ThoughtUtility.ThoughtNullified(p, def))
             {
-                float num = (float)(Find.TickManager.TicksGame - CompLastViolenceTick.Get(p)) / 60000f;
+                float num = (float)(Find.TickManager.TicksGame - LastViolenceTickComp.Get(p)) / 60000f;
                 if (num > DaysSatisfied && def.minExpectationForNegativeThought != null && p.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(p.MapHeld).order < def.minExpectationForNegativeThought.order)
                     return false;
                 if (num < DaysSatisfied)
@@ -345,7 +337,7 @@ namespace MorePrecepts
             {
                 if (ThoughtUtility.ThoughtNullified(pawn, def))
                     return 0f;
-                float x = (float)(Find.TickManager.TicksGame - CompLastViolenceTick.Get(pawn)) / 60000f;
+                float x = (float)(Find.TickManager.TicksGame - LastViolenceTickComp.Get(pawn)) / 60000f;
                 return Mathf.RoundToInt(ThoughtWorker_Precept_Violence_Wanted.MoodOffsetFromDaysSinceLastAttackCurve.Evaluate(x));
             }
         }
@@ -359,7 +351,7 @@ namespace MorePrecepts
             {
                 if (ThoughtUtility.ThoughtNullified(pawn, def))
                     return 0f;
-                float x = (float)(Find.TickManager.TicksGame - CompLastViolenceTick.Get(pawn)) / 60000f;
+                float x = (float)(Find.TickManager.TicksGame - LastViolenceTickComp.Get(pawn)) / 60000f;
                 return Mathf.RoundToInt(ThoughtWorker_Precept_Violence_Essential.MoodOffsetFromDaysSinceLastAttackCurve.Evaluate(x));
             }
         }
