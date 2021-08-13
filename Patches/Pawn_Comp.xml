@@ -5,7 +5,7 @@
     <xpath>/Defs/ThingDef[@Name="BasePawn"]/comps</xpath>
     <value>
       <li>
-        <compClass>MorePrecepts.LastViolenceTickComp</compClass>
+        <compClass>MorePrecepts.PawnComp</compClass>
       </li>
     </value>
   </Operation>
