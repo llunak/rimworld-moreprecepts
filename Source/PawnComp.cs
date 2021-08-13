@@ -17,7 +17,7 @@ namespace MorePrecepts
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Values.Look(ref lastViolenceTick, "MorePrecents.LastViolenceTick", -99999);
+            Scribe_Values.Look(ref lastViolenceTick, "MorePrecepts.LastViolenceTick", -99999);
         }
     }
 }
