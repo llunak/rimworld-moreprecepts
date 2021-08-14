@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ThingDef ParentName="IdeoBuildingConsumableBase">
+    <defName>LavishFeast</defName>
+    <label>lavish feast</label>
+    <description>A collection of lavish meals ready for a lavish feast.</description>
+    <ideoBuildingNamerBase>NamerFeast</ideoBuildingNamerBase>
+    <graphicData>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <texPath>Things/Building/LavishFeast</texPath>
+      <drawSize>(3,2)</drawSize>
+      <shadowData>
+        <volume>(0.8, 1 ,0.8)</volume>
+      </shadowData>
+    </graphicData>
+    <size>(3,2)</size>
+    <costList>
+      <MealLavish>12</MealLavish>
+    </costList>
+    <killedLeavings>
+      <MealLavish>6</MealLavish>
+    </killedLeavings>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <rotatable>false</rotatable>
+    <ritualFocus>
+      <spectateDistance>1~2</spectateDistance>
+    </ritualFocus>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <WorkToBuild>1000</WorkToBuild>
+      <Mass>25</Mass>
+    </statBases>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <passability>PassThroughOnly</passability>
+    <placeWorkers Inherit="False" />
+  </ThingDef>
+
+</Defs>

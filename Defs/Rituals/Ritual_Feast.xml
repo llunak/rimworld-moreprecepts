@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <RitualObligationTargetFilterDef>
+    <defName>LavishFeast</defName>
+    <workerClass>RitualObligationTargetWorker_ConsumableBuilding</workerClass>
+    <thingDefs>
+      <li>LavishFeast</li>
+    </thingDefs>
+  </RitualObligationTargetFilterDef>
+
+  <RitualBehaviorDef ParentName="DateRitualBehavior">
+    <defName>LavishFeast</defName>
+    <durationTicks>5000</durationTicks>
+    <roles Inherit="False"/>
+    <spectatorsLabel>Participants</spectatorsLabel>
+    <spectatorGerund>participate</spectatorGerund>
+    <stages Inherit="False">
+      <li>
+        <defaultDuty>EatAtFeast</defaultDuty>
+        <endTriggers>
+          <li Class="StageEndTrigger_DurationPercentage">
+            <percentage>1.0</percentage>
+          </li>
+        </endTriggers>
+      </li>
+    </stages>
+  </RitualBehaviorDef>
+
+  <RitualOutcomeEffectDef ParentName="DestroyConsumableBuilding">
+    <defName>DestroyConsumableBuilding_LavishFeast</defName>
+  </RitualOutcomeEffectDef>
+
+</Defs>

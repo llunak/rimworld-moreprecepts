@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <DutyDef>
+    <defName>EatAtFeast</defName>
+    <hook>HighPriority</hook>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="MorePrecepts.JobGiver_EatAtFeast" />
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+
+</Defs>

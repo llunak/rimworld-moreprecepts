@@ -4,6 +4,29 @@ using Verse;
 namespace MorePrecepts
 {
     [DefOf]
+    public static class EffecterDefOf
+    {
+            public static EffecterDef EatVegetarian;
+
+        static EffecterDefOf()
+        {
+            DefOfHelper.EnsureInitializedInCtor(typeof(EffecterDefOf));
+        }
+    }
+
+    [DefOf]
+    public static class JobDefOf
+    {
+            [MayRequireIdeology]
+            public static JobDef EatAtFeast;
+
+        static JobDefOf()
+        {
+            DefOfHelper.EnsureInitializedInCtor(typeof(JobDefOf));
+        }
+    }
+
+    [DefOf]
     public static class PreceptDefOf
     {
         public static PreceptDef Superstition_Strong;
@@ -33,6 +56,17 @@ namespace MorePrecepts
         static PreceptDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(PreceptDefOf));
+        }
+    }
+
+    [DefOf]
+    public static class SoundDefOf
+    {
+            public static SoundDef Meal_Eat;
+
+        static SoundDefOf()
+        {
+            DefOfHelper.EnsureInitializedInCtor(typeof(SoundDefOf));
         }
     }
 

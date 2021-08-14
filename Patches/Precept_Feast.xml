@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/PreceptDef[defName="IdeoBuilding"]/buildingDefChances</xpath>
+    <value>
+      <LavishFeast>0</LavishFeast>
+    </value>
+  </Operation>
+
+</Patch>

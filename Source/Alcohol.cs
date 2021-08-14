@@ -309,7 +309,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
 							if (maxAmountToPickup2 != 0)
 							{
 								t2.SetForbidden(value: false);
-								Job job23 = JobMaker.MakeJob(JobDefOf.Ingest, t2);
+								Job job23 = JobMaker.MakeJob(RimWorld.JobDefOf.Ingest, t2);
 								job23.count = maxAmountToPickup2;
 								pawn.jobs.TryTakeOrderedJob(job23, JobTag.Misc);
 							}
