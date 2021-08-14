@@ -477,7 +477,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             }
             // The original case.
             bool allowDrug = !eater.IsTeetotaler();
-            return allowDrug || !thing.IsDrug;
+            return !(allowDrug || !thing.IsDrug); // Negate, since the transpilled code negates.
         }
 
         // This transpiller is set up manually, as Harmony cannot find the method to patch (or I don't know how to set it up).
