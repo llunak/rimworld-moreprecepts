@@ -78,4 +78,31 @@ namespace MorePrecepts
             yield return eat;
         }
     }
+
+    public class RitualOutcomeComp_LavishMealsUsed : RitualOutcomeComp_QualitySingleOffset
+    {
+        private static bool HasLavishMeals(TargetInfo target)
+        {
+            return target.Thing.def.defName.StartsWith("LavishFeast");
+        }
+
+        public override bool Applies(LordJob_Ritual ritual)
+        {
+            return HasLavishMeals(ritual.selectedTarget);
+        }
+
+        public override ExpectedOutcomeDesc GetExpectedOutcomeDesc(Precept_Ritual ritual, TargetInfo ritualTarget, RitualObligation obligation, RitualRoleAssignments assignments)
+        {
+            bool has = HasLavishMeals(ritualTarget);
+            return new ExpectedOutcomeDesc
+            {
+                label = LabelForDesc.CapitalizeFirst(),
+                effect = ExpectedOffsetDesc(positive: has, has ? qualityOffset : 0),
+                present = has,
+                quality = has ? qualityOffset : 0,
+                positive = has
+            };
+        }
+    }
+
 }

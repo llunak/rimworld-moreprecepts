@@ -45,6 +45,33 @@
 
   <RitualOutcomeEffectDef ParentName="DestroyConsumableBuilding">
     <defName>DestroyConsumableBuilding_LavishFeast</defName>
+    <comps Inherit="False">
+      <li Class="RitualOutcomeComp_ParticipantCount">
+        <label>participant count</label>
+        <curve>
+          <points>
+            <li>(1,  0.0)</li>
+            <li>(5,  0.4)</li>
+            <li>(10, 0.6)</li>
+          </points>
+        </curve>
+      </li>
+      <li Class="RitualOutcomeComp_RoomStat">
+        <label>room impressiveness</label>
+        <statDef>Impressiveness</statDef>
+        <curve>
+          <points>
+            <li>0,  0</li>
+            <li>50,  0.1</li>
+            <li>120, 0.2</li>
+          </points>
+        </curve>
+      </li>
+      <li Class="MorePrecepts.RitualOutcomeComp_LavishMealsUsed">
+        <label>lavish meals</label>
+        <qualityOffset>0.2</qualityOffset>
+      </li>
+    </comps>
   </RitualOutcomeEffectDef>
 
 </Defs>
