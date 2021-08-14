@@ -5,7 +5,7 @@
     <defName>LavishFeast</defName>
     <shortDescOverride>lavish feast</shortDescOverride>
     <descOverride>A lavish feast. Participants gather around a platter of lavish meals and feast on it.</descOverride>
-    <iconPathOverride>UI/Icons/Rituals/CannibalFeast</iconPathOverride>
+    <iconPathOverride>UI/Icons/LavishFeast</iconPathOverride>
     <ritualObligationTargetFilter>LavishFeast</ritualObligationTargetFilter>
     <ritualBehavior>LavishFeast</ritualBehavior>
     <ritualOutcomeEffect>DestroyConsumableBuilding_LavishFeast</ritualOutcomeEffect>
