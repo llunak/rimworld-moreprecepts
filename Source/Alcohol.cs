@@ -1,6 +1,8 @@
 using HarmonyLib;
 using System.Collections.Generic;
 using System;
+using System.Reflection;
+using System.Reflection.Emit;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
@@ -384,9 +386,9 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
     {
         [HarmonyPostfix]
         [HarmonyPatch(nameof(CurrentSocialStateInternal))]
-        public static void CurrentSocialStateInternal(ref bool __result, Pawn p, Pawn other)
+        public static void CurrentSocialStateInternal(ref ThoughtState __result, Pawn p, Pawn other)
         {
-            if(__result)
+            if(__result.Active)
                 return;
             // A pawn with precept that dislikes alcohol will dislike pawn that has an alcohol addiction (and not others).
             // Mostly copy&paste&modify from the original function.
@@ -427,7 +429,124 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
 // TODO JoyGiver_SocialRelax
 // TODO JobGiver_GetFood
 // TODO PawnAddictionHediffsGenerator
-// TODO FoodUtility
+
+    // The BestFoodSourceOnMap() function gets called from several other places (FoodUtility.TryFindBestFoodSourceFor(),
+    // JobGiver_GetFood, WorkGiver_InteractAnimal), but they all basically pass !pawn.IsTeetotaler() to allowDrug,
+    // so just ignore the argument and set the proper value.
+    [HarmonyPatch(typeof(FoodUtility))]
+    public static class FoodUtility_Patch
+    {
+        [HarmonyTranspiler]
+        [HarmonyPatch(nameof(BestFoodInInventory))]
+        public static IEnumerable<CodeInstruction> BestFoodInInventory(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = new List<CodeInstruction>(instructions);
+            bool found = false;
+            for( int i = 0; i < codes.Count; ++i )
+            {
+                // The function has code:
+                // .. && (allowDrug || !thing.def.IsDrug) && ..
+                // Replace it with:
+                // .. && (!BestFoodInInventory_Hook(eater, thing.def)) && ..
+                // Log.Message("T:" + i + ":" + codes[i].opcode + "::" + (codes[i].operand != null ? codes[i].operand.ToString() : codes[i].operand));
+                // T:45:ldarg.s::5
+                // T:46:brtrue.s::System.Reflection.Emit.Label
+                // T:47:ldloc.2::
+                // T:48:ldfld::Verse.ThingDef def
+                // T:49:callvirt::Boolean get_IsDrug()
+                // T:50:brtrue.s::System.Reflection.Emit.Label
+                if(codes[i].opcode == OpCodes.Ldarg_S && codes[i].operand.ToString() == "5"
+                    && i + 5 < codes.Count && codes[i+1].opcode == OpCodes.Brtrue_S
+                    && codes[i+4].opcode == OpCodes.Callvirt && codes[i+4].operand.ToString() == "Boolean get_IsDrug()")
+                {
+                    codes[i] = new CodeInstruction(OpCodes.Nop);
+                    codes[i+1] = new CodeInstruction(OpCodes.Ldarg_1);
+                    codes[i+4] = new CodeInstruction(OpCodes.Call, typeof(FoodUtility_Patch).GetMethod(nameof(BestFoodInInventory_Hook)));
+                    found = true;
+                    break;
+                }
+            }
+            if(!found)
+                Log.Error("MorePrecepts: Failed to patch FoodUtility.BestFoodInInventory");
+            return codes;
+        }
+
+        public static bool BestFoodInInventory_Hook(Pawn eater, ThingDef thing)
+        {
+            // If this returns true, the thing will not be used.
+            if(AlcoholHelper.NeedsAlcoholOverride(thing, eater))
+            {
+                if(AlcoholHelper.HasDislikingAlcoholPrecept(eater))
+                    return true; // block
+                else
+                    return false; // allow
+            }
+            // The original case.
+            bool allowDrug = !eater.IsTeetotaler();
+            return allowDrug || !thing.IsDrug;
+        }
+
+        // This transpiller is set up manually, as Harmony cannot find the method to patch (or I don't know how to set it up).
+        // The catch is that the code to patch is an internal predicate function in FoodUtility.BestFoodSourceOnMap(),
+        // which is implemented as a method in a nested private class.
+        public static IEnumerable<CodeInstruction> BestFoodSourceOnMap_foodValidator(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = new List<CodeInstruction>(instructions);
+            bool found = false;
+            for( int i = 0; i < codes.Count; ++i )
+            {
+                // The function has code:
+                // .. || (!allowDrug && thing.def.IsDrug) || ..
+                // Replace it with:
+                // .. || (BestFoodSourceOnMap_Hook(eater, thing.def)) || ..
+                // Log.Message("T:" + i + ":" + codes[i].opcode + "::" + (codes[i].operand != null ? codes[i].operand.ToString() : codes[i].operand));
+                // T:165:ldarg.0::
+                // T:166:ldfld::System.Boolean allowDrug
+                // T:167:brtrue.s::System.Reflection.Emit.Label
+                // T:168:ldarg.1::
+                // T:169:ldfld::Verse.ThingDef def
+                // T:170:callvirt::Boolean get_IsDrug()
+                // T:171:brtrue.s::System.Reflection.Emit.Label
+                if(codes[i].opcode == OpCodes.Ldarg_0 && i + 6 < codes.Count
+                    && codes[i+1].opcode == OpCodes.Ldfld && codes[i+1].operand.ToString() == "System.Boolean allowDrug"
+                    && codes[i+2].opcode == OpCodes.Brtrue_S
+                    && codes[i+5].opcode == OpCodes.Callvirt && codes[i+5].operand.ToString() == "Boolean get_IsDrug()")
+                {
+                    Type nestedClass = typeof(FoodUtility).GetNestedType("<>c__DisplayClass12_0", BindingFlags.NonPublic);
+                    if(nestedClass != null)
+                    {
+                        FieldInfo eaterField = AccessTools.Field(nestedClass, "eater");
+                        if(eaterField != null)
+                        {
+                            codes[i+1] = new CodeInstruction(OpCodes.Ldfld, eaterField);
+                            codes[i+2] = new CodeInstruction(OpCodes.Nop);
+                            codes[i+5] = new CodeInstruction(OpCodes.Call, typeof(FoodUtility_Patch).GetMethod(nameof(BestFoodSourceOnMap_Hook)));
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if(!found)
+                Log.Error("MorePrecepts: Failed to patch FoodUtility.BestFoodSourceOnMap");
+            return codes;
+        }
+
+        public static bool BestFoodSourceOnMap_Hook(Pawn eater, ThingDef thing)
+        {
+            // If this returns true, the thing will not be used.
+            if(AlcoholHelper.NeedsAlcoholOverride(thing, eater))
+            {
+                if(AlcoholHelper.HasDislikingAlcoholPrecept(eater))
+                    return true; // block
+                else
+                    return false; // allow
+            }
+            // The original case.
+            bool allowDrug = !eater.IsTeetotaler();
+            return !allowDrug && thing.IsDrug;
+        }
+    }
 
 // These are basically copy&paste&modify of HighLife classes, split into two classes based on the constants.
 // The wanted class more or less matches HighLife settings, the Essential gets unhappy more quickly.
