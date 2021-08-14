@@ -2,31 +2,34 @@
 <Defs>
 
   <RitualObligationTargetFilterDef>
-    <defName>LavishFeast</defName>
+    <defName>Feast</defName>
     <workerClass>RitualObligationTargetWorker_ConsumableBuilding</workerClass>
     <thingDefs>
       <li>LavishFeast</li>
+      <li>FineFeast</li>
     </thingDefs>
   </RitualObligationTargetFilterDef>
 
   <RitualObligationTargetFilterDef>
-    <defName>LavishFeast_Meat</defName>
+    <defName>Feast_Meat</defName>
     <workerClass>RitualObligationTargetWorker_ConsumableBuilding</workerClass>
     <thingDefs>
       <li>LavishFeast_Meat</li>
+      <li>FineFeast_Meat</li>
     </thingDefs>
   </RitualObligationTargetFilterDef>
 
   <RitualObligationTargetFilterDef>
-    <defName>LavishFeast_Veg</defName>
+    <defName>Feast_Veg</defName>
     <workerClass>RitualObligationTargetWorker_ConsumableBuilding</workerClass>
     <thingDefs>
       <li>LavishFeast_Veg</li>
+      <li>FineFeast_Veg</li>
     </thingDefs>
   </RitualObligationTargetFilterDef>
 
   <RitualBehaviorDef ParentName="DateRitualBehavior">
-    <defName>LavishFeast</defName>
+    <defName>Feast</defName>
     <durationTicks>5000</durationTicks>
     <roles Inherit="False"/>
     <spectatorsLabel>Participants</spectatorsLabel>
@@ -44,7 +47,7 @@
   </RitualBehaviorDef>
 
   <RitualOutcomeEffectDef ParentName="DestroyConsumableBuilding">
-    <defName>DestroyConsumableBuilding_LavishFeast</defName>
+    <defName>DestroyConsumableBuilding_Feast</defName>
     <comps Inherit="False">
       <li Class="RitualOutcomeComp_ParticipantCount">
         <label>participant count</label>

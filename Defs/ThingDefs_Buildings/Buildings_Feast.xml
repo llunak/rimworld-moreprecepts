@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-  <ThingDef Name="LavishFeastBase" Abstract="True" ParentName="IdeoBuildingConsumableBase">
+  <ThingDef Name="FeastBase" Abstract="True" ParentName="IdeoBuildingConsumableBase">
     <ideoBuildingNamerBase>NamerFeast</ideoBuildingNamerBase>
     <size>(3,2)</size>
     <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
@@ -19,7 +19,7 @@
     <placeWorkers Inherit="False" />
   </ThingDef>
 
-  <ThingDef ParentName="LavishFeastBase">
+  <ThingDef ParentName="FeastBase">
     <defName>LavishFeast</defName>
     <label>lavish feast</label>
     <description>A collection of lavish meals ready for a lavish feast.</description>
@@ -39,7 +39,7 @@
     </killedLeavings>
   </ThingDef>
 
-  <ThingDef ParentName="LavishFeastBase">
+  <ThingDef ParentName="FeastBase">
     <defName>LavishFeast_Meat</defName>
     <label>carnivore lavish feast</label>
     <description>A collection of carnivore lavish meals ready for a lavish feast.</description>
@@ -59,7 +59,7 @@
     </killedLeavings>
   </ThingDef>
 
-  <ThingDef ParentName="LavishFeastBase">
+  <ThingDef ParentName="FeastBase">
     <defName>LavishFeast_Veg</defName>
     <label>vegetarian lavish feast</label>
     <description>A collection of vegetarian lavish meals ready for a lavish feast.</description>
@@ -76,6 +76,66 @@
     </costList>
     <killedLeavings>
       <MealLavish_Veg>6</MealLavish_Veg>
+    </killedLeavings>
+  </ThingDef>
+
+  <ThingDef ParentName="FeastBase">
+    <defName>FineFeast</defName>
+    <label>fine feast</label>
+    <description>A collection of fine meals ready for a fine feast.</description>
+    <graphicData>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <texPath>Things/Building/FineFeast</texPath>
+      <drawSize>(3,2)</drawSize>
+      <shadowData>
+        <volume>(0.8, 1 ,0.8)</volume>
+      </shadowData>
+    </graphicData>
+    <costList>
+      <MealFine>12</MealFine>
+    </costList>
+    <killedLeavings>
+      <MealFine>6</MealFine>
+    </killedLeavings>
+  </ThingDef>
+
+  <ThingDef ParentName="FeastBase">
+    <defName>FineFeast_Meat</defName>
+    <label>carnivore fine feast</label>
+    <description>A collection of carnivore fine meals ready for a fine feast.</description>
+    <graphicData>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <texPath>Things/Building/FineFeast_Meat</texPath>
+      <drawSize>(3,2)</drawSize>
+      <shadowData>
+        <volume>(0.8, 1 ,0.8)</volume>
+      </shadowData>
+    </graphicData>
+    <costList>
+      <MealFine_Meat>12</MealFine_Meat>
+    </costList>
+    <killedLeavings>
+      <MealFine_Meat>6</MealFine_Meat>
+    </killedLeavings>
+  </ThingDef>
+
+  <ThingDef ParentName="FeastBase">
+    <defName>FineFeast_Veg</defName>
+    <label>vegetarian fine feast</label>
+    <description>A collection of vegetarian fine meals ready for a fine feast.</description>
+    <graphicData>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <texPath>Things/Building/FineFeast_Veg</texPath>
+      <drawSize>(3,2)</drawSize>
+      <shadowData>
+        <volume>(0.8, 1 ,0.8)</volume>
+      </shadowData>
+    </graphicData>
+    <costList>
+      <MealFine_Veg>12</MealFine_Veg>
+    </costList>
+    <killedLeavings>
+      <MealFine_Veg>6</MealFine_Veg>
     </killedLeavings>
   </ThingDef>
 

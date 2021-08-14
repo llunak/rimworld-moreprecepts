@@ -61,8 +61,8 @@ namespace MorePrecepts
                     pawn.needs.food.CurLevel += totalBuildingNutrition / (float)pawn.GetLord().ownedPawns.Count / (float)eat.defaultDuration;
             };
             // This is a bit crude, but it should do.
-            bool hasMeat = base.TargetA.Thing.def.defName == "LavishFeast" || base.TargetA.Thing.def.defName == "LavishFeast_Meat";
-            bool hasNonMeat = base.TargetA.Thing.def.defName == "LavishFeast" || base.TargetA.Thing.def.defName == "LavishFeast_Veg";
+            bool hasMeat = !base.TargetA.Thing.def.defName.EndsWith("_Veg");
+            bool hasNonMeat = !base.TargetA.Thing.def.defName.EndsWith("_Meat");
             eat.AddFinishAction(delegate
             {
                 if(hasMeat)

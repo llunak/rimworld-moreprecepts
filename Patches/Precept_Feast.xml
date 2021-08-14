@@ -7,6 +7,9 @@
       <LavishFeast>0</LavishFeast>
       <LavishFeast_Meat>0</LavishFeast_Meat>
       <LavishFeast_Veg>0</LavishFeast_Veg>
+      <FineFeast>0</FineFeast>
+      <FineFeast_Meat>0</FineFeast_Meat>
+      <FineFeast_Veg>0</FineFeast_Veg>
     </value>
   </Operation>
 
