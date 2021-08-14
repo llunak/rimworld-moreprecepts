@@ -421,18 +421,12 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
     // unusual case of drug precept being fine with drugs but alcohol precept not being fine with alcohol.
     // But let's say that people who don't like only alcohol are fine with chemical interest.
 
-    // PawnInventoryGenerator and JobGiver_TakeCombatEnhancingDrug are about combat enhancing drugs,
-    // which alcohol is not, so let's ignore it.
-
-// TODO Pawn_InventoryTracker
-// TODO CaravanPawnsNeedsUtility
-// TODO JoyGiver_SocialRelax
-// TODO JobGiver_GetFood
-// TODO PawnAddictionHediffsGenerator
+    // PawnInventoryGenerator, Pawn_InventoryTracker and JobGiver_TakeCombatEnhancingDrug are about combat
+    // enhancing drugs, which alcohol is not, so let's ignore it.
 
     // The BestFoodSourceOnMap() function gets called from several other places (FoodUtility.TryFindBestFoodSourceFor(),
-    // JobGiver_GetFood, WorkGiver_InteractAnimal), but they all basically pass !pawn.IsTeetotaler() to allowDrug,
-    // so just ignore the argument and set the proper value.
+    // JobGiver_GetFood, WorkGiver_InteractAnimal), but they all basically pass !pawn.IsTeetotaler() to allowDrug
+    // (or false for animals), so just ignore the argument and check pawn settings ourselves.
     [HarmonyPatch(typeof(FoodUtility))]
     public static class FoodUtility_Patch
     {
@@ -528,7 +522,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                 }
             }
             if(!found)
-                Log.Error("MorePrecepts: Failed to patch FoodUtility.BestFoodSourceOnMap");
+                Log.Error("MorePrecepts: Failed to patch FoodUtility.BestFoodSourceOnMap() validator");
             return codes;
         }
 
@@ -545,6 +539,156 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             // The original case.
             bool allowDrug = !eater.IsTeetotaler();
             return !allowDrug && thing.IsDrug;
+        }
+    }
+
+    [HarmonyPatch(typeof(PawnAddictionHediffsGenerator))]
+    public static class PawnAddictionHediffsGenerator_Patch
+    {
+        [HarmonyTranspiler]
+        [HarmonyPatch(nameof(GenerateAddictionsAndTolerancesFor))]
+        public static IEnumerable<CodeInstruction> GenerateAddictionsAndTolerancesFor(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = new List<CodeInstruction>(instructions);
+            bool found = false;
+            for( int i = 0; i < codes.Count; ++i )
+            {
+                // The function has code:
+                // if(.. || pawn.IsTeetotaler()) return;
+                // Patch out the return for the IsTeetotaler() case.
+                // Log.Message("T:" + i + ":" + codes[i].opcode + "::" + (codes[i].operand != null ? codes[i].operand.ToString() : codes[i].operand));
+                // T:16:ldloc.0::
+                // T:17:ldfld::Verse.Pawn pawn
+                // T:18:call::Boolean IsTeetotaler(Verse.Pawn)
+                // T:19:brfalse.s::System.Reflection.Emit.Label
+                // T:20:ret::
+                if(i + 4 < codes.Count && codes[i+2].opcode == OpCodes.Call
+                    && codes[i+2].operand.ToString() == "Boolean IsTeetotaler(Verse.Pawn)"
+                    && codes[i+4].opcode == OpCodes.Ret)
+                {
+                    codes[i+4] = new CodeInstruction(OpCodes.Nop);
+                    found = true;
+                    break;
+                }
+            }
+            if(!found)
+                Log.Error("MorePrecepts: Failed to patch PawnAddictionHediffsGenerator.GenerateAddictionsAndTolerancesFor()");
+            return codes;
+        }
+    }
+
+    // The TryFindIngestibleToNurse() function has several checks related to drugs that are located at the start,
+    // patch them out and then patch the predicate to check them depending on the item.
+    [HarmonyPatch(typeof(JoyGiver_SocialRelax))]
+    public static class JoyGiver_SocialRelax_Patch
+    {
+        [HarmonyTranspiler]
+        [HarmonyPatch(nameof(TryFindIngestibleToNurse))]
+        public static IEnumerable<CodeInstruction> TryFindIngestibleToNurse(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = new List<CodeInstruction>(instructions);
+            int foundCount = 0;
+            for( int i = 0; i < codes.Count; ++i )
+            {
+                // The function has code:
+                // if(.. || pawn.IsTeetotaler()) return;
+                // Patch out the return for the IsTeetotaler() case.
+                // Log.Message("T:" + i + ":" + codes[i].opcode + "::" + (codes[i].operand != null ? codes[i].operand.ToString() : codes[i].operand));
+                // T:7:call::Boolean IsTeetotaler(Verse.Pawn)
+                // T:8:brfalse.s::System.Reflection.Emit.Label
+                // T:9:ldarg.2::
+                if(i + 2 < codes.Count
+                    && codes[i].opcode == OpCodes.Call && codes[i].operand.ToString() == "Boolean IsTeetotaler(Verse.Pawn)"
+                    && codes[i+1].opcode == OpCodes.Brfalse_S
+                    && codes[i+2].opcode == OpCodes.Ldarg_2)
+                {
+                    codes[i+2] = codes[i+1];
+                    codes[i+2].opcode = OpCodes.Br_S;
+                    codes[i+1] = new CodeInstruction(OpCodes.Pop); // need to pop the conditional branch argument
+                    ++foundCount;
+                }
+                // T:14:ldsfld::RimWorld.HistoryEventDef IngestedRecreationalDrug
+                // T:15:ldloc.0::
+                // T:16:ldfld::Verse.Pawn ingester
+                // T:17:ldsfld::System.String Doer
+                // T:18:call::Verse.NamedArgument Named(System.Object, System.String)
+                // T:19:newobj::Void .ctor(HistoryEventDef, NamedArgument)
+                // T:20:call::Boolean DoerWillingToDo(RimWorld.HistoryEvent)
+                // T:21:brtrue.s::System.Reflection.Emit.Label
+                // T:22:ldarg.2::
+                if(i + 8 < codes.Count
+                    && codes[i].opcode == OpCodes.Ldsfld && codes[i].operand.ToString() == "RimWorld.HistoryEventDef IngestedRecreationalDrug"
+                    && codes[i+6].opcode == OpCodes.Call && codes[i+6].operand.ToString() == "Boolean DoerWillingToDo(RimWorld.HistoryEvent)"
+                    && codes[i+7].opcode == OpCodes.Brtrue_S
+                    && codes[i+8].opcode == OpCodes.Ldarg_2)
+                {
+                    codes[i+8] = codes[i+7];
+                    codes[i+8].opcode = OpCodes.Br_S;
+                    codes[i+7] = new CodeInstruction(OpCodes.Pop); // need to pop the conditional branch argument
+                    ++foundCount;
+                }
+            }
+            if(foundCount != 2)
+                Log.Error("MorePrecepts: Failed to patch JoyGiver_SocialRelax.TryFindIngestibleToNurse()");
+            return codes;
+        }
+
+        // This transpiller is set up manually, as Harmony cannot find the method to patch (or I don't know how to set it up).
+        // The catch is that the code to patch is an internal predicate function in JoyGiver_SocialRelax.TryFindIngestibleToNurse(),
+        // which is implemented as a method in a nested private class.
+        public static IEnumerable<CodeInstruction> TryFindIngestibleToNurse_validator(IEnumerable<CodeInstruction> instructions)
+        {
+            var codes = new List<CodeInstruction>(instructions);
+            bool found = false;
+            for( int i = 0; i < codes.Count; ++i )
+            {
+                // The function has code:
+                // ingester.CanReserve(t) && !t.IsForbidden(ingester)
+                // Replace it with:
+                // ingester.CanReserve(t) && !TryFindIngestibleToNurse_Hook(t,ingester)
+                // Log.Message("T:" + i + ":" + codes[i].opcode + "::" + (codes[i].operand != null ? codes[i].operand.ToString() : codes[i].operand));
+                // T:10:ldarg.1::
+                // T:11:ldarg.0::
+                // T:12:ldfld::Verse.Pawn ingester
+                // T:13:call::Boolean IsForbidden(Verse.Thing, Verse.Pawn)
+                if(codes[i].opcode == OpCodes.Call && codes[i].operand.ToString() == "Boolean IsForbidden(Verse.Thing, Verse.Pawn)")
+                {
+                    codes[i] = new CodeInstruction(OpCodes.Call, typeof(JoyGiver_SocialRelax_Patch).GetMethod(nameof(TryFindIngestibleToNurse_Hook)));
+                    found = true;
+                    break;
+                }
+            }
+            if(!found)
+                Log.Error("MorePrecepts: Failed to patch JoyGiver_SocialRelax.TryFindIngestibleToNurse() validator");
+            return codes;
+        }
+
+        public static bool TryFindIngestibleToNurse_Hook(Thing thing, Pawn ingester)
+        {
+            // If this returns true, the thing will be ignored.
+            // Original code first.
+            if(thing.IsForbidden(ingester))
+                return true;
+            // Now the patched out code, depending on the thing.
+            if(AlcoholHelper.NeedsAlcoholOverride(thing.def, ingester))
+            {
+                AlcoholHelper.AddOverride();
+                bool block = false;
+                if(ingester.IsTeetotaler())
+                    block = true;
+                if (!new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, ingester.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+                    block = true;
+                AlcoholHelper.RemoveOverride();
+                return block;
+            }
+            else // normal drug, the original code
+            {
+                if(ingester.IsTeetotaler())
+                    return true; // block
+                if (!new HistoryEvent(HistoryEventDefOf.IngestedRecreationalDrug, ingester.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+                    return true; // block
+                return false;
+            }
         }
     }
 

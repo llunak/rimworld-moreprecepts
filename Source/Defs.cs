@@ -70,6 +70,8 @@ namespace MorePrecepts
 
         public static HistoryEventDef AdministeredAlcohol;
 
+        public static HistoryEventDef IngestedRecreationalDrug;
+
         public static HistoryEventDef Violence_AttackedPerson;
 
         [MayRequireIdeology]
