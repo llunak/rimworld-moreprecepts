@@ -35,52 +35,47 @@ namespace MorePrecepts
         }
     }
 
-	public class JobDriver_EatAtFeast : JobDriver
-	{
-		private const TargetIndex PlatterIndex = TargetIndex.A;
+    public class JobDriver_EatAtFeast : JobDriver
+    {
+        private const TargetIndex PlatterIndex = TargetIndex.A;
+        private const TargetIndex CellIndex = TargetIndex.B;
 
-		private const TargetIndex CellIndex = TargetIndex.B;
+        public override bool TryMakePreToilReservations(bool errorOnFailed)
+        {
+            return pawn.ReserveSittableOrSpot(job.targetB.Cell, job, errorOnFailed);
+        }
 
-		public override bool TryMakePreToilReservations(bool errorOnFailed)
-		{
-			return pawn.ReserveSittableOrSpot(job.targetB.Cell, job, errorOnFailed);
-		}
-
-		protected override IEnumerable<Toil> MakeNewToils()
-		{
-			if (!ModLister.CheckIdeology("Feast eat job"))
-			{
-				yield break;
-			}
-			this.EndOnDespawnedOrNull(TargetIndex.A);
-			yield return Toils_Goto.Goto(TargetIndex.B, PathEndMode.OnCell);
-			float totalBuildingNutrition = base.TargetA.Thing.def.CostList.Sum((ThingDefCountClass x) => x.thingDef.GetStatValueAbstract(StatDefOf.Nutrition) * (float)x.count);
-			Toil eat = new Toil();
-			eat.tickAction = delegate
-			{
-				pawn.rotationTracker.FaceCell(base.TargetA.Thing.OccupiedRect().ClosestCellTo(pawn.Position));
-				pawn.GainComfortFromCellIfPossible();
-				if (pawn.needs.food != null)
-				{
-					pawn.needs.food.CurLevel += totalBuildingNutrition / (float)pawn.GetLord().ownedPawns.Count / (float)eat.defaultDuration;
-				}
-			};
-			eat.AddFinishAction(delegate
-			{
-// TODO
-				if (pawn.mindState != null)
-				{
-					pawn.mindState.lastHumanMeatIngestedTick = Find.TickManager.TicksGame;
-				}
-				Find.HistoryEventsManager.RecordEvent(new HistoryEvent(RimWorld.HistoryEventDefOf.AteHumanMeat, pawn.Named(HistoryEventArgsNames.Doer)));
-			});
-// TODO
-			eat.WithEffect(EffecterDefOf.EatVegetarian, TargetIndex.A);
-			eat.PlaySustainerOrSound(SoundDefOf.Meal_Eat);
-			eat.handlingFacing = true;
-			eat.defaultCompleteMode = ToilCompleteMode.Delay;
-			eat.defaultDuration = (job.doUntilGatheringEnded ? job.expiryInterval : job.def.joyDuration);
-			yield return eat;
-		}
-	}
+        protected override IEnumerable<Toil> MakeNewToils()
+        {
+            if (!ModLister.CheckIdeology("Feast eat job"))
+                yield break;
+            this.EndOnDespawnedOrNull(TargetIndex.A);
+            yield return Toils_Goto.Goto(TargetIndex.B, PathEndMode.OnCell);
+            float totalBuildingNutrition = base.TargetA.Thing.def.CostList.Sum((ThingDefCountClass x) => x.thingDef.GetStatValueAbstract(StatDefOf.Nutrition) * (float)x.count);
+            Toil eat = new Toil();
+            eat.tickAction = delegate
+            {
+                pawn.rotationTracker.FaceCell(base.TargetA.Thing.OccupiedRect().ClosestCellTo(pawn.Position));
+                pawn.GainComfortFromCellIfPossible();
+                if (pawn.needs.food != null)
+                    pawn.needs.food.CurLevel += totalBuildingNutrition / (float)pawn.GetLord().ownedPawns.Count / (float)eat.defaultDuration;
+            };
+            // This is a bit crude, but it should do.
+            bool hasMeat = base.TargetA.Thing.def.defName == "LavishFeast" || base.TargetA.Thing.def.defName == "LavishFeast_Meat";
+            bool hasNonMeat = base.TargetA.Thing.def.defName == "LavishFeast" || base.TargetA.Thing.def.defName == "LavishFeast_Veg";
+            eat.AddFinishAction(delegate
+            {
+                if(hasMeat)
+                    Find.HistoryEventsManager.RecordEvent(new HistoryEvent(RimWorld.HistoryEventDefOf.AteMeat, pawn.Named(HistoryEventArgsNames.Doer)));
+                if(hasNonMeat)
+                    Find.HistoryEventsManager.RecordEvent(new HistoryEvent(RimWorld.HistoryEventDefOf.AteNonMeat, pawn.Named(HistoryEventArgsNames.Doer)));
+            });
+            eat.WithEffect(EffecterDefOf.EatVegetarian, TargetIndex.A);
+            eat.PlaySustainerOrSound(SoundDefOf.Meal_Eat);
+            eat.handlingFacing = true;
+            eat.defaultCompleteMode = ToilCompleteMode.Delay;
+            eat.defaultDuration = (job.doUntilGatheringEnded ? job.expiryInterval : job.def.joyDuration);
+            yield return eat;
+        }
+    }
 }

@@ -1,26 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-  <ThingDef ParentName="IdeoBuildingConsumableBase">
-    <defName>LavishFeast</defName>
-    <label>lavish feast</label>
-    <description>A collection of lavish meals ready for a lavish feast.</description>
+  <ThingDef Name="LavishFeastBase" Abstract="True" ParentName="IdeoBuildingConsumableBase">
     <ideoBuildingNamerBase>NamerFeast</ideoBuildingNamerBase>
-    <graphicData>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <texPath>Things/Building/LavishFeast</texPath>
-      <drawSize>(3,2)</drawSize>
-      <shadowData>
-        <volume>(0.8, 1 ,0.8)</volume>
-      </shadowData>
-    </graphicData>
     <size>(3,2)</size>
-    <costList>
-      <MealLavish>12</MealLavish>
-    </costList>
-    <killedLeavings>
-      <MealLavish>6</MealLavish>
-    </killedLeavings>
     <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
     <rotatable>false</rotatable>
     <ritualFocus>
@@ -34,6 +17,66 @@
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <passability>PassThroughOnly</passability>
     <placeWorkers Inherit="False" />
+  </ThingDef>
+
+  <ThingDef ParentName="LavishFeastBase">
+    <defName>LavishFeast</defName>
+    <label>lavish feast</label>
+    <description>A collection of lavish meals ready for a lavish feast.</description>
+    <graphicData>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <texPath>Things/Building/LavishFeast</texPath>
+      <drawSize>(3,2)</drawSize>
+      <shadowData>
+        <volume>(0.8, 1 ,0.8)</volume>
+      </shadowData>
+    </graphicData>
+    <costList>
+      <MealLavish>12</MealLavish>
+    </costList>
+    <killedLeavings>
+      <MealLavish>6</MealLavish>
+    </killedLeavings>
+  </ThingDef>
+
+  <ThingDef ParentName="LavishFeastBase">
+    <defName>LavishFeast_Meat</defName>
+    <label>carnivore lavish feast</label>
+    <description>A collection of carnivore lavish meals ready for a lavish feast.</description>
+    <graphicData>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <texPath>Things/Building/LavishFeast_Meat</texPath>
+      <drawSize>(3,2)</drawSize>
+      <shadowData>
+        <volume>(0.8, 1 ,0.8)</volume>
+      </shadowData>
+    </graphicData>
+    <costList>
+      <MealLavish_Meat>12</MealLavish_Meat>
+    </costList>
+    <killedLeavings>
+      <MealLavish_Meat>6</MealLavish_Meat>
+    </killedLeavings>
+  </ThingDef>
+
+  <ThingDef ParentName="LavishFeastBase">
+    <defName>LavishFeast_Veg</defName>
+    <label>vegetarian lavish feast</label>
+    <description>A collection of vegetarian lavish meals ready for a lavish feast.</description>
+    <graphicData>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <texPath>Things/Building/LavishFeast_Veg</texPath>
+      <drawSize>(3,2)</drawSize>
+      <shadowData>
+        <volume>(0.8, 1 ,0.8)</volume>
+      </shadowData>
+    </graphicData>
+    <costList>
+      <MealLavish_Veg>12</MealLavish_Veg>
+    </costList>
+    <killedLeavings>
+      <MealLavish_Veg>6</MealLavish_Veg>
+    </killedLeavings>
   </ThingDef>
 
 </Defs>

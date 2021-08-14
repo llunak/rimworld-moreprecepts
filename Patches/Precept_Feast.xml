@@ -5,6 +5,8 @@
     <xpath>/Defs/PreceptDef[defName="IdeoBuilding"]/buildingDefChances</xpath>
     <value>
       <LavishFeast>0</LavishFeast>
+      <LavishFeast_Meat>0</LavishFeast_Meat>
+      <LavishFeast_Veg>0</LavishFeast_Veg>
     </value>
   </Operation>
 

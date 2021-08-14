@@ -9,6 +9,22 @@
     </thingDefs>
   </RitualObligationTargetFilterDef>
 
+  <RitualObligationTargetFilterDef>
+    <defName>LavishFeast_Meat</defName>
+    <workerClass>RitualObligationTargetWorker_ConsumableBuilding</workerClass>
+    <thingDefs>
+      <li>LavishFeast_Meat</li>
+    </thingDefs>
+  </RitualObligationTargetFilterDef>
+
+  <RitualObligationTargetFilterDef>
+    <defName>LavishFeast_Veg</defName>
+    <workerClass>RitualObligationTargetWorker_ConsumableBuilding</workerClass>
+    <thingDefs>
+      <li>LavishFeast_Veg</li>
+    </thingDefs>
+  </RitualObligationTargetFilterDef>
+
   <RitualBehaviorDef ParentName="DateRitualBehavior">
     <defName>LavishFeast</defName>
     <durationTicks>5000</durationTicks>

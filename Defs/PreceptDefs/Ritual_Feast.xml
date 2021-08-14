@@ -11,4 +11,24 @@
     <ritualOutcomeEffect>DestroyConsumableBuilding_LavishFeast</ritualOutcomeEffect>
   </RitualPatternDef>
 
+  <RitualPatternDef ParentName="CelebrationConsumable">
+    <defName>LavishFeast_Meat</defName>
+    <shortDescOverride>carnivore lavish feast</shortDescOverride>
+    <descOverride>A carnivore lavish feast. Participants gather around a platter of lavish meals and feast on it.</descOverride>
+    <iconPathOverride>UI/Icons/LavishFeast</iconPathOverride>
+    <ritualObligationTargetFilter>LavishFeast_Meat</ritualObligationTargetFilter>
+    <ritualBehavior>LavishFeast</ritualBehavior>
+    <ritualOutcomeEffect>DestroyConsumableBuilding_LavishFeast</ritualOutcomeEffect>
+  </RitualPatternDef>
+
+  <RitualPatternDef ParentName="CelebrationConsumable">
+    <defName>LavishFeast_Veg</defName>
+    <shortDescOverride>vegetarian lavish feast</shortDescOverride>
+    <descOverride>A vegetarian lavish feast. Participants gather around a platter of lavish meals and feast on it.</descOverride>
+    <iconPathOverride>UI/Icons/LavishFeast</iconPathOverride>
+    <ritualObligationTargetFilter>LavishFeast_Veg</ritualObligationTargetFilter>
+    <ritualBehavior>LavishFeast</ritualBehavior>
+    <ritualOutcomeEffect>DestroyConsumableBuilding_LavishFeast</ritualOutcomeEffect>
+  </RitualPatternDef>
+
 </Defs>
