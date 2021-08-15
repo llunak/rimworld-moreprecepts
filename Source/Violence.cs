@@ -229,6 +229,25 @@ namespace MorePrecepts
         }
     }
 
+    [HarmonyPatch(typeof(Pawn_MeleeVerbs))]
+    public static class Pawn_MeleeVerbs_Patch
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(TryMeleeAttack))]
+        public static bool TryMeleeAttack(ref bool __result, Pawn_MeleeVerbs __instance, Thing target, Verb verbToUse, bool surpriseAttack)
+        {
+            Pawn pawn = __instance.Pawn;
+            Pawn otherPawn = target as Pawn;
+            if( otherPawn != null && pawn.RaceProps.Humanlike && otherPawn.RaceProps.Humanlike
+                 && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+            {
+                __result = false;
+                return false;
+            }
+            return true;
+        }
+    }
+
     // These are basically copy&paste&modify of HighLife classes, split into two classes based on the constants.
     // The Wanted class is less demanding, the Essential gets unhappy more quickly.
     public class ThoughtWorker_Precept_Violence_Wanted : ThoughtWorker_Precept, IPreceptCompDescriptionArgs
