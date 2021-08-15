@@ -90,6 +90,17 @@ namespace MorePrecepts
             }
             yield return taggedString;
         }
+
+        public override List<string> MissingTargetBuilding(Ideo ideo)
+        {
+            for (int i = 0; i < ideo.PreceptsListForReading.Count; i++)
+            {
+                Precept_Building precept_Building = ideo.PreceptsListForReading[i] as Precept_Building;
+                if (precept_Building != null && precept_Building.ThingDef.defName == "FuneralPyre")
+                    return null;
+            }
+            return new List<string> { "FuneralPyre".Translate() };
+        }
     }
 
     public class RitualObligationTargetWorker_AnyEmptyFuneralPyre : RitualObligationTargetWorker_AnyEmptyGrave
@@ -126,6 +137,17 @@ namespace MorePrecepts
             Pawn arg = (Pawn)obligation.targetA.Thing;
             TaggedString taggedString = "RitualTargetEmptyFuneralPyreInfo".Translate(arg.Named("PAWN"));
             yield return taggedString;
+        }
+
+        public override List<string> MissingTargetBuilding(Ideo ideo)
+        {
+            for (int i = 0; i < ideo.PreceptsListForReading.Count; i++)
+            {
+                Precept_Building precept_Building = ideo.PreceptsListForReading[i] as Precept_Building;
+                if (precept_Building != null && precept_Building.ThingDef.defName == "FuneralPyre")
+                    return null;
+            }
+            return new List<string> { "FuneralPyre".Translate() };
         }
     }
 

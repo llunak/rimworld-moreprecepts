@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
+  <FuneralPyre>funeral pyre</FuneralPyre>
+
   <RitualTargetFuneralPyreInfo>A funeral pyre containing {PAWN_labelShort}'s corpse.</RitualTargetFuneralPyreInfo>
   <RitualTargetEmptyFuneralPyreInfo>An empty funeral pyre to mourn {PAWN_labelShort}'s passing.</RitualTargetEmptyFuneralPyreInfo>
   <RitualTargetFuneralPyreInfoAbstract>A funeral pyre containing {IDEO_memberNameIndef}'s corpse</RitualTargetFuneralPyreInfoAbstract>
