@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <TaleDef>
+    <defName>BurnedCorpse</defName>
+    <label>burned corpse</label>
+    <taleClass>Tale_DoublePawn</taleClass>
+    <type>Volatile</type>
+    <baseInterest>2</baseInterest>
+    <firstPawnSymbol>ORGANIZER</firstPawnSymbol>
+    <secondPawnSymbol>CORPSE</secondPawnSymbol>
+    <rulePack>
+      <rulesStrings>
+        <li>tale_noun->[ORGANIZER_nameDef] burning [CORPSE_nameDef] on a funeral pyre</li>
+        <li>tale_noun->[ORGANIZER_nameDef] laying [CORPSE_nameDef] to rest on a funeral pyre</li>
+        <li>image->[ORGANIZER_nameFull] standing next to [CORPSE_nameFull]'s funeral pyre [circumstance_group]</li>
+        <li>image->[ORGANIZER_nameFull] sitting next to [CORPSE_nameFull]'s funeral pyre [circumstance_group]</li>
+        <li>image->[ORGANIZER_nameFull] watching [CORPSE_nameFull]'s funeral pyre [circumstance_group]</li>
+        <li>image->[ORGANIZER_nameFull] placing [CORPSE_nameFull]'s body on a funeral pyre [circumstance_group]</li>
+        <li>image->[ORGANIZER_nameFull] lighting [CORPSE_nameFull]'s funeral pyre [circumstance_group]</li>
+        <li>circumstance_phrase->with a [AdjectiveAngsty] expression</li>
+        <li>circumstance_phrase->and consumed in thought</li>
+        <li>circumstance_phrase->while gazing at a faraway [TerrainFeature]</li>
+        <li>circumstance_phrase->and talking quietly to [ORGANIZER_objective]self</li>
+        <li>desc_sentence->A [Color] aurora shines in the background.</li>
+        <li>desc_sentence->In the distance, a [Community] is covered with ash.</li>
+        <li>desc_sentence->A spectral image of [CORPSE_nameDef] looks over the scene with a [AdjectiveFriendly] expression.</li>
+        <li>desc_sentence->A spectral image of [CORPSE_nameDef] stands next to [ORGANIZER_nameDef], wearing a [AdjectiveFriendly] expression.</li>
+        <li>desc_sentence->A spectral image of [CORPSE_nameDef] looks over the scene with a [AdjectiveAngsty] expression.</li>
+        <li>desc_sentence->A spectral image of [CORPSE_nameDef] stands next to [ORGANIZER_nameDef], wearing a [AdjectiveAngsty] expression.</li>
+        <li>desc_sentence->[Quantity_adjphrase] [Animal]s rest near the scene.</li>
+      </rulesStrings>
+    </rulePack>
+  </TaleDef>
+
+</Defs>

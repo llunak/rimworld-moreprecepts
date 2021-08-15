@@ -1,0 +1,131 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using RimWorld;
+using Verse;
+
+namespace MorePrecepts
+{
+
+    // Basing this on Building_Grave should save a lot of code, as the pyre is a "grave" that gets burned.
+    public class Building_FuneralPyre : Building_Grave
+    {
+        public override int OpenTicks => 0;
+
+        public override void Notify_CorpseBuried(Pawn worker)
+        {
+            // Count this as burying, but ignore all the other grave things.
+            worker.records.Increment(RecordDefOf.CorpsesBuried);
+        }
+
+        public override void Draw()
+        {
+            base.Draw();
+            if (base.HasCorpse)
+                base.Corpse.DrawAt(base.Position.ToVector3ShiftedWithAltitude(AltitudeLayer.BuildingOnTop) + def.building.gibbetCorposeDrawOffset);
+        }
+    }
+
+    public class RitualOutcomeEffectWorker_FuneralPyre : RitualOutcomeEffectWorker_RemoveConsumableBuilding
+    {
+        public RitualOutcomeEffectWorker_FuneralPyre()
+        {
+        }
+
+        public RitualOutcomeEffectWorker_FuneralPyre(RitualOutcomeEffectDef def)
+            : base(def)
+        {
+        }
+
+        public override void Apply(float progress, Dictionary<Pawn, int> totalPresence, LordJob_Ritual jobRitual)
+        {
+            if (jobRitual.selectedTarget.HasThing)
+            {
+                Building_FuneralPyre pyre = jobRitual.selectedTarget.Thing as Building_FuneralPyre;
+                if(pyre != null && jobRitual.Organizer != null)
+                    TaleRecorder.RecordTale(TaleDefOf.BurnedCorpse, jobRitual.Organizer, (pyre.Corpse != null) ? pyre.Corpse.InnerPawn : null);
+            }
+            base.Apply(progress, totalPresence, jobRitual);
+        }
+    }
+
+    public class RitualObligationTargetWorker_FuneralPyreWithTarget : RitualObligationTargetWorker_GraveWithTarget
+    {
+        public RitualObligationTargetWorker_FuneralPyreWithTarget()
+        {
+        }
+
+        public RitualObligationTargetWorker_FuneralPyreWithTarget(RitualObligationTargetFilterDef def)
+            : base(def)
+        {
+        }
+
+        public override IEnumerable<TargetInfo> GetTargets(RitualObligation obligation, Map map)
+        {
+            Thing thing = map.listerThings.ThingsInGroup(ThingRequestGroup.Grave).FirstOrDefault((Thing t) => t is Building_FuneralPyre && ((Building_FuneralPyre)t).Corpse == obligation.targetA.Thing);
+            if (thing != null)
+                yield return thing;
+        }
+
+        protected override RitualTargetUseReport CanUseTargetInternal(TargetInfo target, RitualObligation obligation)
+        {
+            Building_FuneralPyre building_FuneralPyre;
+            return target.HasThing && (building_FuneralPyre = target.Thing as Building_FuneralPyre) != null && building_FuneralPyre.Corpse == obligation.targetA.Thing;
+        }
+
+        public override IEnumerable<string> GetTargetInfos(RitualObligation obligation)
+        {
+            if (obligation == null)
+            {
+                yield return "RitualTargetFuneralPyreInfoAbstract".Translate(parent.ideo.Named("IDEO"));
+                yield break;
+            }
+            bool num = obligation.targetA.Thing.ParentHolder is Building_FuneralPyre;
+            Pawn innerPawn = ((Corpse)obligation.targetA.Thing).InnerPawn;
+            TaggedString taggedString = "RitualTargetFuneralPyreInfo".Translate(innerPawn.Named("PAWN"));
+            if (!num)
+            {
+                taggedString += " (" + "RitualTargetFuneralPyreInfoMustBePlaced".Translate(innerPawn.Named("PAWN")) + ")";
+            }
+            yield return taggedString;
+        }
+    }
+
+    public class RitualObligationTargetWorker_AnyEmptyFuneralPyre : RitualObligationTargetWorker_AnyEmptyGrave
+    {
+        public RitualObligationTargetWorker_AnyEmptyFuneralPyre()
+        {
+        }
+
+        public RitualObligationTargetWorker_AnyEmptyFuneralPyre(RitualObligationTargetFilterDef def)
+            : base(def)
+        {
+        }
+
+        public override IEnumerable<TargetInfo> GetTargets(RitualObligation obligation, Map map)
+        {
+            Thing thing = map.listerThings.ThingsInGroup(ThingRequestGroup.Grave).FirstOrDefault((Thing t) => t is Building_FuneralPyre && ((Building_FuneralPyre)t).Corpse == null);
+            if (thing != null)
+                yield return thing;
+        }
+
+        protected override RitualTargetUseReport CanUseTargetInternal(TargetInfo target, RitualObligation obligation)
+        {
+            Building_FuneralPyre building_FuneralPyre;
+            return target.HasThing && (building_FuneralPyre = target.Thing as Building_FuneralPyre) != null && building_FuneralPyre.Corpse == null;
+        }
+
+        public override IEnumerable<string> GetTargetInfos(RitualObligation obligation)
+        {
+            if (obligation == null)
+                {
+                yield return "RitualTargetEmptyFuneralPyreInfoAbstract".Translate(parent.ideo.Named("IDEO"));
+                yield break;
+                }
+            Pawn arg = (Pawn)obligation.targetA.Thing;
+            TaggedString taggedString = "RitualTargetEmptyFuneralPyreInfo".Translate(arg.Named("PAWN"));
+            yield return taggedString;
+        }
+    }
+
+}

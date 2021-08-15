@@ -92,6 +92,17 @@ namespace MorePrecepts
     }
 
     [DefOf]
+    public static class TaleDefOf
+    {
+            public static TaleDef BurnedCorpse;
+
+        static TaleDefOf()
+        {
+            DefOfHelper.EnsureInitializedInCtor(typeof(TaleDefOf));
+        }
+    }
+
+    [DefOf]
     public static class ThoughtDefOf
     {
         public static ThoughtDef Superstition_Superstitious_Strong_Plus;

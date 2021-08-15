@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <RitualTargetFuneralPyreInfo>A funeral pyre containing {PAWN_labelShort}'s corpse.</RitualTargetFuneralPyreInfo>
+  <RitualTargetEmptyFuneralPyreInfo>An empty funeral pyre to mourn {PAWN_labelShort}'s passing.</RitualTargetEmptyFuneralPyreInfo>
+  <RitualTargetFuneralPyreInfoAbstract>A funeral pyre containing {IDEO_memberNameIndef}'s corpse</RitualTargetFuneralPyreInfoAbstract>
+  <RitualTargetEmptyFuneralPyreInfoAbstract>An empty funeral pyre to mourn {IDEO_memberNameIndef}'s passing.</RitualTargetEmptyFuneralPyreInfoAbstract>
+  <RitualTargetFuneralPyreInfoMustBePlaced>{PAWN_labelShort}'s body must be placed first</RitualTargetFuneralPyreInfoMustBePlaced>
+
+</LanguageData>
