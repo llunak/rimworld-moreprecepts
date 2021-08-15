@@ -183,7 +183,7 @@ namespace MorePrecepts
             // with our funeral pyres, but it probably doesn't make much sense to have more than one funeral type anyway.
             // The exclusionTags tag is supported here, but for some reason it blocks duplicates only when
             // creating an ideology, not when editing it.
-            if( pat.defName.Contains("Funeral"))
+            if( pat != null && pat.defName.Contains("Funeral"))
             {
                 foreach (Precept item in ideo.PreceptsListForReading)
                 {
