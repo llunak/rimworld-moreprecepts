@@ -45,6 +45,11 @@ namespace MorePrecepts
                 Building_FuneralPyre pyre = jobRitual.selectedTarget.Thing as Building_FuneralPyre;
                 if(pyre != null && jobRitual.Organizer != null)
                     TaleRecorder.RecordTale(TaleDefOf.BurnedCorpse, jobRitual.Organizer, (pyre.Corpse != null) ? pyre.Corpse.InnerPawn : null);
+                if(pyre.Corpse != null)
+                {
+                    PawnComp comp = pyre.Corpse.InnerPawn.GetComp<PawnComp>();
+                    comp.burnedOnPyre = true;
+                }
             }
             base.Apply(progress, totalPresence, jobRitual);
         }
@@ -119,6 +124,22 @@ namespace MorePrecepts
             Thing thing = map.listerThings.ThingsInGroup(ThingRequestGroup.Grave).FirstOrDefault((Thing t) => t is Building_FuneralPyre && ((Building_FuneralPyre)t).Corpse == null);
             if (thing != null)
                 yield return thing;
+        }
+
+        public override bool ObligationTargetsValid(RitualObligation obligation)
+        {
+            if (obligation.targetA.HasThing)
+            {
+                Pawn pawn = obligation.targetA.Thing as Pawn;
+                if(pawn != null)
+                {
+                    PawnComp comp = pawn.GetComp<PawnComp>();
+                    if(comp.burnedOnPyre)
+                        return false;
+                }
+                return obligation.targetA.ThingDestroyed;
+            }
+            return false;
         }
 
         protected override RitualTargetUseReport CanUseTargetInternal(TargetInfo target, RitualObligation obligation)
