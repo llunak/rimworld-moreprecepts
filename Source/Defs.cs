@@ -53,9 +53,30 @@ namespace MorePrecepts
 
         public static PreceptDef Alcohol_Essential;
 
+        public static PreceptDef Feast;
+
+        public static PreceptDef Feast_Meat;
+
+        public static PreceptDef Feast_Veg;
+
         static PreceptDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(PreceptDefOf));
+        }
+    }
+
+    [DefOf]
+    public static class RitualPatternDefOf
+    {
+            public static RitualPatternDef Feast;
+
+            public static RitualPatternDef Feast_Meat;
+
+            public static RitualPatternDef Feast_Veg;
+
+        static RitualPatternDefOf()
+        {
+            DefOfHelper.EnsureInitializedInCtor(typeof(RitualPatternDefOf));
         }
     }
 

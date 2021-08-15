@@ -1,3 +1,4 @@
+using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -102,6 +103,25 @@ namespace MorePrecepts
                 quality = has ? qualityOffset : 0,
                 positive = has
             };
+        }
+    }
+
+    [HarmonyPatch(typeof(IdeoUIUtility))]
+    public static class IdeoUIUtility_Patch
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CanAddPrecept))]
+        public static bool CanAddPrecept(ref AcceptanceReport __result, ref PreceptDef def, RitualPatternDef pat, Ideo ideo)
+        {
+            // HACK: I do not understand why, but the feast rituals get called here with 'DateRitualConsumable' precept.
+            // Force the proper precepts for it to make disabling the ritual work in the 'Add Ritual...' combobox.
+            if(pat == RitualPatternDefOf.Feast)
+                def = PreceptDefOf.Feast;
+            if(pat == RitualPatternDefOf.Feast_Meat)
+                def = PreceptDefOf.Feast_Meat;
+            if(pat == RitualPatternDefOf.Feast_Veg)
+                def = PreceptDefOf.Feast_Veg;
+            return true;
         }
     }
 

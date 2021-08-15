@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <PreceptDef>
+    <defName>Feast</defName>
+    <label>feast</label>
+    <description>A feast. Meals will be collected in a place, then participants will feast on them.</description>
+    <issue>Ritual</issue>
+    <impact>Low</impact>
+    <preceptClass>Precept_Ritual</preceptClass>
+    <ritualPatternBase>Feast</ritualPatternBase>
+    <iconPath>UI/Icons/Feast</iconPath>
+    <visible>true</visible>
+    <countsTowardsPreceptLimit>true</countsTowardsPreceptLimit>
+    <selectionWeight>1.0</selectionWeight>
+    <conflictingMemes>
+      <li>Guilty</li>
+      <li>PainIsVirtue</li>
+      <li>AnimalPersonhood</li>
+      <li>Cannibal</li>
+      <li>Rancher</li>
+    </conflictingMemes>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Feast_Meat</defName>
+    <label>carnivore feast</label>
+    <description>A carnivore feast. Carnivore meals will be collected in a place, then participants will feast on them.</description>
+    <issue>Ritual</issue>
+    <impact>Low</impact>
+    <preceptClass>Precept_Ritual</preceptClass>
+    <ritualPatternBase>Feast_Meat</ritualPatternBase>
+    <iconPath>UI/Icons/Feast</iconPath>
+    <visible>true</visible>
+    <countsTowardsPreceptLimit>true</countsTowardsPreceptLimit>
+    <selectionWeight>1.0</selectionWeight>
+    <conflictingMemes>
+      <li>Guilty</li>
+      <li>PainIsVirtue</li>
+      <li>AnimalPersonhood</li>
+      <li>Cannibal</li>
+    </conflictingMemes>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Feast_Veg</defName>
+    <label>vegetarian feast</label>
+    <description>A vegetarian feast. Vegetarian meals will be collected in a place, then participants will feast on them.</description>
+    <issue>Ritual</issue>
+    <impact>Low</impact>
+    <preceptClass>Precept_Ritual</preceptClass>
+    <ritualPatternBase>Feast_Veg</ritualPatternBase>
+    <iconPath>UI/Icons/Feast</iconPath>
+    <visible>true</visible>
+    <countsTowardsPreceptLimit>true</countsTowardsPreceptLimit>
+    <selectionWeight>1.0</selectionWeight>
+    <conflictingMemes>
+      <li>Guilty</li>
+      <li>PainIsVirtue</li>
+      <li>Cannibal</li>
+      <li>Rancher</li>
+    </conflictingMemes>
+  </PreceptDef>
+
+  <RitualPatternDef ParentName="CelebrationConsumable">
+    <defName>Feast</defName>
+    <shortDescOverride>feast</shortDescOverride>
+    <descOverride>A feast. Participants gather around a platter of meals and feast on it.</descOverride>
+    <iconPathOverride>UI/Icons/Feast</iconPathOverride>
+    <ritualObligationTargetFilter>Feast</ritualObligationTargetFilter>
+    <ritualBehavior>Feast</ritualBehavior>
+    <ritualOutcomeEffect>DestroyConsumableBuilding_Feast</ritualOutcomeEffect>
+  </RitualPatternDef>
+
+  <RitualPatternDef ParentName="CelebrationConsumable">
+    <defName>Feast_Meat</defName>
+    <shortDescOverride>carnivore feast</shortDescOverride>
+    <descOverride>A carnivore feast. Participants gather around a platter of meals and feast on it.</descOverride>
+    <iconPathOverride>UI/Icons/Feast</iconPathOverride>
+    <ritualObligationTargetFilter>Feast_Meat</ritualObligationTargetFilter>
+    <ritualBehavior>Feast</ritualBehavior>
+    <ritualOutcomeEffect>DestroyConsumableBuilding_Feast</ritualOutcomeEffect>
+  </RitualPatternDef>
+
+  <RitualPatternDef ParentName="CelebrationConsumable">
+    <defName>Feast_Veg</defName>
+    <shortDescOverride>vegetarian feast</shortDescOverride>
+    <descOverride>A vegetarian feast. Participants gather around a platter of meals and feast on it.</descOverride>
+    <iconPathOverride>UI/Icons/Feast</iconPathOverride>
+    <ritualObligationTargetFilter>Feast_Veg</ritualObligationTargetFilter>
+    <ritualBehavior>Feast</ritualBehavior>
+    <ritualOutcomeEffect>DestroyConsumableBuilding_Feast</ritualOutcomeEffect>
+  </RitualPatternDef>
+
+</Defs>
