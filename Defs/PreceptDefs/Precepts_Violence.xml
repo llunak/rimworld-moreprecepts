@@ -32,6 +32,14 @@
         </nullifyingTraits>
       </li>
       <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Violence_AttackedPerson</eventDef>
+        <thought>Violence_Pacifism</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>Violence_AttackedPerson</eventDef>
+        <thought>Violence_Know_Pacifism</thought>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
         <eventDef>QuestPawnArrested</eventDef>
         <thought>Violence_Pacifism</thought>
       </li>
