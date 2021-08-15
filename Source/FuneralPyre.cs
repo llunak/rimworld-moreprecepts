@@ -1,3 +1,4 @@
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -125,6 +126,32 @@ namespace MorePrecepts
             Pawn arg = (Pawn)obligation.targetA.Thing;
             TaggedString taggedString = "RitualTargetEmptyFuneralPyreInfo".Translate(arg.Named("PAWN"));
             yield return taggedString;
+        }
+    }
+
+    [HarmonyPatch(typeof(IdeoUIUtility))]
+    public static class IdeoUIUtility_Patch2
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CanAddPrecept))]
+        public static bool CanAddPrecept(ref AcceptanceReport __result, ref PreceptDef def, RitualPatternDef pat, Ideo ideo)
+        {
+            // Do not allow more than one funeral type. This primarily blocks usage of standard funeral rituals
+            // with our funeral pyres, but it probably doesn't make much sense to have more than one funeral type anyway.
+            // The exclusionTags tag is supported here, but for some reason it blocks duplicates only when
+            // creating an ideology, not when editing it.
+            if( pat.defName.Contains("Funeral"))
+            {
+                foreach (Precept item in ideo.PreceptsListForReading)
+                {
+                    if (item is Precept_Ritual && item.def.defName.Contains("Funeral"))
+                    {
+                        __result = new AcceptanceReport("IdeoAlreadyHasFuneral".Translate());
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 

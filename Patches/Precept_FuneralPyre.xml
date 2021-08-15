@@ -28,4 +28,13 @@
     </value>
   </Operation>
 
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/PreceptDef[defName="Funeral"]</xpath>
+    <value>
+      <exclusionTags>
+        <li>Funeral</li>
+      </exclusionTags>
+    </value>
+  </Operation>
+
 </Patch>
