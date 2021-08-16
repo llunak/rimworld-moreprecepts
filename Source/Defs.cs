@@ -39,6 +39,8 @@ namespace MorePrecepts
 
         public static PreceptDef Violence_Disapproved;
 
+        public static PreceptDef Violence_Defense;
+
         public static PreceptDef Violence_Wanted;
 
         public static PreceptDef Violence_Essential;
@@ -139,6 +141,8 @@ namespace MorePrecepts
         public static HistoryEventDef IngestedRecreationalDrug;
 
         public static HistoryEventDef Violence_AttackedPerson;
+
+        public static HistoryEventDef Violence_AttackedHostilePerson;
 
         [MayRequireIdeology]
         public static HistoryEventDef BuiltTrap;

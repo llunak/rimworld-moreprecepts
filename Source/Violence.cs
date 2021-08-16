@@ -36,6 +36,42 @@ namespace MorePrecepts
         }
     }
 
+    public static class ViolenceHelper
+    {
+        public static bool NotWillingToAttackAny(Pawn attacker)
+        {
+            if( attacker.RaceProps.Humanlike
+                && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, attacker.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool NotWillingToAttackNonHostile(Pawn attacker)
+        {
+            if( attacker.RaceProps.Humanlike
+                && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedHostilePerson, attacker.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool WillingToAttack(Pawn attacker, Pawn victim)
+        {
+            if( attacker.RaceProps.Humanlike && victim.RaceProps.Humanlike )
+            {
+                if(NotWillingToAttackAny(attacker))
+                    return false;
+                if(!victim.HostileTo(attacker) && NotWillingToAttackNonHostile(attacker))
+                    return false;
+            }
+            return true;
+        }
+
+    }
+
 // Basically all this code patches all relevant WorkTags.Violent places to disable violence only between pawns.
 
     [HarmonyPatch(typeof(FloatMenuUtility))]
@@ -48,8 +84,7 @@ namespace MorePrecepts
             if( __result == null )
                 return;
             Pawn victim = target.Thing as Pawn;
-            if( victim != null && pawn.RaceProps.Humanlike && victim.RaceProps.Humanlike
-                && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+            if( victim != null && !ViolenceHelper.WillingToAttack( pawn, victim ))
             {
                 failStr = "IdeoligionForbids".Translate();
                 __result = null;
@@ -66,7 +101,7 @@ namespace MorePrecepts
         {
             FieldInfo fi = AccessTools.Field(typeof(Pawn_InteractionsTracker),"pawn");
             Pawn pawn = (Pawn)fi.GetValue(__instance);
-            if( __result && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+            if( __result && !ViolenceHelper.WillingToAttack(pawn, otherPawn))
                 __result = false;
         }
 
@@ -85,6 +120,8 @@ namespace MorePrecepts
                     __result = Mathf.Max( 0.01f, __result / 4 );
                 else if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Violence_Disapproved))
                     __result = Mathf.Max( 0.01f, __result / 2 );
+                else if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Violence_Defense))
+                    __result = Mathf.Max( 0.01f, __result / 4 );
             }
         }
     }
@@ -99,11 +136,8 @@ namespace MorePrecepts
             if( __result != null )
             {
                 Pawn meleeThreat = pawn.mindState.meleeThreat;
-                if( pawn.RaceProps.Humanlike && meleeThreat.RaceProps.Humanlike
-                     && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
-                {
+                if( meleeThreat != null && !ViolenceHelper.WillingToAttack(pawn, meleeThreat))
                     __result = null;
-                }
             }
         }
     }
@@ -118,11 +152,8 @@ namespace MorePrecepts
             if( __result != null )
             {
                 Pawn otherPawn = ((MentalState_SocialFighting)pawn.MentalState).otherPawn;
-                if( pawn.RaceProps.Humanlike && otherPawn.RaceProps.Humanlike
-                     && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
-                {
+                if( otherPawn != null && !ViolenceHelper.WillingToAttack(pawn, otherPawn))
                     __result = null;
-                }
             }
         }
     }
@@ -137,21 +168,30 @@ namespace MorePrecepts
             bool canBashFences = false)
         {
             Pawn pawn = searcher as Pawn;
-            if( pawn != null && pawn.RaceProps.Humanlike
-                && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+            if( pawn != null )
             {
-                // Use a wrapper validator that'll also ignore other pawns and pass that to the actual function.
-                Predicate<Thing> oldValidator = validator;
-                Predicate<Thing> validatorWrapper = delegate(Thing thing)
+                bool blockAll = ViolenceHelper.NotWillingToAttackAny(pawn);
+                bool blockNonHostile = ViolenceHelper.NotWillingToAttackNonHostile(pawn);
+                if(blockAll || blockNonHostile)
                 {
-                    Pawn target = thing as Pawn;
-                    if( target != null && target.RaceProps.Humanlike)
-                        return false;
-                    if(oldValidator != null && !oldValidator(thing))
-                        return false;
-                    return true;
-                };
-                validator = validatorWrapper;
+                    // Use a wrapper validator that'll also ignore other pawns and pass that to the actual function.
+                    Predicate<Thing> oldValidator = validator;
+                    Predicate<Thing> validatorWrapper = delegate(Thing thing)
+                    {
+                        Pawn target = thing as Pawn;
+                        if( target != null && target.RaceProps.Humanlike)
+                        {
+                            if(blockAll)
+                                return false;
+                            if(blockNonHostile && !target.HostileTo(pawn))
+                                return false;
+                        }
+                        if(oldValidator != null && !oldValidator(thing))
+                            return false;
+                        return true;
+                    };
+                    validator = validatorWrapper;
+                }
             }
         }
     }
@@ -164,7 +204,9 @@ namespace MorePrecepts
         public static void AppliesToPawn(ref bool __result, Pawn p, ref string reason, LordJob_Ritual ritual, RitualRoleAssignments assignments,
             Precept_Ritual precept, bool skipReason)
         {
-            if( !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, p.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+            // Block also self-defense pawns, this is selecting for the duel, so it's not known who the opponent would be,
+            // and it's simpler to assume they wouldn't want to enter the duel.
+            if( !ViolenceHelper.NotWillingToAttackAny(p) || !ViolenceHelper.NotWillingToAttackNonHostile(p))
             {
                 if (!skipReason)
                     reason = "MessageRitualRoleMustBeCapableOfFighting".Translate(p);
@@ -182,8 +224,7 @@ namespace MorePrecepts
         {
             Pawn pawn = __instance;
             Pawn otherPawn = targ.Thing as Pawn;
-            if( otherPawn != null && pawn.RaceProps.Humanlike && otherPawn.RaceProps.Humanlike
-                 && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+            if( otherPawn != null && !ViolenceHelper.WillingToAttack(pawn, otherPawn))
             {
                 __result = false;
                 return false;
@@ -202,6 +243,12 @@ namespace MorePrecepts
                 HistoryEvent historyEvent = new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson,
                     pawn.Named(HistoryEventArgsNames.Doer));
                 Find.HistoryEventsManager.RecordEvent(historyEvent);
+                if(!otherPawn.HostileTo(pawn))
+                {
+                    HistoryEvent historyEventNonHostile = new HistoryEvent(HistoryEventDefOf.Violence_AttackedHostilePerson,
+                        pawn.Named(HistoryEventArgsNames.Doer));
+                    Find.HistoryEventsManager.RecordEvent(historyEventNonHostile);
+                }
             }
         }
 
@@ -238,8 +285,7 @@ namespace MorePrecepts
         {
             Pawn pawn = __instance.Pawn;
             Pawn otherPawn = target as Pawn;
-            if( otherPawn != null && pawn.RaceProps.Humanlike && otherPawn.RaceProps.Humanlike
-                 && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+            if( otherPawn != null && !ViolenceHelper.WillingToAttack( pawn, otherPawn ))
             {
                 __result = false;
                 return false;

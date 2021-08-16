@@ -6,4 +6,9 @@
     <label>attacked person</label>
   </HistoryEventDef>
 
+  <HistoryEventDef>
+    <defName>Violence_AttackedHostilePerson</defName>
+    <label>attacked hostile person</label>
+  </HistoryEventDef>
+
 </Defs>
