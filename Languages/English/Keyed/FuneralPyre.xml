@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
-  <FuneralPyre>funeral pyre</FuneralPyre>
+  <MorePrecepts.FuneralPyre>funeral pyre</MorePrecepts.FuneralPyre>
 
-  <RitualTargetFuneralPyreInfo>A funeral pyre containing {PAWN_labelShort}'s corpse.</RitualTargetFuneralPyreInfo>
-  <RitualTargetEmptyFuneralPyreInfo>An empty funeral pyre to mourn {PAWN_labelShort}'s passing.</RitualTargetEmptyFuneralPyreInfo>
-  <RitualTargetFuneralPyreInfoAbstract>A funeral pyre containing {IDEO_memberNameIndef}'s corpse</RitualTargetFuneralPyreInfoAbstract>
-  <RitualTargetEmptyFuneralPyreInfoAbstract>An empty funeral pyre to mourn {IDEO_memberNameIndef}'s passing.</RitualTargetEmptyFuneralPyreInfoAbstract>
-  <RitualTargetFuneralPyreInfoMustBePlaced>{PAWN_labelShort}'s body must be placed first</RitualTargetFuneralPyreInfoMustBePlaced>
+  <MorePrecepts.RitualTargetFuneralPyreInfo>A funeral pyre containing {PAWN_labelShort}'s corpse.</MorePrecepts.RitualTargetFuneralPyreInfo>
+  <MorePrecepts.RitualTargetEmptyFuneralPyreInfo>An empty funeral pyre to mourn {PAWN_labelShort}'s passing.</MorePrecepts.RitualTargetEmptyFuneralPyreInfo>
+  <MorePrecepts.RitualTargetFuneralPyreInfoAbstract>A funeral pyre containing {IDEO_memberNameIndef}'s corpse</MorePrecepts.RitualTargetFuneralPyreInfoAbstract>
+  <MorePrecepts.RitualTargetEmptyFuneralPyreInfoAbstract>An empty funeral pyre to mourn {IDEO_memberNameIndef}'s passing.</MorePrecepts.RitualTargetEmptyFuneralPyreInfoAbstract>
+  <MorePrecepts.RitualTargetFuneralPyreInfoMustBePlaced>{PAWN_labelShort}'s body must be placed first</MorePrecepts.RitualTargetFuneralPyreInfoMustBePlaced>
 
-  <IdeoAlreadyHasFuneral>can only have one funeral type</IdeoAlreadyHasFuneral>
+  <MorePrecepts.IdeoAlreadyHasFuneral>can only have one funeral type</MorePrecepts.IdeoAlreadyHasFuneral>
 
 </LanguageData>

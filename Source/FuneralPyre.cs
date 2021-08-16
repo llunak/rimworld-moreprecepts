@@ -83,15 +83,15 @@ namespace MorePrecepts
         {
             if (obligation == null)
             {
-                yield return "RitualTargetFuneralPyreInfoAbstract".Translate(parent.ideo.Named("IDEO"));
+                yield return "MorePrecepts.RitualTargetFuneralPyreInfoAbstract".Translate(parent.ideo.Named("IDEO"));
                 yield break;
             }
             bool num = obligation.targetA.Thing.ParentHolder is Building_FuneralPyre;
             Pawn innerPawn = ((Corpse)obligation.targetA.Thing).InnerPawn;
-            TaggedString taggedString = "RitualTargetFuneralPyreInfo".Translate(innerPawn.Named("PAWN"));
+            TaggedString taggedString = "MorePrecepts.RitualTargetFuneralPyreInfo".Translate(innerPawn.Named("PAWN"));
             if (!num)
             {
-                taggedString += " (" + "RitualTargetFuneralPyreInfoMustBePlaced".Translate(innerPawn.Named("PAWN")) + ")";
+                taggedString += " (" + "MorePrecepts.RitualTargetFuneralPyreInfoMustBePlaced".Translate(innerPawn.Named("PAWN")) + ")";
             }
             yield return taggedString;
         }
@@ -104,7 +104,7 @@ namespace MorePrecepts
                 if (precept_Building != null && precept_Building.ThingDef.defName == "FuneralPyre")
                     return null;
             }
-            return new List<string> { "FuneralPyre".Translate() };
+            return new List<string> { "MorePrecepts.FuneralPyre".Translate() };
         }
     }
 
@@ -152,11 +152,11 @@ namespace MorePrecepts
         {
             if (obligation == null)
                 {
-                yield return "RitualTargetEmptyFuneralPyreInfoAbstract".Translate(parent.ideo.Named("IDEO"));
+                yield return "MorePrecepts.RitualTargetEmptyFuneralPyreInfoAbstract".Translate(parent.ideo.Named("IDEO"));
                 yield break;
                 }
             Pawn arg = (Pawn)obligation.targetA.Thing;
-            TaggedString taggedString = "RitualTargetEmptyFuneralPyreInfo".Translate(arg.Named("PAWN"));
+            TaggedString taggedString = "MorePrecepts.RitualTargetEmptyFuneralPyreInfo".Translate(arg.Named("PAWN"));
             yield return taggedString;
         }
 
@@ -168,7 +168,7 @@ namespace MorePrecepts
                 if (precept_Building != null && precept_Building.ThingDef.defName == "FuneralPyre")
                     return null;
             }
-            return new List<string> { "FuneralPyre".Translate() };
+            return new List<string> { "MorePrecepts.FuneralPyre".Translate() };
         }
     }
 
@@ -189,7 +189,7 @@ namespace MorePrecepts
                 {
                     if (item is Precept_Ritual && item.def.defName.Contains("Funeral"))
                     {
-                        __result = new AcceptanceReport("IdeoAlreadyHasFuneral".Translate());
+                        __result = new AcceptanceReport("MorePrecepts.IdeoAlreadyHasFuneral".Translate());
                         return false;
                     }
                 }
