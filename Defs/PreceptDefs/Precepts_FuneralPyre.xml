@@ -3,6 +3,7 @@
 
   <PreceptDef Name="FuneralPyreBase" ParentName="FuneralBase" Abstract="True">
     <description>A gathering that occurs around a believer's funeral pyre after they die and are buried. If the body is destroyed, an empty funeral pyre can be used. Slaves don't get funerals.</description>
+    <iconPath>UI/Icons/RitualFuneralPyre</iconPath>
     <selectionWeight>0</selectionWeight>
     <classicExtra>false</classicExtra>
   </PreceptDef>
