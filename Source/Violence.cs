@@ -206,7 +206,7 @@ namespace MorePrecepts
         {
             // Block also self-defense pawns, this is selecting for the duel, so it's not known who the opponent would be,
             // and it's simpler to assume they wouldn't want to enter the duel.
-            if( !ViolenceHelper.NotWillingToAttackAny(p) || !ViolenceHelper.NotWillingToAttackNonHostile(p))
+            if( ViolenceHelper.NotWillingToAttackAny(p) || ViolenceHelper.NotWillingToAttackNonHostile(p))
             {
                 if (!skipReason)
                     reason = "MessageRitualRoleMustBeCapableOfFighting".Translate(p);
