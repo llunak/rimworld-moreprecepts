@@ -11,7 +11,7 @@ namespace MorePrecepts
     // Basing this on Building_Grave should save a lot of code, as the pyre is a "grave" that gets burned.
     public class Building_FuneralPyre : Building_Grave
     {
-        public override int OpenTicks => 0;
+        public override int OpenTicks => 10;
 
         public override void Notify_CorpseBuried(Pawn worker)
         {
