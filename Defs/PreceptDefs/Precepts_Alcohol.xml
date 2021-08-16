@@ -124,6 +124,7 @@
       <li Class="PreceptComp_SituationalThought">
         <thought>Alcohol_Wanted</thought>
         <description>Alcohol drunk every {DAYSSATISIFED} days</description>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
     </comps>
   </PreceptDef>
@@ -144,6 +145,7 @@
       <li Class="PreceptComp_SituationalThought">
         <thought>Alcohol_Essential</thought>
         <description>Alcohol drunk every {DAYSSATISIFED} days</description>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
     </comps>
   </PreceptDef>
