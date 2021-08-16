@@ -30,7 +30,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         {
             if(!HasAlcoholPrecept(pawn))
                 return false;
-            if(thing == null || !IsAlcohol(thing))
+            if(!IsAlcohol(thing))
                 return false;
             return true;
         }
@@ -115,15 +115,20 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         public static void PawnAllowedToStartAnew(ref bool __result, out RecipeDef __state, Bill_Medical __instance, Pawn pawn)
         {
             __state = null;
-            ThingDef singleDef = __instance.recipe.ingredients?[0].filter.BestThingRequest.singleDef;
-            if(!AlcoholHelper.NeedsAlcoholOverride(singleDef, pawn))
-                return; // normal processing
-            // We need to also call base.PawnAllowedToStartAnew(), which is complicated with patching.
-            // So temporarily unset the recipe and call the original version, which will then just call
-            // the base function.
-            __state = __instance.recipe;
-            __instance.recipe = null;
+            if (__instance.recipe.Worker is Recipe_AdministerIngestible)
+            {
+                ThingDef singleDef = __instance.recipe.ingredients[0].filter.BestThingRequest.singleDef;
+                if(AlcoholHelper.NeedsAlcoholOverride(singleDef, pawn))
+                {
+                    // We need to also call base.PawnAllowedToStartAnew(), which is complicated with patching.
+                    // So temporarily unset the recipe and call the original version, which will then just call
+                    // the base function.
+                    __state = __instance.recipe;
+                    __instance.recipe = null;
+                }
+            }
         }
+
         [HarmonyPostfix]
         [HarmonyPatch(nameof(PawnAllowedToStartAnew))]
         public static void PawnAllowedToStartAnew(ref bool __result, RecipeDef __state, Bill_Medical __instance, Pawn pawn)
@@ -133,7 +138,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             __instance.recipe = __state;
             if (__instance.recipe.Worker is Recipe_AdministerIngestible)
             {
-                ThingDef singleDef = __instance.recipe.ingredients?[0].filter.BestThingRequest.singleDef;
+                ThingDef singleDef = __instance.recipe.ingredients[0].filter.BestThingRequest.singleDef;
                 if(AlcoholHelper.NeedsAlcoholOverride(singleDef, pawn))
                 {
                     __result = new HistoryEvent(HistoryEventDefOf.AdministeredAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).Notify_PawnAboutToDo_Job();
@@ -151,7 +156,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         [HarmonyPatch(nameof(ApplyOnPawn))]
         public static void ApplyOnPawn(Pawn pawn, BodyPartRecord part, ref Pawn billDoer, List<Thing> ingredients, Bill bill)
         {
-            if (AlcoholHelper.NeedsAlcoholOverride(ingredients?[0].def, billDoer))
+            if (AlcoholHelper.NeedsAlcoholOverride(ingredients[0].def, billDoer))
             {
                 // If alcohol, send alcohol event.
                 if(billDoer != null)
@@ -165,7 +170,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         [HarmonyPatch(nameof(ApplyOnPawn))]
         public static void GetLabelWhenUsedOn(out bool __state, Recipe_AdministerIngestible __instance, Pawn pawn, BodyPartRecord part)
         {
-            ThingDef singleDef = __instance.recipe.ingredients?[0].filter.BestThingRequest.singleDef;
+            ThingDef singleDef = __instance.recipe.ingredients[0].filter.BestThingRequest.singleDef;
             __state = AlcoholHelper.NeedsAlcoholOverride(singleDef, pawn);
             AlcoholHelper.AddOverride( __state );
         }
