@@ -62,7 +62,7 @@
       <!-- Duelists drop weapons -->
       <li>
         <defaultDuty>SpectateCircle</defaultDuty>
-        <spectateDistanceOverride>6~8</spectateDistanceOverride>
+        <spectateDistanceOverride>5~7</spectateDistanceOverride>
         <endTriggers>
           <li Class="StageEndTrigger_RolesUnarmed">
             <roleIds>
@@ -84,7 +84,7 @@
       <!-- People gather up -->
       <li>
         <defaultDuty>SpectateCircle</defaultDuty>
-        <spectateDistanceOverride>6~8</spectateDistanceOverride>
+        <spectateDistanceOverride>5~7</spectateDistanceOverride>
         <endTriggers>
           <li Class="StageEndTrigger_RolesArrived">
             <roleIds>
@@ -99,7 +99,7 @@
             <customPositions>
               <li Class="RitualPosition_InCircle">
                 <preferredRotation>North</preferredRotation>
-                <distRange>4~4</distRange>
+                <distRange>3~3</distRange>
               </li>
             </customPositions>
           </li>
@@ -126,7 +126,7 @@
           </li>
         </targets>
         <defaultDuty>SpectateCircle</defaultDuty>
-        <spectateDistanceOverride>6~8</spectateDistanceOverride>
+        <spectateDistanceOverride>5~7</spectateDistanceOverride>
         <failTriggers>
           <li Class="StageFailTrigger_TargetPawnUnreachable">
             <takerId>escorte1</takerId>
@@ -155,7 +155,7 @@
             <customPositions>
               <li Class="RitualPosition_InCircle">
                 <preferredRotation>North</preferredRotation>
-                <distRange>4~4</distRange>
+                <distRange>3~3</distRange>
               </li>
             </customPositions>
           </li>
@@ -192,7 +192,7 @@
       <!-- Leader speak on cell -->
       <li>
         <defaultDuty>SpectateCircle</defaultDuty>
-        <spectateDistanceOverride>6~8</spectateDistanceOverride>
+        <spectateDistanceOverride>5~7</spectateDistanceOverride>
         <ignoreDurationToFinishAfterStage>true</ignoreDurationToFinishAfterStage>
         <postAction Class="RitualStageAction_SoundOneshotOnTarget">
           <sound>GladiatorDuel_Start</sound>
@@ -210,7 +210,7 @@
             <customPositions>
               <li Class="RitualPosition_InCircle">
                 <preferredRotation>North</preferredRotation>
-                <distRange>4~4</distRange>
+                <distRange>3~3</distRange>
               </li>
             </customPositions>
           </li>
@@ -227,7 +227,7 @@
       <!-- Fight -->
       <li>
         <defaultDuty>SpectateCircle</defaultDuty>
-        <spectateDistanceOverride>6~8</spectateDistanceOverride>
+        <spectateDistanceOverride>5~7</spectateDistanceOverride>
         <visualEffectDef>Duel</visualEffectDef>
         <endTriggers>
           <li Class="StageEndTrigger_DurationPercentage">
@@ -247,7 +247,7 @@
             <customPositions>
               <li Class="RitualPosition_InCircle">
                 <preferredRotation>North</preferredRotation>
-                <distRange>4~4</distRange>
+                <distRange>3~3</distRange>
               </li>
             </customPositions>
           </li>
@@ -264,7 +264,7 @@
       <!-- Duelists drop weapons -->
       <li>
         <defaultDuty>SpectateCircle</defaultDuty>
-        <spectateDistanceOverride>6~8</spectateDistanceOverride>
+        <spectateDistanceOverride>5~7</spectateDistanceOverride>
         <endTriggers>
           <li Class="StageEndTrigger_RolesUnarmed">
             <roleIds>
@@ -286,7 +286,7 @@
       <!-- Wait some time -->
       <li>
         <defaultDuty>SpectateCircle</defaultDuty>
-        <spectateDistanceOverride>6~8</spectateDistanceOverride>
+        <spectateDistanceOverride>5~7</spectateDistanceOverride>
         <endTriggers>
           <li Class="StageEndTrigger_DurationPercentage">
             <percentage>0.05</percentage>
@@ -316,7 +316,7 @@
           </li>
         </targets>
         <defaultDuty>SpectateCircle</defaultDuty>
-        <spectateDistanceOverride>6~8</spectateDistanceOverride>
+        <spectateDistanceOverride>5~7</spectateDistanceOverride>
         <endTriggers>
           <li Class="StageEndTrigger_RolesArrived">
             <roleIds>
@@ -338,7 +338,7 @@
             <customPositions>
               <li Class="RitualPosition_InCircle">
                 <preferredRotation>North</preferredRotation>
-                <distRange>4~4</distRange>
+                <distRange>3~3</distRange>
               </li>
             </customPositions>
           </li>
