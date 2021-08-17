@@ -37,4 +37,22 @@
     </match>
   </Operation>
 
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MemeDef[defName="Supremacist"]/exclusionTags</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/MemeDef[defName="Supremacist"]</xpath>
+      <value>
+        <exclusionTags>
+          <li>PacifismSupremacist</li>
+        </exclusionTags>
+      </value>
+    </nomatch>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MemeDef[defName="Supremacist"]/exclusionTags</xpath>
+      <value>
+        <li>PacifismSupremacist</li>
+      </value>
+    </match>
+  </Operation>
+
 </Patch>
