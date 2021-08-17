@@ -7,7 +7,7 @@
       <xpath>/Defs/MemeDef[defName="Cannibal"]</xpath>
       <value>
         <exclusionTags>
-          <li>Pacifism</li>
+          <li>PacifismCannibal</li>
         </exclusionTags>
       </value>
     </nomatch>
@@ -25,7 +25,7 @@
       <xpath>/Defs/MemeDef[defName="Raider"]</xpath>
       <value>
         <exclusionTags>
-          <li>Pacifism</li>
+          <li>PacifismRaider</li>
         </exclusionTags>
       </value>
     </nomatch>

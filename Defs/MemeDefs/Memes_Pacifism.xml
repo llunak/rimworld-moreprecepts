@@ -28,7 +28,8 @@
       </li>
     </requireOne>
     <exclusionTags>
-      <li>Pacifism</li>
+      <li>PacifismCannibal</li>
+      <li>PacifismRaider</li>
     </exclusionTags>
     <generalRules>
       <rulesStrings>
