@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/PreceptDef[defName="IdeoRole_AnimalsSpecialist"]/requiredMemes</xpath>
+    <value>
+      <li>Nomadism</li>
+    </value>
+  </Operation>
+
+</Patch>
