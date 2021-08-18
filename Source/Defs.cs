@@ -144,6 +144,8 @@ namespace MorePrecepts
 
         public static HistoryEventDef Violence_AttackedHostilePerson;
 
+        public static HistoryEventDef Nomadism_AbandonedSettlement;
+
         [MayRequireIdeology]
         public static HistoryEventDef BuiltTrap;
 
