@@ -26,6 +26,7 @@
     <conflictingMemes>
       <li>HighLife</li>
     </conflictingMemes>
+    <selectionWeight>0.2</selectionWeight>
     <comps>
       <li Class="PreceptComp_UnwillingToDo">
         <eventDef>IngestedAlcohol</eventDef>
@@ -141,6 +142,7 @@
     <associatedMemes>
       <li>HighLife</li>
     </associatedMemes>
+    <selectionWeight>0.2</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Alcohol_Essential</thought>

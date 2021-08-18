@@ -28,6 +28,7 @@
     <associatedMemes>
       <li>NaturePrimacy</li>
     </associatedMemes>
+    <selectionWeight>0.2</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>HasTraps_Prohibited</thought>
@@ -51,6 +52,7 @@
     <associatedMemes>
       <li>NaturePrimacy</li>
     </associatedMemes>
+    <selectionWeight>0.5</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>HasTraps_Horrible</thought>
@@ -70,6 +72,7 @@
     <associatedMemes>
       <li>NaturePrimacy</li>
     </associatedMemes>
+    <selectionWeight>0.5</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>HasTraps_Disapproved</thought>

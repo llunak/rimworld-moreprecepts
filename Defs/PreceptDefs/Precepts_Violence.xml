@@ -23,6 +23,7 @@
       <li>Cannibal</li>
       <li>Raider</li>
     </conflictingMemes>
+    <selectionWeight>0</selectionWeight>
     <comps>
       <li Class="PreceptComp_UnwillingToDo">
         <eventDef>Violence_AttackedPerson</eventDef>
@@ -95,6 +96,7 @@
       <li>Cannibal</li>
       <li>Raider</li>
     </conflictingMemes>
+    <selectionWeight>0</selectionWeight>
     <comps>
       <li Class="PreceptComp_SelfTookMemoryThought">
         <eventDef>Violence_AttackedPerson</eventDef>
@@ -159,6 +161,7 @@
       <li>Cannibal</li>
       <li>Raider</li>
     </conflictingMemes>
+    <selectionWeight>0.2</selectionWeight>
     <comps>
       <li Class="PreceptComp_SelfTookMemoryThought">
         <eventDef>Violence_AttackedPerson</eventDef>
@@ -223,6 +226,7 @@
       <li>Cannibal</li>
       <li>Raider</li>
     </conflictingMemes>
+    <selectionWeight>0.5</selectionWeight>
     <comps>
       <li Class="PreceptComp_UnwillingToDo">
         <eventDef>Violence_AttackedHostilePerson</eventDef>
@@ -326,6 +330,7 @@
     <associatedMemes>
       <li>Raider</li>
     </associatedMemes>
+    <selectionWeight>0.2</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Violence_Essential</thought>

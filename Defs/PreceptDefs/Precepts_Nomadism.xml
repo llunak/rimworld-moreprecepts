@@ -22,6 +22,7 @@
     <associatedMemes>
       <li>Loyalist</li>
     </associatedMemes>
+    <selectionWeight>0.5</selectionWeight>
     <comps>
       <li Class="PreceptComp_SelfTookMemoryThought">
         <eventDef>Nomadism_AbandonedSettlement</eventDef>
@@ -80,6 +81,7 @@
     <displayOrderInIssue>0</displayOrderInIssue>
     <displayOrderInImpact>1000</displayOrderInImpact>
     <allowedForNPCFactions>false</allowedForNPCFactions>
+    <selectionWeight>0.2</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Nomadism_Essential</thought>
