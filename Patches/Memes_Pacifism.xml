@@ -55,4 +55,11 @@
     </match>
   </Operation>
 
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/PreceptDef[defName="IdeoRole_MedicalSpecialist"]/requiredMemes</xpath>
+    <value>
+      <li>Pacifism</li>
+    </value>
+  </Operation>
+
 </Patch>

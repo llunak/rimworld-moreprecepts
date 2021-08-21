@@ -8,7 +8,7 @@
     </value>
   </Operation>
 
-<!-- Allow the use of RoughLiving and Temperature, but do not require them. For Tempe-->
+<!-- Allow the use of RoughLiving and Temperature, but do not require them. For Temperature do not even default to it. -->
   <Operation Class="PatchOperationAdd">
     <xpath>/Defs/PreceptDef[defName="RoughLiving_Welcomed"]/associatedMemes</xpath>
     <value>
