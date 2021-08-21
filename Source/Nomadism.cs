@@ -50,13 +50,15 @@ namespace MorePrecepts
         private const float DaysSatisfied = 3f;
         private const float DaysNoBonus = 45f;
         private const float DaysMissing = 46f;
-        private const float DaysMissing_Major = 60f;
+        private const float DaysMissing_Minor = 60f;
+        private const float DaysMissing_Major = 65f;
 
         public static readonly SimpleCurve MoodOffsetFromDaysSinceLastDrugCurve = new SimpleCurve
         {
             new CurvePoint(DaysSatisfied, 5f),
             new CurvePoint(DaysNoBonus, 0f),
             new CurvePoint(DaysMissing, -1f),
+            new CurvePoint(DaysMissing_Minor, -1f),
             new CurvePoint(DaysMissing_Major, -10f)
         };
 
@@ -76,14 +78,16 @@ namespace MorePrecepts
                     return ThoughtState.ActiveAtStage(1);
                 if (num < DaysMissing)
                     return ThoughtState.ActiveAtStage(2);
-                return ThoughtState.ActiveAtStage(3);
+                if (num < DaysMissing_Minor)
+                    return ThoughtState.ActiveAtStage(3);
+                return ThoughtState.ActiveAtStage(4);
             }
             return false;
         }
 
         public IEnumerable<NamedArgument> GetDescriptionArgs()
         {
-            yield return DaysSatisfied.Named("DAYSSATISIFED");
+            yield return DaysMissing_Minor.Named("DAYSCHANGED");
         }
     }
 
@@ -94,13 +98,15 @@ namespace MorePrecepts
         private const float DaysSatisfied = 2f;
         private const float DaysNoBonus = 5f;
         private const float DaysMissing = 5.1f;
-        private const float DaysMissing_Major = 7f;
+        private const float DaysMissing_Minor = 15f;
+        private const float DaysMissing_Major = 17f;
 
         public static readonly SimpleCurve MoodOffsetFromDaysSinceLastDrugCurve = new SimpleCurve
         {
             new CurvePoint(DaysSatisfied, 10f),
             new CurvePoint(DaysNoBonus, 0f),
             new CurvePoint(DaysMissing, -1f),
+            new CurvePoint(DaysMissing_Minor, -1f),
             new CurvePoint(DaysMissing_Major, -10f)
         };
 
@@ -120,14 +126,16 @@ namespace MorePrecepts
                     return ThoughtState.ActiveAtStage(1);
                 if (num < DaysMissing)
                     return ThoughtState.ActiveAtStage(2);
-                return ThoughtState.ActiveAtStage(3);
+                if (num < DaysMissing_Minor)
+                    return ThoughtState.ActiveAtStage(3);
+                return ThoughtState.ActiveAtStage(4);
             }
             return false;
         }
 
         public IEnumerable<NamedArgument> GetDescriptionArgs()
         {
-            yield return DaysSatisfied.Named("DAYSSATISIFED");
+            yield return DaysMissing_Minor.Named("DAYSCHANGED");
         }
     }
 

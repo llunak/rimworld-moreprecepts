@@ -62,7 +62,7 @@
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Nomadism_Wanted</thought>
-        <description>Settlement changed every {DAYSSATISIFED} days</description>
+        <description>Settlement changed every {DAYSCHANGED} days</description>
         <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
       <li Class="PreceptComp_SelfTookMemoryThought">
@@ -85,7 +85,7 @@
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Nomadism_Essential</thought>
-        <description>Settlement changed every {DAYSSATISIFED} days</description>
+        <description>Settlement changed every {DAYSCHANGED} days</description>
         <tooltipShowMoodRange>true</tooltipShowMoodRange>
       </li>
       <li Class="PreceptComp_SelfTookMemoryThought">
