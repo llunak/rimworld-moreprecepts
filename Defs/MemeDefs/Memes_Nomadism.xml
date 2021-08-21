@@ -12,6 +12,7 @@
     <requireOne>
       <li>
         <li>Nomadism_Essential</li>
+        <li>Nomadism_Important</li>
         <li>Nomadism_Wanted</li>
       </li>
     </requireOne>

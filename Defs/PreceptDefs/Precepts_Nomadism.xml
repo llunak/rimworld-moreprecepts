@@ -17,7 +17,7 @@
     <label>horrible</label>
     <description>Moving from one place to another is a terrible idea. We need a stable home.</description>
     <impact>Medium</impact>
-    <displayOrderInIssue>30</displayOrderInIssue>
+    <displayOrderInIssue>70</displayOrderInIssue>
     <displayOrderInImpact>100</displayOrderInImpact>
     <associatedMemes>
       <li>Loyalist</li>
@@ -37,7 +37,7 @@
     <label>disapproved</label>
     <description>Moving from one place to another is a bad idea. We should stay in one place.</description>
     <impact>Low</impact>
-    <displayOrderInIssue>20</displayOrderInIssue>
+    <displayOrderInIssue>60</displayOrderInIssue>
     <displayOrderInImpact>100</displayOrderInImpact>
     <associatedMemes>
       <li>Loyalist</li>
@@ -56,7 +56,7 @@
     <label>wanted</label>
     <description>Staying in one place for too long would make us lazy and complacent.</description>
     <impact>Low</impact>
-    <displayOrderInIssue>0</displayOrderInIssue>
+    <displayOrderInIssue>50</displayOrderInIssue>
     <displayOrderInImpact>1000</displayOrderInImpact>
     <allowedForNPCFactions>false</allowedForNPCFactions>
     <comps>
@@ -73,15 +73,38 @@
   </PreceptDef>
 
   <PreceptDef>
+    <defName>Nomadism_Important</defName>
+    <issue>Nomadism</issue>
+    <label>important</label>
+    <description>We need to keep moving to take advantage of the changing conditions.</description>
+    <impact>Medium</impact>
+    <displayOrderInIssue>40</displayOrderInIssue>
+    <displayOrderInImpact>1000</displayOrderInImpact>
+    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <selectionWeight>0.3</selectionWeight>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Nomadism_Important</thought>
+        <description>Settlement changed every {DAYSCHANGED} days</description>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Nomadism_AbandonedSettlement</eventDef>
+        <thought>Nomadism_AbandonedSettlement_Important</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
     <defName>Nomadism_Essential</defName>
     <issue>Nomadism</issue>
     <label>essential</label>
     <description>We need to keep moving, staying in one place is against our way of life.</description>
     <impact>Medium</impact>
-    <displayOrderInIssue>0</displayOrderInIssue>
+    <displayOrderInIssue>30</displayOrderInIssue>
     <displayOrderInImpact>1000</displayOrderInImpact>
     <allowedForNPCFactions>false</allowedForNPCFactions>
-    <selectionWeight>0.2</selectionWeight>
+    <selectionWeight>0.1</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Nomadism_Essential</thought>
