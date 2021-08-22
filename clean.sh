@@ -1,4 +1,6 @@
 #! /bin/sh
+echo Remember to update version!
+
 echo git status:
 git status --porcelain
 #wait for keypress or Ctrl+C
