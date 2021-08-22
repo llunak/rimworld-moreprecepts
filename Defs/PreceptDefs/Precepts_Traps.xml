@@ -9,11 +9,6 @@
     <iconPath>UI/Issues/Traps</iconPath>
   </IssueDef>
 
-  <HistoryEventDef>
-    <defName>BuiltTrap</defName>
-    <label>built trap</label>
-  </HistoryEventDef>
-
   <!-- Precepts -->
 
   <PreceptDef>
