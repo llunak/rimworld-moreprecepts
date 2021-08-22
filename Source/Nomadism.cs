@@ -1,6 +1,7 @@
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
@@ -49,8 +50,8 @@ namespace MorePrecepts
         // The values are also hardcoded in the XML.
         private const float DaysSatisfied = 5f;
         private const float DaysNoBonus = 10f;
-        private const float DaysMissing = 46f;
-        private const float DaysMissing_Minor = 60f;
+        public const float DaysMissing = 46f;
+        public const float DaysMissing_Minor = 60f;
         private const float DaysMissing_Major = 65f;
 
         public static readonly SimpleCurve MoodOffsetFromDaysSinceLastDrugCurve = new SimpleCurve
@@ -97,8 +98,8 @@ namespace MorePrecepts
         // The values are also hardcoded in the XML.
         private const float DaysSatisfied = 5f;
         private const float DaysNoBonus = 10f;
-        private const float DaysMissing = 25f;
-        private const float DaysMissing_Minor = 30f;
+        public const float DaysMissing = 25f;
+        public const float DaysMissing_Minor = 30f;
         private const float DaysMissing_Major = 35f;
 
         public static readonly SimpleCurve MoodOffsetFromDaysSinceLastDrugCurve = new SimpleCurve
@@ -145,8 +146,8 @@ namespace MorePrecepts
         // The values are also hardcoded in the XML.
         private const float DaysSatisfied = 3f;
         private const float DaysNoBonus = 5f;
-        private const float DaysMissing = 10f;
-        private const float DaysMissing_Minor = 15f;
+        public const float DaysMissing = 10f;
+        public const float DaysMissing_Minor = 15f;
         private const float DaysMissing_Major = 17f;
 
         public static readonly SimpleCurve MoodOffsetFromDaysSinceLastDrugCurve = new SimpleCurve
@@ -268,4 +269,65 @@ namespace MorePrecepts
             return base.MoodOffset();
         }
     }
+
+    public class Alert_SettlementToLeave : Alert
+    {
+        // Pawns and description of how long they've been in the settlement they're in.
+        private Dictionary<Pawn, string> affectedPawns = new Dictionary<Pawn,string>();
+
+        public Alert_SettlementToLeave()
+        {
+            defaultLabel = "MorePrecepts.AlertSettlementToLeave".Translate();
+        }
+
+        private void UpdatePawns()
+        {
+            affectedPawns.Clear();
+            foreach(Pawn pawn in PawnsFinder.HomeMaps_FreeColonistsSpawned)
+            {
+                if(pawn.Ideo == null)
+                    continue;
+                ThoughtDef thought = null;
+                if(pawn.Ideo.HasPrecept(PreceptDefOf.Nomadism_Wanted) && !ThoughtUtility.ThoughtNullified(pawn, ThoughtDefOf.Nomadism_Wanted))
+                    thought = ThoughtDefOf.Nomadism_Wanted;
+                if(pawn.Ideo.HasPrecept(PreceptDefOf.Nomadism_Important) && !ThoughtUtility.ThoughtNullified(pawn, ThoughtDefOf.Nomadism_Important))
+                    thought = ThoughtDefOf.Nomadism_Important;
+                if(pawn.Ideo.HasPrecept(PreceptDefOf.Nomadism_Essential) && !ThoughtUtility.ThoughtNullified(pawn, ThoughtDefOf.Nomadism_Essential))
+                    thought = ThoughtDefOf.Nomadism_Essential;
+                if(thought == null)
+                    continue;
+                 if (thought.minExpectationForNegativeThought != null && pawn.MapHeld != null
+                    && ExpectationsUtility.CurrentExpectationFor(pawn.MapHeld).order < thought.minExpectationForNegativeThought.order)
+                    continue;
+                bool inSettlement;
+                int days = (Find.TickManager.TicksGame - SettlementCreationTick.Get(pawn, out inSettlement)) / 60000;
+                if(!inSettlement)
+                    continue;
+                int max = -1;
+                if(thought == ThoughtDefOf.Nomadism_Wanted && days > ThoughtWorker_Precept_Nomadism_Wanted.DaysMissing)
+                    max = (int)ThoughtWorker_Precept_Nomadism_Wanted.DaysMissing_Minor;
+                if(thought == ThoughtDefOf.Nomadism_Important && days > ThoughtWorker_Precept_Nomadism_Important.DaysMissing)
+                    max = (int)ThoughtWorker_Precept_Nomadism_Important.DaysMissing_Minor;
+                if(thought == ThoughtDefOf.Nomadism_Essential && days > ThoughtWorker_Precept_Nomadism_Essential.DaysMissing)
+                    max = (int)ThoughtWorker_Precept_Nomadism_Essential.DaysMissing_Minor;
+                if(max > 0)
+                    affectedPawns.Add(pawn, string.Format(
+                        "MorePrecepts.AlertSettlementToLeaveColonistInfo".Translate(),
+                        pawn.NameShortColored.Resolve(), days, max));
+            }
+        }
+
+        public override TaggedString GetExplanation()
+        {
+            return "MorePrecepts.AlertSettlementToLeaveDesc"
+                .Translate(affectedPawns.Select(v => v.Value).ToLineList(" - "));
+        }
+
+        public override AlertReport GetReport()
+        {
+            UpdatePawns();
+            return AlertReport.CulpritsAre(affectedPawns.Keys.ToList());
+        }
+    }
+
 }

@@ -61,6 +61,12 @@ namespace MorePrecepts
 
         public static PreceptDef Feast_Veg;
 
+        public static PreceptDef Nomadism_Wanted;
+
+        public static PreceptDef Nomadism_Important;
+
+        public static PreceptDef Nomadism_Essential;
+
         static PreceptDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(PreceptDefOf));
@@ -114,6 +120,12 @@ namespace MorePrecepts
         public static ThoughtDef Superstition_Superstitious_Mild_Plus;
 
         public static ThoughtDef Superstition_Superstitious_Mild_Minus;
+
+        public static ThoughtDef Nomadism_Wanted;
+
+        public static ThoughtDef Nomadism_Important;
+
+        public static ThoughtDef Nomadism_Essential;
 
         static ThoughtDefOf()
         {
