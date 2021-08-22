@@ -50,6 +50,11 @@ namespace MorePrecepts
                 return;
             if(pawn.CurrentBed() != null)
                 return; // Is in bed => somebody's tried to treat him.
+            // If there's any active threat on the map, ignore the death. This is
+            // primarily to avoid debuffs for killing downed pawns during a fight
+            // (e.g. grenades killing them).
+            if(GenHostility.AnyHostileActiveThreatToPlayer_NewTemp(pawn.Map))
+                return;
             // ExecutionThoughtStage appears to be meant only for executions, but it works generically,
             // so use it to set severity of the thought depending on how long the pawn has been left there.
             int hours = (Find.TickManager.TicksGame - PawnComp.GetLastDownedTick(pawn)) / GenDate.TicksPerHour;
