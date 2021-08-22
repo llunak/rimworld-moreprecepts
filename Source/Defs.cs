@@ -170,6 +170,14 @@ namespace MorePrecepts
 
         public static HistoryEventDef DrugPossession_TradedHardDrug;
 
+        public static HistoryEventDef Compassion_IncapacitatedPawnLeftToDie_All;
+
+        public static HistoryEventDef Compassion_IncapacitatedPawnLeftToDie_NonGuiltyEnemies;
+
+        public static HistoryEventDef Compassion_IncapacitatedPawnLeftToDie_NonHostile;
+
+        public static HistoryEventDef Compassion_IncapacitatedPawnLeftToDie_Allies;
+
         [MayRequireIdeology]
         public static HistoryEventDef BuiltTrap;
 

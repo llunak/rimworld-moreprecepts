@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Issue -->
+
+  <IssueDef>
+    <defName>Compassion</defName>
+    <label>compassion</label>
+    <iconPath>UI/Issues/Compassion</iconPath>
+  </IssueDef>
+
+  <!-- Precepts -->
+
+  <PreceptDef>
+    <defName>Compassion_All</defName>
+    <issue>Compassion</issue>
+    <label>all</label>
+    <description>We must not leave anybody helpless to die, even enemies.</description>
+    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <impact>Medium</impact>
+    <displayOrderInIssue>20</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <associatedMemes>
+      <li>Guilty</li>
+    </associatedMemes>
+    <conflictingMemes>
+      <li>Supremacist</li>
+      <li>PainIsVirtue</li>
+    </conflictingMemes>
+    <selectionWeight>0</selectionWeight>
+    <comps>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>Compassion_IncapacitatedPawnLeftToDie_All</eventDef>
+        <thought>Compassion_PawnLeftToDie_All</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Compassion_NonGuiltyEnemies</defName>
+    <issue>Compassion</issue>
+    <label>except guilty enemies</label>
+    <description>We must not leave anybody helpless to die if they are not guilty enemies.</description>
+    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <impact>Low</impact>
+    <displayOrderInIssue>30</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <associatedMemes>
+      <li>Guilty</li>
+    </associatedMemes>
+    <conflictingMemes>
+      <li>Supremacist</li>
+      <li>PainIsVirtue</li>
+    </conflictingMemes>
+    <selectionWeight>0.2</selectionWeight>
+    <comps>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>Compassion_IncapacitatedPawnLeftToDie_NonGuiltyEnemies</eventDef>
+        <thought>Compassion_NonGuiltyEnemies_PawnLeftToDie</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Compassion_NonHostile</defName>
+    <issue>Compassion</issue>
+    <label>not hostile</label>
+    <description>We must not leave anybody helpless to die if they are not hostile.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>40</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <associatedMemes>
+      <li>Guilty</li>
+    </associatedMemes>
+    <conflictingMemes>
+      <li>Supremacist</li>
+      <li>PainIsVirtue</li>
+    </conflictingMemes>
+    <selectionWeight>0.5</selectionWeight>
+    <comps>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>Compassion_IncapacitatedPawnLeftToDie_NonHostile</eventDef>
+        <thought>Compassion_NonHostile_PawnLeftToDie</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Compassion_Allies</defName>
+    <issue>Compassion</issue>
+    <label>allies</label>
+    <description>We must not leave helpless allies to die.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>50</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <associatedMemes>
+      <li>Guilty</li>
+    </associatedMemes>
+    <conflictingMemes>
+      <li>Supremacist</li>
+      <li>PainIsVirtue</li>
+    </conflictingMemes>
+    <selectionWeight>1</selectionWeight>
+    <comps>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>Compassion_IncapacitatedPawnLeftToDie_Allies</eventDef>
+        <thought>Compassion_Allies_PawnLeftToDie</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+    </comps>
+  </PreceptDef>
+
+<!-- Neutral is not needed, that's the default case. -->
+
+</Defs>

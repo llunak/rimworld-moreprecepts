@@ -11,7 +11,10 @@ namespace MorePrecepts
         private int lastTakeAlcoholTick;
 
         // For violence precept.
-        public int lastViolenceTick;
+        private int lastViolenceTick;
+
+        // For compassion precept.
+        private int lastDownedTick;
 
         // For funeral pyre.
         private bool burnedOnPyre;
@@ -66,6 +69,29 @@ namespace MorePrecepts
                 return;
             }
             comp.lastViolenceTick = Math.Min(comp.lastViolenceTick + add, Find.TickManager.TicksGame);
+        }
+
+        public static int GetLastDownedTick(Pawn pawn)
+        {
+            PawnComp comp = pawn.GetComp<PawnComp>();
+            if(comp == null)
+                return WarnBrokenPawn(pawn);
+            return comp.lastDownedTick;
+        }
+
+        public static void SetLastDownedTickToNow(Pawn pawn) => SetLastDownedTick(pawn, Find.TickManager.TicksGame);
+
+        public static void ResetLastDownedTick(Pawn pawn) => SetLastDownedTick(pawn, -99999);
+
+        private static void SetLastDownedTick(Pawn pawn, int tick)
+        {
+            PawnComp comp = pawn.GetComp<PawnComp>();
+            if(comp == null)
+            {
+                WarnBrokenPawn(pawn);
+                return;
+            }
+            comp.lastDownedTick = tick;
         }
 
         public static void SetBurnedOnPyre(Pawn pawn)
@@ -134,6 +160,7 @@ namespace MorePrecepts
         {
             lastTakeAlcoholTick = -99999;
             lastViolenceTick = -99999;
+            lastDownedTick = -99999;
             burnedOnPyre = false;
             noticedDrugsTick = -99999;
         }
@@ -143,6 +170,7 @@ namespace MorePrecepts
             base.PostExposeData();
             Scribe_Values.Look(ref lastTakeAlcoholTick, "MorePrecepts.LastTakeAlcoholTick", -99999);
             Scribe_Values.Look(ref lastViolenceTick, "MorePrecepts.LastViolenceTick", -99999);
+            Scribe_Values.Look(ref lastDownedTick, "MorePrecepts.LastDownedTick", -99999);
             Scribe_Values.Look(ref burnedOnPyre, "MorePrecepts.BurnedOnPyre", false);
             Scribe_Values.Look(ref noticedDrugsTick, "MorePrecepts.NoticedDrugsTick", -99999);
         }
