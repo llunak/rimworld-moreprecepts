@@ -28,13 +28,22 @@
     </value>
   </Operation>
 
-  <Operation Class="PatchOperationAdd">
-    <xpath>/Defs/PreceptDef[defName="Funeral"]</xpath>
-    <value>
-      <exclusionTags>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PreceptDef[defName="Funeral"]/exclusionTags</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/PreceptDef[defName="Funeral"]</xpath>
+      <value>
+        <exclusionTags>
+          <li>Funeral</li>
+        </exclusionTags>
+      </value>
+    </nomatch>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/PreceptDef[defName="Funeral"]/exclusionTags</xpath>
+      <value>
         <li>Funeral</li>
-      </exclusionTags>
-    </value>
+      </value>
+    </match>
   </Operation>
 
 </Patch>
