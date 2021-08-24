@@ -90,7 +90,6 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         public static int Get(Pawn pawn)
         {
             PawnComp comp = pawn.GetComp<PawnComp>();
-            Log.Message("GA:" + comp.lastTakeAlcoholTick);
             return comp.lastTakeAlcoholTick;
         }
 
@@ -98,7 +97,6 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         {
             PawnComp comp = pawn.GetComp<PawnComp>();
             comp.lastTakeAlcoholTick = Find.TickManager.TicksGame;
-            Log.Message("SA:" + comp.lastTakeAlcoholTick);
         }
     }
 
