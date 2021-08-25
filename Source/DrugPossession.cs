@@ -118,4 +118,46 @@ namespace MorePrecepts
             => thing.def.IsNonMedicalDrug && thing.def.ingestible.drugCategory == DrugCategory.Hard;
     }
 
+    public class ThoughtWorker_Precept_DrugPossession_HasDrugs : ThoughtWorker
+    {
+        private delegate bool IsRelevantDrug(Thing thing);
+
+        private bool PawnHasDrugs(Pawn pawn, IsRelevantDrug isRelevantDrug)
+        {
+            foreach(Thing thing in pawn.inventory.innerContainer)
+                if(isRelevantDrug(thing))
+                    return true;
+            return false;
+        }
+
+        protected override ThoughtState CurrentSocialStateInternal(Pawn pawn, Pawn other)
+        {
+            if (!pawn.RaceProps.Humanlike || !other.RaceProps.Humanlike)
+                return false;
+            if(pawn.Ideo == null)
+                return false;
+            IsRelevantDrug isRelevantDrug = null;
+            if(pawn.Ideo.HasPrecept(PreceptDefOf.DrugPossession_Prohibited))
+                isRelevantDrug = delegate(Thing thing)
+                {
+                    return thing.def.IsNonMedicalDrug;
+                };
+            else if(pawn.Ideo.HasPrecept(PreceptDefOf.DrugPossession_Alcohol))
+                isRelevantDrug = delegate(Thing thing)
+                {
+                    return !thing.def.IsNonMedicalDrug && !AlcoholHelper.IsAlcohol(thing.def);
+                };
+            else if(pawn.Ideo.HasPrecept(PreceptDefOf.DrugPossession_Social))
+                isRelevantDrug = delegate(Thing thing)
+                {
+                    return thing.def.IsNonMedicalDrug && thing.def.ingestible.drugCategory == DrugCategory.Hard;
+                };
+            if( isRelevantDrug == null )
+                return false;
+            if (!RelationsUtility.PawnsKnowEachOther(pawn, other))
+                return false;
+            return PawnHasDrugs(other, isRelevantDrug);
+        }
+    }
+
 }

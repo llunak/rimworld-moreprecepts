@@ -67,6 +67,12 @@ namespace MorePrecepts
 
         public static PreceptDef Nomadism_Essential;
 
+        public static PreceptDef DrugPossession_Prohibited;
+
+        public static PreceptDef DrugPossession_Alcohol;
+
+        public static PreceptDef DrugPossession_Social;
+
         static PreceptDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(PreceptDefOf));

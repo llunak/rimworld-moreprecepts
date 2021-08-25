@@ -6,6 +6,7 @@
   <ThoughtDef>
     <defName>DrugPossession_Prohibited</defName>
     <workerClass>MorePrecepts.ThoughtWorker_Precept_DrugPossession_Prohibited</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
     <nullifyingTraitDegrees>
       <DrugDesire>1</DrugDesire>
       <DrugDesire>2</DrugDesire>
@@ -27,6 +28,7 @@
 
   <ThoughtDef>
     <defName>DrugPossession_TradedDrug_Prohibited</defName>
+    <validWhileDespawned>true</validWhileDespawned>
     <durationDays>5</durationDays>
     <stages>
       <li>
@@ -44,6 +46,7 @@
   <ThoughtDef>
     <defName>DrugPossession_Know_TradedDrug_Prohibited</defName>
     <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <validWhileDespawned>true</validWhileDespawned>
     <durationDays>5</durationDays>
     <stackLimit>100</stackLimit>
     <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
@@ -64,6 +67,7 @@
   <ThoughtDef>
     <defName>DrugPossession_Alcohol</defName>
     <workerClass>MorePrecepts.ThoughtWorker_Precept_DrugPossession_Alcohol</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
     <nullifyingTraitDegrees>
       <DrugDesire>1</DrugDesire>
       <DrugDesire>2</DrugDesire>
@@ -85,6 +89,7 @@
 
   <ThoughtDef>
     <defName>DrugPossession_TradedDrug_Alcohol</defName>
+    <validWhileDespawned>true</validWhileDespawned>
     <durationDays>5</durationDays>
     <stages>
       <li>
@@ -102,6 +107,7 @@
   <ThoughtDef>
     <defName>DrugPossession_Know_TradedDrug_Alcohol</defName>
     <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <validWhileDespawned>true</validWhileDespawned>
     <durationDays>5</durationDays>
     <stackLimit>100</stackLimit>
     <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
@@ -122,6 +128,7 @@
   <ThoughtDef>
     <defName>DrugPossession_Social</defName>
     <workerClass>MorePrecepts.ThoughtWorker_Precept_DrugPossession_Social</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
     <nullifyingTraitDegrees>
       <DrugDesire>1</DrugDesire>
       <DrugDesire>2</DrugDesire>
@@ -143,6 +150,7 @@
 
   <ThoughtDef>
     <defName>DrugPossession_TradedDrug_Social</defName>
+    <validWhileDespawned>true</validWhileDespawned>
     <durationDays>5</durationDays>
     <stages>
       <li>
@@ -160,6 +168,7 @@
   <ThoughtDef>
     <defName>DrugPossession_Know_TradedDrug_Social</defName>
     <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <validWhileDespawned>true</validWhileDespawned>
     <durationDays>5</durationDays>
     <stackLimit>100</stackLimit>
     <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
@@ -173,6 +182,21 @@
       <DrugDesire>2</DrugDesire>
       <DrugDesire>1</DrugDesire>
     </nullifyingTraitDegrees>
+  </ThoughtDef>
+
+  <!-- Generic -->
+
+  <ThoughtDef>
+    <defName>DrugPossession_HasDrugs</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_DrugPossession_HasDrugs</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>has drugs</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+    </stages>
   </ThoughtDef>
 
 </Defs>
