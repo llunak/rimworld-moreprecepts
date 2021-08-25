@@ -73,14 +73,7 @@
         <thought>Violence_Know_Pacifism</thought>
       </li>
       <!-- Executions have their own precept -->
-      <li Class="PreceptComp_SelfTookMemoryThought">
-        <eventDef>HarvestedOrgan</eventDef>
-        <thought>Violence_Pacifism</thought>
-      </li>
-      <li Class="PreceptComp_KnowsMemoryThought">
-        <eventDef>HarvestedOrgan</eventDef>
-        <thought>Violence_Know_Pacifism</thought>
-      </li>
+      <!-- Organ harvesting has its own precept -->
     </comps>
   </PreceptDef>
 
@@ -138,14 +131,6 @@
         <eventDef>PerformedHarmfulSurgery</eventDef>
         <thought>Violence_Know_Horrible</thought>
       </li>
-      <li Class="PreceptComp_SelfTookMemoryThought">
-        <eventDef>HarvestedOrgan</eventDef>
-        <thought>Violence_Horrible</thought>
-      </li>
-      <li Class="PreceptComp_KnowsMemoryThought">
-        <eventDef>HarvestedOrgan</eventDef>
-        <thought>Violence_Know_Horrible</thought>
-      </li>
     </comps>
   </PreceptDef>
 
@@ -201,14 +186,6 @@
       </li>
       <li Class="PreceptComp_KnowsMemoryThought">
         <eventDef>PerformedHarmfulSurgery</eventDef>
-        <thought>Violence_Know_Disapproved</thought>
-      </li>
-      <li Class="PreceptComp_SelfTookMemoryThought">
-        <eventDef>HarvestedOrgan</eventDef>
-        <thought>Violence_Disapproved</thought>
-      </li>
-      <li Class="PreceptComp_KnowsMemoryThought">
-        <eventDef>HarvestedOrgan</eventDef>
         <thought>Violence_Know_Disapproved</thought>
       </li>
     </comps>
@@ -273,15 +250,6 @@
       </li>
       <li Class="PreceptComp_KnowsMemoryThought">
         <eventDef>PerformedHarmfulSurgery</eventDef>
-        <thought>Violence_Know_Defense</thought>
-      </li>
-      <!-- Executions have their own precept -->
-      <li Class="PreceptComp_SelfTookMemoryThought">
-        <eventDef>HarvestedOrgan</eventDef>
-        <thought>Violence_Defense</thought>
-      </li>
-      <li Class="PreceptComp_KnowsMemoryThought">
-        <eventDef>HarvestedOrgan</eventDef>
         <thought>Violence_Know_Defense</thought>
       </li>
     </comps>
