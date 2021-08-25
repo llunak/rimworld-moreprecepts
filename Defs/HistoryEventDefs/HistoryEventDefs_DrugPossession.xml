@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <HistoryEventDef>
+    <defName>DrugPossession_TradedDrug</defName> 
+    <label>traded drug</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>DrugPossession_TradedNonAlcoholDrug</defName> 
+    <label>traded non-alcoholic drug</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>DrugPossession_TradedHardDrug</defName> 
+    <label>traded hard drug</label>
+  </HistoryEventDef>
+
+</Defs>

@@ -158,6 +158,12 @@ namespace MorePrecepts
 
         public static HistoryEventDef Nomadism_AbandonedSettlement;
 
+        public static HistoryEventDef DrugPossession_TradedDrug;
+
+        public static HistoryEventDef DrugPossession_TradedNonAlcoholDrug;
+
+        public static HistoryEventDef DrugPossession_TradedHardDrug;
+
         [MayRequireIdeology]
         public static HistoryEventDef BuiltTrap;
 

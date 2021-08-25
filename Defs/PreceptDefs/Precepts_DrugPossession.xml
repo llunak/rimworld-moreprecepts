@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Issue -->
+
+  <IssueDef>
+    <defName>DrugPossession</defName>
+    <label>drug possession</label>
+    <iconPath>UI/Issues/DrugPossession</iconPath>
+  </IssueDef>
+
+  <!-- Precepts -->
+
+  <PreceptDef>
+    <defName>DrugPossession_Prohibited</defName>
+    <issue>DrugPossession</issue>
+    <label>prohibited</label>
+    <description>It is an offense to own any kind of drugs.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>10</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <associatedMemes>
+      <li>FleshPurity</li>
+    </associatedMemes>
+    <conflictingMemes>
+      <li>HighLife</li>
+    </conflictingMemes>
+    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <selectionWeight>0.1</selectionWeight>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>DrugPossession_Prohibited</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>DrugPossession_TradedDrug</eventDef>
+        <thought>DrugPossession_TradedDrug_Prohibited</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>DrugPossession_TradedDrug</eventDef>
+        <thought>DrugPossession_Know_TradedDrug_Prohibited</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>DrugPossession_Alcohol</defName>
+    <issue>DrugPossession</issue>
+    <label>alcohol</label>
+    <description>It is an offense to own any drugs, except for alcohol.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>20</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <associatedMemes>
+      <li>FleshPurity</li>
+    </associatedMemes>
+    <conflictingMemes>
+      <li>HighLife</li>
+    </conflictingMemes>
+    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <selectionWeight>0.2</selectionWeight>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>DrugPossession_Alcohol</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>DrugPossession_TradedNonAlcoholDrug</eventDef>
+        <thought>DrugPossession_TradedDrug_Alcohol</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>DrugPossession_TradedNonAlcoholDrug</eventDef>
+        <thought>DrugPossession_Know_TradedDrug_Alcohol</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>DrugPossession_Social</defName>
+    <issue>DrugPossession</issue>
+    <label>social</label>
+    <description>Social drugs are acceptable, but owning hard drugs is wrong.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>30</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <associatedMemes>
+      <li>FleshPurity</li>
+    </associatedMemes>
+    <conflictingMemes>
+      <li>HighLife</li>
+    </conflictingMemes>
+    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <selectionWeight>0.5</selectionWeight>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>DrugPossession_Social</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>DrugPossession_TradedHardDrug</eventDef>
+        <thought>DrugPossession_TradedDrug_Social</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>DrugPossession_TradedHardDrug</eventDef>
+        <thought>DrugPossession_Know_TradedDrug_Social</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+</Defs>
