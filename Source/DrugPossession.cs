@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Linq;
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 
 namespace MorePrecepts
@@ -43,19 +44,52 @@ namespace MorePrecepts
             new CurvePoint(HoursUntilFull, 10f)
         };
 
+        private bool PawnHasDrugs(Pawn pawn)
+        {
+            foreach(Thing thing in pawn.inventory.innerContainer)
+                if(IsRelevantDrug(thing))
+                    return true;
+            return false;
+        }
+
+        private bool CaravanHasDrugs(Pawn pawn)
+        {
+            if(!pawn.IsCaravanMember())
+                return false;
+            foreach(Pawn otherPawn in CaravanUtility.GetCaravan(pawn).PawnsListForReading)
+                if(PawnHasDrugs(otherPawn))
+                    return true;
+            return false;
+        }
+
+        private bool PawnsHaveDrugs(Pawn pawn)
+        {
+            foreach(Pawn otherPawn in pawn.Map.mapPawns.FreeColonistsAndPrisoners)
+                if(PawnHasDrugs(otherPawn))
+                    return true;
+            return false;
+        }
+
+        private bool HomeMapHasDrugs(Pawn pawn)
+        {
+            if(!pawn.Map.IsPlayerHome)
+                return false;
+            Thing thing = pawn.Map.listerThings.ThingsInGroup(ThingRequestGroup.Drug)
+                .FirstOrDefault((Thing t) => IsRelevantDrug(t));
+            return thing != null;
+        }
+
         protected override ThoughtState ShouldHaveThought(Pawn pawn)
         {
             if (!ThoughtUtility.ThoughtNullified(pawn, def))
             {
-                Thing thing = pawn.Map.listerThings.ThingsInGroup(ThingRequestGroup.Drug)
-                    .FirstOrDefault((Thing t) => IsRelevantDrug(t));
-                if(thing == null)
+                if(CaravanHasDrugs(pawn) || PawnsHaveDrugs(pawn) || HomeMapHasDrugs(pawn))
                 {
-                    PawnComp.SetNoticedDrugsTick(pawn, -1);
-                    return false;
+                    PawnComp.SetNoticedDrugsTickIfNotSet(pawn, Find.TickManager.TicksGame);
+                    return ThoughtState.ActiveAtStage(0);
                 }
-                PawnComp.SetNoticedDrugsTickIfNotSet(pawn, Find.TickManager.TicksGame);
-                return ThoughtState.ActiveAtStage(0);
+                PawnComp.SetNoticedDrugsTick(pawn, -1);
+                return false;
             }
             return false;
         }
