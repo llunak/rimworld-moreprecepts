@@ -15,7 +15,7 @@
     <defName>DrugPossession_Prohibited</defName>
     <issue>DrugPossession</issue>
     <label>prohibited</label>
-    <description>It is an offense to own any kind of drugs.</description>
+    <description>It is an offense to own or trade any kind of drugs.</description>
     <impact>Low</impact>
     <displayOrderInIssue>10</displayOrderInIssue>
     <displayOrderInImpact>100</displayOrderInImpact>
@@ -47,7 +47,7 @@
     <defName>DrugPossession_Alcohol</defName>
     <issue>DrugPossession</issue>
     <label>alcohol</label>
-    <description>It is an offense to own any drugs, except for alcohol.</description>
+    <description>It is an offense to own or trade any drugs, except for alcohol.</description>
     <impact>Low</impact>
     <displayOrderInIssue>20</displayOrderInIssue>
     <displayOrderInImpact>100</displayOrderInImpact>
@@ -79,7 +79,7 @@
     <defName>DrugPossession_Social</defName>
     <issue>DrugPossession</issue>
     <label>social</label>
-    <description>Social drugs are acceptable, but owning hard drugs is wrong.</description>
+    <description>Social drugs are acceptable, but owning or trading hard drugs is wrong.</description>
     <impact>Low</impact>
     <displayOrderInIssue>30</displayOrderInIssue>
     <displayOrderInImpact>100</displayOrderInImpact>
