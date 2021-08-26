@@ -41,6 +41,24 @@ namespace MorePrecepts
         }
     }
 
+    [HarmonyPatch(typeof(TendUtility))]
+    public static class TendUtility_Patch
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(DoTend))]
+        public static void DoTend(Pawn doctor, Pawn patient, Medicine medicine)
+        {
+            // When a downed pawn is tended, reset the time it's been left to die.
+            if(patient.Downed && patient.RaceProps.Humanlike && !patient.Dead)
+            {
+                int ticks = HealthUtility.TicksUntilDeathDueToBloodLoss(patient);
+                if(ticks <= 0 || ticks > GenDate.TicksPerDay * 10)
+                    ticks = -99999;
+                PawnComp.SetLastDownedTicksUntilDeath(patient, ticks);
+            }
+        }
+    }
+
     [HarmonyPatch(typeof(Pawn))]
     public static class Pawn2_Patch
     {
@@ -53,7 +71,7 @@ namespace MorePrecepts
                 return;
             if(!pawn.Downed)
                 return;
-            if(pawn.CurrentBed() != null)
+            if(pawn.InBed())
                 return; // Is in bed => somebody's tried to treat him.
             // ExecutionThoughtStage appears to be meant only for executions, but it works generically,
             // so use it to set severity of the thought depending on how long the pawn has been left there.
