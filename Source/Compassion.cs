@@ -22,7 +22,12 @@ namespace MorePrecepts
             FieldInfo fi = AccessTools.Field(typeof(Pawn_HealthTracker),"pawn");
             Pawn pawn = (Pawn)fi.GetValue(__instance);
             if(pawn.RaceProps.Humanlike && !pawn.Dead)
-                PawnComp.SetLastDownedTickToNow(pawn);
+            {
+                int ticks = HealthUtility.TicksUntilDeathDueToBloodLoss(pawn);
+                if(ticks <= 0 || ticks > GenDate.TicksPerDay * 10)
+                    ticks = -99999;
+                PawnComp.SetLastDownedTicksUntilDeath(pawn, ticks);
+            }
         }
 
         [HarmonyPostfix]
@@ -32,7 +37,7 @@ namespace MorePrecepts
             FieldInfo fi = AccessTools.Field(typeof(Pawn_HealthTracker),"pawn");
             Pawn pawn = (Pawn)fi.GetValue(__instance);
             if(pawn.RaceProps.Humanlike && !pawn.Dead)
-                PawnComp.ResetLastDownedTick(pawn);
+                PawnComp.SetLastDownedTicksUntilDeath(pawn, -99999);
         }
     }
 
@@ -46,18 +51,16 @@ namespace MorePrecepts
             Pawn pawn = __instance;
             if(!pawn.RaceProps.Humanlike)
                 return;
-            if(!pawn.Downed || PawnComp.GetLastDownedTick(pawn) < 0)
+            if(!pawn.Downed)
                 return;
             if(pawn.CurrentBed() != null)
                 return; // Is in bed => somebody's tried to treat him.
-            // If there's any active threat on the map, ignore the death. This is
-            // primarily to avoid debuffs for killing downed pawns during a fight
-            // (e.g. grenades killing them).
-            if(GenHostility.AnyHostileActiveThreatToPlayer_NewTemp(pawn.Map))
-                return;
             // ExecutionThoughtStage appears to be meant only for executions, but it works generically,
             // so use it to set severity of the thought depending on how long the pawn has been left there.
-            int hours = (Find.TickManager.TicksGame - PawnComp.GetLastDownedTick(pawn)) / GenDate.TicksPerHour;
+            int ticksUntilDeathWhenDowned = PawnComp.GetLastDownedTicksUntilDeath(pawn);
+            if(ticksUntilDeathWhenDowned <= 0)
+                return;
+            int hours = ticksUntilDeathWhenDowned / GenDate.TicksPerHour;
             int stage = 0; // The least severe thought.
             if( hours > 2 )
                 stage = 1;
@@ -65,6 +68,10 @@ namespace MorePrecepts
                 stage = 2;
             if( hours > 10 )
                 stage = 3; // The most severe thought.
+            // If there's any active threat on the map, lower the death to the least severe stage. This is
+            // primarily to reduce debuffs for killing downed pawns during a fight (e.g. grenades killing them).
+            if(pawn.Map != null && GenHostility.AnyHostileActiveThreatToPlayer_NewTemp(pawn.Map))
+                stage = 0;
             // All:
             Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.Compassion_IncapacitatedPawnLeftToDie_All,
                 pawn.Named(HistoryEventArgsNames.Victim), stage.Named(HistoryEventArgsNames.ExecutionThoughtStage)));
