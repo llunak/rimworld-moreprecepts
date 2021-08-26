@@ -46,10 +46,7 @@ namespace MorePrecepts
                 if(pyre != null && jobRitual.Organizer != null)
                     TaleRecorder.RecordTale(TaleDefOf.BurnedCorpse, jobRitual.Organizer, (pyre.Corpse != null) ? pyre.Corpse.InnerPawn : null);
                 if(pyre.Corpse != null)
-                {
-                    PawnComp comp = pyre.Corpse.InnerPawn.GetComp<PawnComp>();
-                    comp.burnedOnPyre = true;
-                }
+                    PawnComp.SetBurnedOnPyre(pyre.Corpse.InnerPawn);
             }
             base.Apply(progress, totalPresence, jobRitual);
         }
@@ -133,8 +130,7 @@ namespace MorePrecepts
                 Pawn pawn = obligation.targetA.Thing as Pawn;
                 if(pawn != null)
                 {
-                    PawnComp comp = pawn.GetComp<PawnComp>();
-                    if(comp.burnedOnPyre)
+                    if(PawnComp.GetBurnedOnPyre(pawn))
                         return false;
                 }
                 return obligation.targetA.ThingDestroyed;

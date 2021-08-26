@@ -1,22 +1,65 @@
 using RimWorld;
 using Verse;
+using System;
 
 namespace MorePrecepts
 {
     // A ThingComp attached to pawns, to contain all pawn extra data for this mod.
     public class PawnComp : ThingComp
     {
-        // For alcohol  precept.
-        public int lastTakeAlcoholTick;
+        // For alcohol  precept, alcohol version of lastTakeRecreationalDrugTick.
+        private int lastTakeAlcoholTick;
 
         // For violence precept.
         public int lastViolenceTick;
 
         // For funeral pyre.
-        public bool burnedOnPyre;
+        private bool burnedOnPyre;
 
         // For drugpossession, the first tick the pawn became aware of drugs present.
         private int noticedDrugsTick;
+
+        public static int GetLastTakeAlcoholTick(Pawn pawn)
+        {
+            PawnComp comp = pawn.GetComp<PawnComp>();
+            return comp.lastTakeAlcoholTick;
+        }
+
+        public static void SetLastTakeAlcoholTickToNow(Pawn pawn)
+        {
+            PawnComp comp = pawn.GetComp<PawnComp>();
+            comp.lastTakeAlcoholTick = Find.TickManager.TicksGame;
+        }
+
+        public static int GetLastViolenceTick(Pawn pawn)
+        {
+            PawnComp comp = pawn.GetComp<PawnComp>();
+            return comp.lastViolenceTick;
+        }
+
+        public static void SetLastViolenceTickToNow(Pawn pawn)
+        {
+            PawnComp comp = pawn.GetComp<PawnComp>();
+            comp.lastViolenceTick = Find.TickManager.TicksGame;
+        }
+
+        public static void AddToLastViolenceTick(Pawn pawn, int add)
+        {
+            PawnComp comp = pawn.GetComp<PawnComp>();
+            comp.lastViolenceTick = Math.Min(comp.lastViolenceTick + add, Find.TickManager.TicksGame);
+        }
+
+        public static void SetBurnedOnPyre(Pawn pawn)
+        {
+            PawnComp comp = pawn.GetComp<PawnComp>();
+            comp.burnedOnPyre = true;
+        }
+
+        public static bool GetBurnedOnPyre(Pawn pawn)
+        {
+            PawnComp comp = pawn.GetComp<PawnComp>();
+            return comp.burnedOnPyre;
+        }
 
         public static int GetNoticedDrugsTick(Pawn pawn)
         {

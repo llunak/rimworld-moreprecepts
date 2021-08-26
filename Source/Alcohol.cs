@@ -84,22 +84,6 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         }
     }
 
-    // Alcohol version of lastTakeRecreationalDrugTick.
-    public static class LastTakeAlcoholTick
-    {
-        public static int Get(Pawn pawn)
-        {
-            PawnComp comp = pawn.GetComp<PawnComp>();
-            return comp.lastTakeAlcoholTick;
-        }
-
-        public static void SetToNow(Pawn pawn)
-        {
-            PawnComp comp = pawn.GetComp<PawnComp>();
-            comp.lastTakeAlcoholTick = Find.TickManager.TicksGame;
-        }
-    }
-
 // We need to patch IsTeetotaler() to not return true if only DrugUse:MedicalOnly is set (in which
 // the case function would normally return true). That means we also need to check all calls
 // to IsTeetotaler() and add a drug use check if needed. If the item is actually alcohol, we'll
@@ -252,7 +236,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
 			}
 			if (!ingester.Dead)
 			{
-				LastTakeAlcoholTick.SetToNow(ingester);
+				PawnComp.SetLastTakeAlcoholTickToNow(ingester);
 			}
 			if (ingester.drugs != null)
 			{
@@ -731,7 +715,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         {
             if (!ThoughtUtility.ThoughtNullified(p, def))
             {
-                float num = (float)(Find.TickManager.TicksGame - LastTakeAlcoholTick.Get(p)) / 60000f;
+                float num = (float)(Find.TickManager.TicksGame - PawnComp.GetLastTakeAlcoholTick(p)) / 60000f;
                 if (num > DaysSatisfied && def.minExpectationForNegativeThought != null && p.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(p.MapHeld).order < def.minExpectationForNegativeThought.order)
                     return false;
                 if (num < DaysSatisfied)
@@ -771,7 +755,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         {
             if (!ThoughtUtility.ThoughtNullified(p, def))
             {
-                float num = (float)(Find.TickManager.TicksGame - LastTakeAlcoholTick.Get(p)) / 60000f;
+                float num = (float)(Find.TickManager.TicksGame - PawnComp.GetLastTakeAlcoholTick(p)) / 60000f;
                 if (num > DaysSatisfied && def.minExpectationForNegativeThought != null && p.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(p.MapHeld).order < def.minExpectationForNegativeThought.order)
                     return false;
                 if (num < DaysSatisfied)
@@ -800,7 +784,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             {
                 if (ThoughtUtility.ThoughtNullified(pawn, def))
                     return 0f;
-                float x = (float)(Find.TickManager.TicksGame - LastTakeAlcoholTick.Get(pawn)) / 60000f;
+                float x = (float)(Find.TickManager.TicksGame - PawnComp.GetLastTakeAlcoholTick(pawn)) / 60000f;
                 return Mathf.RoundToInt(ThoughtWorker_Precept_Alcohol_Wanted.MoodOffsetFromDaysSinceLastDrugCurve.Evaluate(x));
             }
         }
@@ -814,7 +798,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             {
                 if (ThoughtUtility.ThoughtNullified(pawn, def))
                     return 0f;
-                float x = (float)(Find.TickManager.TicksGame - LastTakeAlcoholTick.Get(pawn)) / 60000f;
+                float x = (float)(Find.TickManager.TicksGame - PawnComp.GetLastTakeAlcoholTick(pawn)) / 60000f;
                 return Mathf.RoundToInt(ThoughtWorker_Precept_Alcohol_Wanted.MoodOffsetFromDaysSinceLastDrugCurve.Evaluate(x));
             }
         }
