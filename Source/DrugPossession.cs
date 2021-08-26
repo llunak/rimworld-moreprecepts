@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using RimWorld.Planet;
@@ -6,6 +7,80 @@ using Verse;
 
 namespace MorePrecepts
 {
+    public static class DrugPossessionHelper
+    {
+        public delegate bool IsRelevantDrug(Thing thing);
+
+        public static bool PawnHasDrugs(Pawn pawn, IsRelevantDrug isRelevantDrug, ref Thing drug)
+        {
+            foreach(Thing thing in pawn.inventory.innerContainer)
+            {
+                if(isRelevantDrug(thing))
+                {
+                    drug = thing;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool CaravanHasDrugs(Pawn pawn, IsRelevantDrug isRelevantDrug, ref Thing drug)
+        {
+            if(!pawn.IsCaravanMember())
+                return false;
+            foreach(Pawn otherPawn in CaravanUtility.GetCaravan(pawn).PawnsListForReading)
+                if(PawnHasDrugs(otherPawn, isRelevantDrug, ref drug))
+                    return true;
+            return false;
+        }
+
+        public static bool PawnsHaveDrugs(Pawn pawn, IsRelevantDrug isRelevantDrug, ref Thing drug)
+        {
+            foreach(Pawn otherPawn in pawn.Map.mapPawns.FreeColonistsAndPrisoners)
+                if(PawnHasDrugs(otherPawn, isRelevantDrug, ref drug))
+                    return true;
+            return false;
+        }
+
+        public static bool HomeMapHasDrugs(Pawn pawn, IsRelevantDrug isRelevantDrug, ref Thing drug)
+        {
+            if(!pawn.Map.IsPlayerHome)
+                return false;
+            Thing thing = pawn.Map.listerThings.ThingsInGroup(ThingRequestGroup.Drug)
+                .FirstOrDefault((Thing t) => isRelevantDrug(t));
+            drug = thing;
+            return thing != null;
+        }
+
+        public static bool IsDrug(Thing thing)
+        {
+            return thing.def.IsNonMedicalDrug;
+        }
+
+        public static bool IsNonAlcohol(Thing thing)
+        {
+            return !thing.def.IsNonMedicalDrug && !AlcoholHelper.IsAlcohol(thing.def);
+        }
+
+        public static bool IsHardDrug(Thing thing)
+        {
+            return thing.def.IsNonMedicalDrug && thing.def.ingestible.drugCategory == DrugCategory.Hard;
+        }
+
+        public static IsRelevantDrug GetDrugTestDelegate(Pawn pawn)
+        {
+            if(pawn.Ideo == null)
+                return null;
+            if(pawn.Ideo.HasPrecept(PreceptDefOf.DrugPossession_Prohibited))
+                return IsDrug;
+            else if(pawn.Ideo.HasPrecept(PreceptDefOf.DrugPossession_Alcohol))
+                return IsNonAlcohol;
+            else if(pawn.Ideo.HasPrecept(PreceptDefOf.DrugPossession_Social))
+                return IsHardDrug;
+            return null;
+        }
+    }
+
     public class Comp_DrugSelling : ThingComp
     {
         public override void PrePreTraded(TradeAction action, Pawn playerNegotiator, ITrader trader)
@@ -44,49 +119,21 @@ namespace MorePrecepts
             new CurvePoint(HoursUntilFull, 10f)
         };
 
-        private bool PawnHasDrugs(Pawn pawn)
-        {
-            foreach(Thing thing in pawn.inventory.innerContainer)
-                if(IsRelevantDrug(thing))
-                    return true;
-            return false;
-        }
-
-        private bool CaravanHasDrugs(Pawn pawn)
-        {
-            if(!pawn.IsCaravanMember())
-                return false;
-            foreach(Pawn otherPawn in CaravanUtility.GetCaravan(pawn).PawnsListForReading)
-                if(PawnHasDrugs(otherPawn))
-                    return true;
-            return false;
-        }
-
-        private bool PawnsHaveDrugs(Pawn pawn)
-        {
-            foreach(Pawn otherPawn in pawn.Map.mapPawns.FreeColonistsAndPrisoners)
-                if(PawnHasDrugs(otherPawn))
-                    return true;
-            return false;
-        }
-
-        private bool HomeMapHasDrugs(Pawn pawn)
-        {
-            if(!pawn.Map.IsPlayerHome)
-                return false;
-            Thing thing = pawn.Map.listerThings.ThingsInGroup(ThingRequestGroup.Drug)
-                .FirstOrDefault((Thing t) => IsRelevantDrug(t));
-            return thing != null;
-        }
-
         protected override ThoughtState ShouldHaveThought(Pawn pawn)
         {
             if (!ThoughtUtility.ThoughtNullified(pawn, def))
             {
-                if(CaravanHasDrugs(pawn) || PawnsHaveDrugs(pawn) || HomeMapHasDrugs(pawn))
+                DrugPossessionHelper.IsRelevantDrug isRelevantDrug = DrugPossessionHelper.GetDrugTestDelegate(pawn);
+                if( isRelevantDrug != null )
                 {
-                    PawnComp.SetNoticedDrugsTickIfNotSet(pawn, Find.TickManager.TicksGame);
-                    return ThoughtState.ActiveAtStage(0);
+                    Thing dummy = null;
+                    if(DrugPossessionHelper.CaravanHasDrugs(pawn, isRelevantDrug, ref dummy)
+                        || DrugPossessionHelper.PawnsHaveDrugs(pawn, isRelevantDrug, ref dummy)
+                        || DrugPossessionHelper.HomeMapHasDrugs(pawn, isRelevantDrug, ref dummy))
+                    {
+                        PawnComp.SetNoticedDrugsTickIfNotSet(pawn, Find.TickManager.TicksGame);
+                        return ThoughtState.ActiveAtStage(0);
+                    }
                 }
                 PawnComp.SetNoticedDrugsTick(pawn, -1);
                 return false;
@@ -103,60 +150,79 @@ namespace MorePrecepts
 
     public class ThoughtWorker_Precept_DrugPossession_Prohibited : ThoughtWorker_Precept_DrugPossession_Base
     {
-        protected override bool IsRelevantDrug(Thing thing) => thing.def.IsNonMedicalDrug;
+        protected override bool IsRelevantDrug(Thing thing) => DrugPossessionHelper.IsDrug(thing);
     }
 
     public class ThoughtWorker_Precept_DrugPossession_Alcohol : ThoughtWorker_Precept_DrugPossession_Base
     {
-        protected override bool IsRelevantDrug(Thing thing)
-            =>  !thing.def.IsNonMedicalDrug && !AlcoholHelper.IsAlcohol(thing.def);
+        protected override bool IsRelevantDrug(Thing thing) => DrugPossessionHelper.IsNonAlcohol(thing);
     }
 
     public class ThoughtWorker_Precept_DrugPossession_Social : ThoughtWorker_Precept_DrugPossession_Base
     {
-        protected override bool IsRelevantDrug(Thing thing)
-            => thing.def.IsNonMedicalDrug && thing.def.ingestible.drugCategory == DrugCategory.Hard;
+        protected override bool IsRelevantDrug(Thing thing) => DrugPossessionHelper.IsHardDrug(thing);
     }
 
     public class ThoughtWorker_Precept_DrugPossession_HasDrugs : ThoughtWorker
     {
-        private delegate bool IsRelevantDrug(Thing thing);
-
-        private bool PawnHasDrugs(Pawn pawn, IsRelevantDrug isRelevantDrug)
-        {
-            foreach(Thing thing in pawn.inventory.innerContainer)
-                if(isRelevantDrug(thing))
-                    return true;
-            return false;
-        }
-
         protected override ThoughtState CurrentSocialStateInternal(Pawn pawn, Pawn other)
         {
             if (!pawn.RaceProps.Humanlike || !other.RaceProps.Humanlike)
                 return false;
-            if(pawn.Ideo == null)
-                return false;
-            IsRelevantDrug isRelevantDrug = null;
-            if(pawn.Ideo.HasPrecept(PreceptDefOf.DrugPossession_Prohibited))
-                isRelevantDrug = delegate(Thing thing)
-                {
-                    return thing.def.IsNonMedicalDrug;
-                };
-            else if(pawn.Ideo.HasPrecept(PreceptDefOf.DrugPossession_Alcohol))
-                isRelevantDrug = delegate(Thing thing)
-                {
-                    return !thing.def.IsNonMedicalDrug && !AlcoholHelper.IsAlcohol(thing.def);
-                };
-            else if(pawn.Ideo.HasPrecept(PreceptDefOf.DrugPossession_Social))
-                isRelevantDrug = delegate(Thing thing)
-                {
-                    return thing.def.IsNonMedicalDrug && thing.def.ingestible.drugCategory == DrugCategory.Hard;
-                };
+            DrugPossessionHelper.IsRelevantDrug isRelevantDrug = DrugPossessionHelper.GetDrugTestDelegate(pawn);
             if( isRelevantDrug == null )
                 return false;
             if (!RelationsUtility.PawnsKnowEachOther(pawn, other))
                 return false;
-            return PawnHasDrugs(other, isRelevantDrug);
+            Thing dummy = null;
+            return DrugPossessionHelper.PawnHasDrugs(other, isRelevantDrug, ref dummy);
+        }
+    }
+
+    public class Alert_DrugPossession : Alert
+    {
+        // Pawns disliking drugs.
+        private List<Pawn> affectedPawns = new List<Pawn>();
+        // Disliked drugs (not necessarily all of them).
+        private List<Thing> affectedThings = new List<Thing>();
+
+        public Alert_DrugPossession()
+        {
+            defaultLabel = "MorePrecepts.AlertDrugsPresent".Translate();
+        }
+
+        private void Update()
+        {
+            affectedPawns.Clear();
+            affectedThings.Clear();
+            foreach(Pawn pawn in PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_FreeColonists)
+            {
+                DrugPossessionHelper.IsRelevantDrug isRelevantDrug = DrugPossessionHelper.GetDrugTestDelegate(pawn);
+                if(isRelevantDrug == null)
+                    continue;
+                Thing drug = null;
+                if(DrugPossessionHelper.CaravanHasDrugs(pawn, isRelevantDrug, ref drug)
+                    || DrugPossessionHelper.PawnsHaveDrugs(pawn, isRelevantDrug, ref drug)
+                    || DrugPossessionHelper.HomeMapHasDrugs(pawn, isRelevantDrug, ref drug))
+                {
+                    affectedPawns.Add(pawn);
+                    if(!affectedThings.Contains(drug))
+                        affectedThings.Add(drug);
+                }
+            }
+        }
+
+        public override TaggedString GetExplanation()
+        {
+            return "MorePrecepts.AlertDrugsPresentDesc"
+                .Translate(affectedPawns.Select(v => v.NameShortColored.Resolve()).ToLineList(" - "),
+                    affectedThings.Select(v => v.LabelShort).ToLineList(" - "));
+        }
+
+        public override AlertReport GetReport()
+        {
+            Update();
+            return AlertReport.CulpritsAre(affectedPawns.Concat(affectedThings).ToList());
         }
     }
 

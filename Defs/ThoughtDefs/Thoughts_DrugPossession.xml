@@ -14,7 +14,7 @@
     <stages>
       <li>
         <label>drugs present</label>
-        <description>There are abhorrent drugs present in this colony.</description>
+        <description>There are abhorrent drugs present.</description>
         <baseMoodEffect>-1</baseMoodEffect>
       </li>
       <li>
@@ -75,7 +75,7 @@
     <stages>
       <li>
         <label>drugs present</label>
-        <description>There are abhorrent drugs present in this colony.</description>
+        <description>There are abhorrent drugs present.</description>
         <baseMoodEffect>-1</baseMoodEffect>
       </li>
       <li>
@@ -136,7 +136,7 @@
     <stages>
       <li>
         <label>hard drugs present</label>
-        <description>There are abhorrent hard drugs present in this colony.</description>
+        <description>There are abhorrent hard drugs present.</description>
         <baseMoodEffect>-1</baseMoodEffect>
       </li>
       <li>
