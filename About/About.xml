@@ -21,6 +21,7 @@
 
 Precepts:
 - Alcohol - If Alcohol precept is set, it controls alcohol usage instead of the more generic DrugUse precept.
+- Compassion - Allied, not hostile, not guilty or all incapacitated pawns should not be left to die helplessly.
 - Drug posession - Pawns will dislike presence and trading of hard, social (non-alcohol) or all non-medical drugs.
 - Elderly - Old people may be viewed with respect or contempt. Results in mood and social buffs and debuffs. When elders are respected, too young pawns are considered inexperienced for important roles.
 - Nomadism - Pawns will dislike or want to abandon their settlement.
