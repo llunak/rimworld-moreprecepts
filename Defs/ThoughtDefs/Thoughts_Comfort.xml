@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ThoughtDef Name="ComfortBase" Abstract="True">
+    <durationDays>1</durationDays>
+    <minExpectationForNegativeThought>Low</minExpectationForNegativeThought>
+    <nullifyingTraits>
+      <li>Ascetic</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
+  <!-- Wanted -->
+
+  <ThoughtDef ParentName="ComfortBase">
+    <defName>Comfort_UsedUncomfortableFurniture_Wanted</defName>
+    <stages>
+      <li>
+        <label>uncomfortable furniture</label>
+        <description>I had to use furniture that was uncomfortable.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+      <li>
+        <label>very uncomfortable furniture</label>
+        <description>I had to use furniture that was very uncomfortable.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+      <li>
+        <label>no furniture</label>
+        <description>I had to do without furniture.</description>
+        <baseMoodEffect>-6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Important -->
+
+  <ThoughtDef ParentName="ComfortBase">
+    <defName>Comfort_UsedUncomfortableFurniture_Important</defName>
+    <stages>
+      <li>
+        <label>uncomfortable furniture</label>
+        <description>I had to use furniture that was not comfortable.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+      <li>
+        <label>very uncomfortable furniture</label>
+        <description>I had to use furniture that was uncomfortable.</description>
+        <baseMoodEffect>-8</baseMoodEffect>
+      </li>
+      <li>
+        <label>no furniture</label>
+        <description>I had to do without furniture. How shameful.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Essential -->
+
+  <ThoughtDef ParentName="ComfortBase">
+    <defName>Comfort_UsedUncomfortableFurniture_Essential</defName>
+    <stages>
+      <li>
+        <label>uncomfortable furniture</label>
+        <description>I had to use furniture that was not sufficiently comfortable.</description>
+        <baseMoodEffect>-8</baseMoodEffect>
+      </li>
+      <li>
+        <label>very uncomfortable furniture</label>
+        <description>I had to use furniture that was not comfortable.</description>
+        <baseMoodEffect>-12</baseMoodEffect>
+      </li>
+      <li>
+        <label>no furniture</label>
+        <description>I had to do without furniture. How humiliating.</description>
+        <baseMoodEffect>-18</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

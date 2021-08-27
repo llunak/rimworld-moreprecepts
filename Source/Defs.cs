@@ -73,6 +73,12 @@ namespace MorePrecepts
 
         public static PreceptDef DrugPossession_Social;
 
+        public static PreceptDef Comfort_Wanted;
+
+        public static PreceptDef Comfort_Important;
+
+        public static PreceptDef Comfort_Essential;
+
         static PreceptDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(PreceptDefOf));
@@ -132,6 +138,12 @@ namespace MorePrecepts
         public static ThoughtDef Nomadism_Important;
 
         public static ThoughtDef Nomadism_Essential;
+
+        public static ThoughtDef Comfort_UsedUncomfortableFurniture_Wanted;
+
+        public static ThoughtDef Comfort_UsedUncomfortableFurniture_Important;
+
+        public static ThoughtDef Comfort_UsedUncomfortableFurniture_Essential;
 
         static ThoughtDefOf()
         {
