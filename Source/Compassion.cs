@@ -11,68 +11,10 @@ using Verse;
 // before dying (leaving the pawn to die longer has bigger mood debuff).
 namespace MorePrecepts
 {
-
-    [HarmonyPatch(typeof(Pawn_HealthTracker))]
-    public static class Pawn_HealthTracker_Patch
+    public static class CompassionHelper
     {
-        [HarmonyPostfix]
-        [HarmonyPatch(nameof(MakeDowned))]
-        public static void MakeDowned(Pawn_HealthTracker __instance)
+        public static void CheckPawnLeftToDie(Pawn pawn)
         {
-            FieldInfo fi = AccessTools.Field(typeof(Pawn_HealthTracker),"pawn");
-            Pawn pawn = (Pawn)fi.GetValue(__instance);
-            if(pawn.RaceProps.Humanlike && !pawn.Dead)
-            {
-                int ticks = HealthUtility.TicksUntilDeathDueToBloodLoss(pawn);
-                if(ticks <= 0 || ticks > GenDate.TicksPerDay * 10)
-                    ticks = -99999;
-                PawnComp.SetLastDownedTicksUntilDeath(pawn, ticks);
-            }
-        }
-
-        [HarmonyPostfix]
-        [HarmonyPatch(nameof(MakeUndowned))]
-        public static void MakeUndowned(Pawn_HealthTracker __instance)
-        {
-            FieldInfo fi = AccessTools.Field(typeof(Pawn_HealthTracker),"pawn");
-            Pawn pawn = (Pawn)fi.GetValue(__instance);
-            if(pawn.RaceProps.Humanlike && !pawn.Dead)
-                PawnComp.SetLastDownedTicksUntilDeath(pawn, -99999);
-        }
-    }
-
-    [HarmonyPatch(typeof(TendUtility))]
-    public static class TendUtility_Patch
-    {
-        [HarmonyPostfix]
-        [HarmonyPatch(nameof(DoTend))]
-        public static void DoTend(Pawn doctor, Pawn patient, Medicine medicine)
-        {
-            // When a downed pawn is tended, reset the time it's been left to die.
-            if(patient.Downed && patient.RaceProps.Humanlike && !patient.Dead)
-            {
-                int ticks = HealthUtility.TicksUntilDeathDueToBloodLoss(patient);
-                if(ticks <= 0 || ticks > GenDate.TicksPerDay * 10)
-                    ticks = -99999;
-                PawnComp.SetLastDownedTicksUntilDeath(patient, ticks);
-            }
-        }
-    }
-
-    [HarmonyPatch(typeof(Pawn))]
-    public static class Pawn2_Patch
-    {
-        [HarmonyPrefix]
-        [HarmonyPatch(nameof(Kill))]
-        public static void Kill(Pawn __instance, DamageInfo? dinfo, Hediff exactCulprit)
-        {
-            Pawn pawn = __instance;
-            if(!pawn.RaceProps.Humanlike)
-                return;
-            if(!pawn.Downed)
-                return;
-            if(pawn.InBed())
-                return; // Is in bed => somebody's tried to treat him.
             // ExecutionThoughtStage appears to be meant only for executions, but it works generically,
             // so use it to set severity of the thought depending on how long the pawn has been left there.
             int ticksUntilDeathWhenDowned = PawnComp.GetLastDownedTicksUntilDeath(pawn);
@@ -111,6 +53,89 @@ namespace MorePrecepts
                 Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.Compassion_IncapacitatedPawnLeftToDie_Allies,
                     pawn.Named(HistoryEventArgsNames.Victim), stage.Named(HistoryEventArgsNames.ExecutionThoughtStage)));
             }
+        }
+
+        public static int TicksToDie(Pawn pawn)
+        {
+            int ticks = HealthUtility.TicksUntilDeathDueToBloodLoss(pawn);
+            if(ticks <= 0 || ticks > GenDate.TicksPerDay * 10)
+                ticks = -99999;
+            return ticks;
+        }
+    }
+
+    [HarmonyPatch(typeof(Pawn_HealthTracker))]
+    public static class Pawn_HealthTracker_Patch
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(MakeDowned))]
+        public static void MakeDowned(Pawn_HealthTracker __instance)
+        {
+            FieldInfo fi = AccessTools.Field(typeof(Pawn_HealthTracker),"pawn");
+            Pawn pawn = (Pawn)fi.GetValue(__instance);
+            if(pawn.RaceProps.Humanlike && !pawn.Dead)
+                PawnComp.SetLastDownedTicksUntilDeath(pawn, CompassionHelper.TicksToDie(pawn));
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(MakeUndowned))]
+        public static void MakeUndowned(Pawn_HealthTracker __instance)
+        {
+            FieldInfo fi = AccessTools.Field(typeof(Pawn_HealthTracker),"pawn");
+            Pawn pawn = (Pawn)fi.GetValue(__instance);
+            if(pawn.RaceProps.Humanlike && !pawn.Dead)
+                PawnComp.SetLastDownedTicksUntilDeath(pawn, -99999);
+        }
+    }
+
+    [HarmonyPatch(typeof(TendUtility))]
+    public static class TendUtility_Patch
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(DoTend))]
+        public static void DoTend(Pawn doctor, Pawn patient, Medicine medicine)
+        {
+            // When a downed pawn is tended, reset the time it's been left to die.
+            if(patient.Downed && patient.RaceProps.Humanlike && !patient.Dead)
+                PawnComp.SetLastDownedTicksUntilDeath(patient, CompassionHelper.TicksToDie(patient));
+        }
+    }
+
+    [HarmonyPatch(typeof(MapDeiniter))]
+    public static class MapDeiniter_Patch
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(PassPawnsToWorld))]
+        public static void PassPawnsToWorld(Map map)
+        {
+            // Check any pawns left to die when leaving a map.
+            foreach( Pawn pawn in map.mapPawns.AllPawns)
+            {
+                if(pawn.RaceProps.Humanlike && !pawn.Dead && pawn.Downed)
+                {
+                    if(CompassionHelper.TicksToDie(pawn) < 0)
+                        continue; // Medically treated => ok.
+                    CompassionHelper.CheckPawnLeftToDie(pawn);
+                }
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(Pawn))]
+    public static class Pawn2_Patch
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(Kill))]
+        public static void Kill(Pawn __instance, DamageInfo? dinfo, Hediff exactCulprit)
+        {
+            Pawn pawn = __instance;
+            if(!pawn.RaceProps.Humanlike)
+                return;
+            if(!pawn.Downed)
+                return;
+            if(pawn.InBed())
+                return; // Is in bed => somebody's tried to treat him.
+            CompassionHelper.CheckPawnLeftToDie(pawn);
         }
     }
 
