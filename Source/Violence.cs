@@ -275,23 +275,13 @@ namespace MorePrecepts
         }
     }
 
-    // These are basically copy&paste&modify of HighLife classes, split into two classes based on the constants.
-    // The Wanted class is less demanding, the Essential gets unhappy more quickly.
-    public class ThoughtWorker_Precept_Violence_Wanted : ThoughtWorker_Precept, IPreceptCompDescriptionArgs
+    public abstract class ThoughtWorker_Precept_Violence_Base : ThoughtWorker_Precept, IPreceptCompDescriptionArgs
     {
-        // The values are also hardcoded in the XML.
-        private const float DaysSatisfied = 5f;
-        private const float DaysNoBonus = 7f;
-        private const float DaysMissing = 8f;
-        private const float DaysMissing_Major = 15f;
-
-        public static readonly SimpleCurve MoodOffsetFromDaysSinceLastAttackCurve = new SimpleCurve
-        {
-            new CurvePoint(DaysSatisfied, 2f),
-            new CurvePoint(DaysNoBonus, 0f),
-            new CurvePoint(DaysMissing, -2f),
-            new CurvePoint(DaysMissing_Major, -10f)
-        };
+        protected abstract float DaysSatisfied();
+        protected abstract float DaysNoBonus();
+        protected abstract float DaysMissing();
+        protected abstract float DaysMissing_Major();
+        protected abstract SimpleCurve MoodOffsetFromDaysSinceLastAttackCurve();
 
         protected override ThoughtState ShouldHaveThought(Pawn p)
         {
@@ -300,94 +290,66 @@ namespace MorePrecepts
             if (!ThoughtUtility.ThoughtNullified(p, def))
             {
                 float num = (float)(Find.TickManager.TicksGame - PawnComp.GetLastViolenceTick(p)) / 60000f;
-                if (num > DaysSatisfied && def.minExpectationForNegativeThought != null && p.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(p.MapHeld).order < def.minExpectationForNegativeThought.order)
+                if (num > DaysNoBonus() && def.minExpectationForNegativeThought != null
+                    && p.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(p.MapHeld).order < def.minExpectationForNegativeThought.order)
                     return false;
-                if (num < DaysSatisfied)
+                if (num < DaysNoBonus())
                     return ThoughtState.ActiveAtStage(0);
-                if (num < DaysNoBonus)
+                if (num < DaysMissing())
                     return ThoughtState.ActiveAtStage(1);
-                if (num < DaysMissing)
-                    return ThoughtState.ActiveAtStage(2);
-                return ThoughtState.ActiveAtStage(3);
+                return ThoughtState.ActiveAtStage(2);
             }
             return false;
         }
 
+        public override float MoodMultiplier(Pawn pawn)
+        {
+            float num = (float)(Find.TickManager.TicksGame - PawnComp.GetLastViolenceTick(pawn)) / 60000f;
+            return Mathf.RoundToInt(MoodOffsetFromDaysSinceLastAttackCurve().Evaluate(num));
+        }
+
         public IEnumerable<NamedArgument> GetDescriptionArgs()
         {
-            yield return DaysSatisfied.Named("DAYSSATISIFED");
+            yield return DaysMissing().Named("DAYSSATISIFED");
         }
     }
 
-    public class ThoughtWorker_Precept_Violence_Essential : ThoughtWorker_Precept, IPreceptCompDescriptionArgs
+    // The Wanted class is less demanding.
+    public class ThoughtWorker_Precept_Violence_Wanted : ThoughtWorker_Precept_Violence_Base
     {
-        // The values are also hardcoded in the XML.
-        private const float DaysSatisfied = 2f;
-        private const float DaysNoBonus = 5f;
-        private const float DaysMissing = 7f;
-        private const float DaysMissing_Major = 10f;
+        protected override float DaysSatisfied() => 5f;
+        protected override float DaysNoBonus() => 7f;
+        protected override float DaysMissing() => 8f;
+        protected override float DaysMissing_Major() => 15f;
+        protected override SimpleCurve MoodOffsetFromDaysSinceLastAttackCurve() => StaticMoodOffsetFromDaysSinceLastAttackCurve;
 
-        public static readonly SimpleCurve MoodOffsetFromDaysSinceLastAttackCurve = new SimpleCurve
+        public static readonly SimpleCurve StaticMoodOffsetFromDaysSinceLastAttackCurve = new SimpleCurve
         {
-            new CurvePoint(DaysSatisfied, 3f),
-            new CurvePoint(DaysNoBonus, 0f),
-            new CurvePoint(DaysMissing, -2f),
-            new CurvePoint(DaysMissing_Major, -10f)
+            // First values are times from above, second values are mood multipliers for the XML value.
+            new CurvePoint(5f, 1f),
+            new CurvePoint(7f, 0f),
+            new CurvePoint(8f, 1f),
+            new CurvePoint(15f, 10f)
         };
-
-        protected override ThoughtState ShouldHaveThought(Pawn p)
-        {
-            if (p.WorkTagIsDisabled(WorkTags.Violent))
-                return false;
-            if (!ThoughtUtility.ThoughtNullified(p, def))
-            {
-                float num = (float)(Find.TickManager.TicksGame - PawnComp.GetLastViolenceTick(p)) / 60000f;
-                if (num > DaysSatisfied && def.minExpectationForNegativeThought != null && p.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(p.MapHeld).order < def.minExpectationForNegativeThought.order)
-                    return false;
-                if (num < DaysSatisfied)
-                    return ThoughtState.ActiveAtStage(0);
-                if (num < DaysNoBonus)
-                    return ThoughtState.ActiveAtStage(1);
-                if (num < DaysMissing)
-                    return ThoughtState.ActiveAtStage(2);
-                return ThoughtState.ActiveAtStage(3);
-            }
-            return false;
-        }
-
-        public IEnumerable<NamedArgument> GetDescriptionArgs()
-        {
-            yield return DaysSatisfied.Named("DAYSSATISIFED");
-        }
     }
 
-    // Again copy&paste&modify from HighLife.
-    public class Thought_Situational_Precept_Violence_Wanted : Thought_Situational
+    // Essential gets unhappy more quickly.
+    public class ThoughtWorker_Precept_Violence_Essential : ThoughtWorker_Precept_Violence_Base
     {
-        protected override float BaseMoodOffset
-        {
-            get
-            {
-                if (ThoughtUtility.ThoughtNullified(pawn, def))
-                    return 0f;
-                float x = (float)(Find.TickManager.TicksGame - PawnComp.GetLastViolenceTick(pawn)) / 60000f;
-                return Mathf.RoundToInt(ThoughtWorker_Precept_Violence_Wanted.MoodOffsetFromDaysSinceLastAttackCurve.Evaluate(x));
-            }
-        }
-    }
+        protected override float DaysSatisfied() => 2f;
+        protected override float DaysNoBonus() => 5f;
+        protected override float DaysMissing() => 7f;
+        protected override float DaysMissing_Major() => 8f;
+        protected override SimpleCurve MoodOffsetFromDaysSinceLastAttackCurve() => StaticMoodOffsetFromDaysSinceLastAttackCurve;
 
-    public class Thought_Situational_Precept_Violence_Essential : Thought_Situational
-    {
-        protected override float BaseMoodOffset
+        public static readonly SimpleCurve StaticMoodOffsetFromDaysSinceLastAttackCurve = new SimpleCurve
         {
-            get
-            {
-                if (ThoughtUtility.ThoughtNullified(pawn, def))
-                    return 0f;
-                float x = (float)(Find.TickManager.TicksGame - PawnComp.GetLastViolenceTick(pawn)) / 60000f;
-                return Mathf.RoundToInt(ThoughtWorker_Precept_Violence_Essential.MoodOffsetFromDaysSinceLastAttackCurve.Evaluate(x));
-            }
-        }
+            // First values are times from above, second values are mood multipliers for the XML value.
+            new CurvePoint(2f, 1f),
+            new CurvePoint(5f, 0f),
+            new CurvePoint(7f, 1f),
+            new CurvePoint(8f, 10f)
+        };
     }
 
     // Give pro-violence pawns a negative social thought against pawns that don't have a recent violence.

@@ -153,9 +153,9 @@
 
   <ThoughtDef>
     <defName>Violence_Wanted</defName>
-    <thoughtClass>MorePrecepts.Thought_Situational_Precept_Violence_Wanted</thoughtClass>
     <workerClass>MorePrecepts.ThoughtWorker_Precept_Violence_Wanted</workerClass>
     <minExpectationForNegativeThought>Low</minExpectationForNegativeThought>
+    <validWhileDespawned>true</validWhileDespawned>
     <nullifyingTraits>
       <li>Wimp</li>
       <li>Kind</li>
@@ -174,9 +174,10 @@
       <li>
         <label>violence missing</label>
         <description>I want to fight somebody. It makes me feel good.</description>
-        <baseMoodEffect>-2</baseMoodEffect>
+        <baseMoodEffect>-1</baseMoodEffect>
       </li>
       <li>
+        <visible>false</visible> <!-- Only for precept tooltip to show range. -->
         <label>violence missing</label>
         <description>I want to fight somebody. It makes me feel good.</description>
         <baseMoodEffect>-10</baseMoodEffect>
@@ -205,9 +206,9 @@
 
   <ThoughtDef>
     <defName>Violence_Essential</defName>
-    <thoughtClass>MorePrecepts.Thought_Situational_Precept_Violence_Essential</thoughtClass>
     <workerClass>MorePrecepts.ThoughtWorker_Precept_Violence_Essential</workerClass>
     <minExpectationForNegativeThought>Low</minExpectationForNegativeThought>
+    <validWhileDespawned>true</validWhileDespawned>
     <nullifyingTraits>
       <li>Wimp</li>
       <li>Kind</li>
@@ -226,9 +227,10 @@
       <li>
         <label>violence missing</label>
         <description>I want to fight somebody. Violence is my life.</description>
-        <baseMoodEffect>-2</baseMoodEffect>
+        <baseMoodEffect>-1</baseMoodEffect>
       </li>
       <li>
+        <visible>false</visible> <!-- Only for precept tooltip to show range. -->
         <label>violence missing</label>
         <description>I want to fight somebody. Violence is my life.</description>
         <baseMoodEffect>-10</baseMoodEffect>
