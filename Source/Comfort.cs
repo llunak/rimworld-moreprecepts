@@ -11,6 +11,8 @@ using Verse.AI;
 // so we need to differentiate where its' necessary and where it's acceptable.
 // Generally Wanted will only want furniture for beds, eating and working tables,
 // Important will refuse not having furniture and Essential will refuse not having sufficient furniture.
+// Eating without furniture is not blocked as an exception (caravans would be difficult, and it's generally
+// life-threatening).
 namespace MorePrecepts
 {
 
@@ -156,6 +158,23 @@ namespace MorePrecepts
                 return false;
             }
             return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(JobGiver_GetRest))]
+    public static class JobGiver_GetRest_Patch
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(TryGiveJob))]
+        public static void TryGiveJob(ref Job __result, Pawn pawn)
+        {
+            // Essential pawns refuse to sleep on the ground (until they faint).
+            (float min, float ok, ThoughtDef thoughtDef, Precept precept) = ComfortHelper.GetComfort(pawn);
+            if(thoughtDef == null || precept.def != PreceptDefOf.Comfort_Essential)
+                return;
+            Job job = __result;
+            if(job.def == RimWorld.JobDefOf.LayDown && !job.targetA.HasThing)
+                __result = null;
         }
     }
 
