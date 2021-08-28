@@ -10,7 +10,7 @@ using Verse.AI;
 // The complication is that many actions have interactions spots where furniture can be placed,
 // so we need to differentiate where its' necessary and where it's acceptable.
 // Generally Wanted will only want furniture for beds, eating and working tables,
-// Important and Essential will refuse not having furniture.
+// Important will refuse not having furniture and Essential will refuse not having sufficient furniture.
 namespace MorePrecepts
 {
 
@@ -99,6 +99,51 @@ namespace MorePrecepts
                 return true;
             __result = true; // Forbid.
             return false;
+        }
+    }
+
+    [HarmonyPatch(typeof(ReservationUtility))]
+    public static class ReservationUtility_Patch
+    {
+        private static bool IsAcceptableSittableOrSpot(Pawn pawn, IntVec3 exactSittingPos)
+        {
+            (float min, float ok, ThoughtDef thoughtDef, Precept precept) = ComfortHelper.GetComfort(pawn);
+            // Wanted don't refuse, Important refuse no furniture, Essential refuse furniture below minimal comfort.
+            if(thoughtDef == null || precept.def == PreceptDefOf.Comfort_Wanted)
+                return true;
+            Building edifice = exactSittingPos.GetEdifice(pawn.Map);
+            if(edifice == null)
+                return false;
+            if(precept.def == PreceptDefOf.Comfort_Essential)
+                if(edifice.GetStatValue(StatDefOf.Comfort) < min)
+                    return false;
+            return true;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CanReserveSittableOrSpot))]
+        public static bool CanReserveSittableOrSpot(ref bool __result, Pawn pawn, IntVec3 exactSittingPos, bool ignoreOtherReservations)
+        {
+            if(!IsAcceptableSittableOrSpot(pawn, exactSittingPos))
+            {
+                JobFailReason.Is("MorePrecepts.InsufficientComfortAtInteractionSpot".Translate());
+                __result = false;
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(ReserveSittableOrSpot))]
+        public static bool ReserveSittableOrSpot(ref bool __result, Pawn pawn, IntVec3 exactSittingPos, Job job, bool errorOnFailed)
+        {
+            if(!IsAcceptableSittableOrSpot(pawn, exactSittingPos))
+            {
+                JobFailReason.Is("MorePrecepts.InsufficientComfortAtInteractionSpot".Translate());
+                __result = false;
+                return false;
+            }
+            return true;
         }
     }
 
