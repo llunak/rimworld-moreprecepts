@@ -18,7 +18,7 @@ namespace MorePrecepts
     {
         public static (float min,float ok,ThoughtDef thoughtDef, Precept precept) GetComfort(Pawn pawn)
         {
-            if(pawn.Ideo == null || pawn.needs == null || pawn.needs.mood == null)
+            if(pawn.Ideo == null || pawn.needs == null || pawn.needs.mood == null || pawn.IsSlave)
                 return (0,0,null,null);
             Precept precept;
             if((precept = pawn.Ideo.GetPrecept(PreceptDefOf.Comfort_Wanted)) != null)
