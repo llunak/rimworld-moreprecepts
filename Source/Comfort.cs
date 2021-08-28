@@ -53,7 +53,7 @@ namespace MorePrecepts
             if(comfort >= ok)
                 return;
             Thought_Memory thought = ThoughtMaker.MakeThought(thoughtDef, precept);
-            thought.SetForcedStage(comfort < min ? 1 : 0);
+            thought.SetForcedStage(comfort == 0 ? 2 : comfort < min ? 1 : 0);
             pawn.needs.mood.thoughts.memories.TryGainMemory(thought);
         }
     }
