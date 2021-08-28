@@ -16,7 +16,7 @@ namespace MorePrecepts
 
     public static class ComfortHelper
     {
-        public static (float min,float ok,ThoughtDef thoughtDef, Precept precept) GetComfort(Pawn pawn)
+        private static (float min,float ok,ThoughtDef thoughtDef, Precept precept) GetComfortInternal(Pawn pawn)
         {
             if(pawn.Ideo == null || pawn.needs == null || pawn.needs.mood == null || pawn.IsSlave)
                 return (0,0,null,null);
@@ -31,6 +31,18 @@ namespace MorePrecepts
                 // excellent bedroll minimum, excellent bed+extra is ok
                 return (0.84f,1.05f,ThoughtDefOf.Comfort_UsedUncomfortableFurniture_Essential, precept);
             return (0,0,null,null);
+        }
+
+        public static (float min,float ok,ThoughtDef thoughtDef, Precept precept) GetComfort(Pawn pawn)
+        {
+            (float min, float ok, ThoughtDef thoughtDef, Precept precept) = GetComfortInternal(pawn);
+            // Check also minimal expectations.
+            if (thoughtDef != null && thoughtDef.minExpectationForNegativeThought != null && pawn.MapHeld != null
+                && ExpectationsUtility.CurrentExpectationFor(pawn.MapHeld).order < thoughtDef.minExpectationForNegativeThought.order)
+            {
+                return (0,0,null,null);
+            }
+            return (min,ok,thoughtDef,precept);
         }
 
         public static void AddThoughtIfNeeded(Pawn pawn, Thing thing, float min, float ok, ThoughtDef thoughtDef, Precept precept)
