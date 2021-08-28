@@ -693,115 +693,77 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         }
     }
 
-// These are basically copy&paste&modify of HighLife classes, split into two classes based on the constants.
-// The wanted class more or less matches HighLife settings, the Essential gets unhappy more quickly.
-    public class ThoughtWorker_Precept_Alcohol_Wanted : ThoughtWorker_Precept, IPreceptCompDescriptionArgs
+    public abstract class ThoughtWorker_Precept_Alcohol_Base : ThoughtWorker_Precept, IPreceptCompDescriptionArgs
     {
-        // The values are also hardcoded in the XML.
-        private const float DaysSatisfied = 0.75f;
-        private const float DaysNoBonus = 1f;
-        private const float DaysMissing = 2f;
-        private const float DaysMissing_Major = 11f;
-
-        public static readonly SimpleCurve MoodOffsetFromDaysSinceLastDrugCurve = new SimpleCurve
-        {
-            new CurvePoint(DaysSatisfied, 3f),
-            new CurvePoint(DaysNoBonus, 0f),
-            new CurvePoint(DaysMissing, -1f),
-            new CurvePoint(DaysMissing_Major, -10f)
-        };
+        protected abstract float DaysSatisfied();
+        protected abstract float DaysNoBonus();
+        protected abstract float DaysMissing();
+        protected abstract float DaysMissing_Major();
+        protected abstract SimpleCurve MoodOffsetFromDaysSinceLastAlcoholCurve();
 
         protected override ThoughtState ShouldHaveThought(Pawn p)
         {
             if (!ThoughtUtility.ThoughtNullified(p, def))
             {
-                float num = (float)(Find.TickManager.TicksGame - PawnComp.GetLastTakeAlcoholTick(p)) / 60000f;
-                if (num > DaysSatisfied && def.minExpectationForNegativeThought != null && p.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(p.MapHeld).order < def.minExpectationForNegativeThought.order)
+                float num = (float)(Find.TickManager.TicksGame - PawnComp.GetLastTakeAlcoholTick(p)) / GenDate.TicksPerDay;
+                if (num > DaysSatisfied() && def.minExpectationForNegativeThought != null
+                    && p.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(p.MapHeld).order < def.minExpectationForNegativeThought.order)
                     return false;
-                if (num < DaysSatisfied)
+                if (num < DaysNoBonus())
                     return ThoughtState.ActiveAtStage(0);
-                if (num < DaysNoBonus)
+                if (num < DaysMissing())
                     return ThoughtState.ActiveAtStage(1);
-                if (num < DaysMissing)
-                    return ThoughtState.ActiveAtStage(2);
-                return ThoughtState.ActiveAtStage(3);
+                return ThoughtState.ActiveAtStage(2);
             }
             return false;
         }
 
+        public override float MoodMultiplier(Pawn pawn)
+        {
+            float num = (float)(Find.TickManager.TicksGame - PawnComp.GetLastTakeAlcoholTick(pawn)) / GenDate.TicksPerDay;
+            return Mathf.RoundToInt(MoodOffsetFromDaysSinceLastAlcoholCurve().Evaluate(num));
+        }
+
         public IEnumerable<NamedArgument> GetDescriptionArgs()
         {
-            yield return DaysSatisfied.Named("DAYSSATISIFED");
+            yield return DaysMissing().Named("DAYSSATISIFED");
         }
     }
 
-    public class ThoughtWorker_Precept_Alcohol_Essential : ThoughtWorker_Precept, IPreceptCompDescriptionArgs
+    public class ThoughtWorker_Precept_Alcohol_Wanted : ThoughtWorker_Precept_Alcohol_Base
     {
-        // The values are also hardcoded in the XML.
-        private const float DaysSatisfied = 0.75f;
-        private const float DaysNoBonus = 1f;
-        private const float DaysMissing = 1.2f;
-        private const float DaysMissing_Major = 3f;
+        protected override float DaysSatisfied() => 0.75f;
+        protected override float DaysNoBonus() => 1f;
+        protected override float DaysMissing() => 2f;
+        protected override float DaysMissing_Major() => 11f;
+        protected override SimpleCurve MoodOffsetFromDaysSinceLastAlcoholCurve() => StaticMoodOffsetFromDaysSinceLastAlcoholCurve;
 
-        public static readonly SimpleCurve MoodOffsetFromDaysSinceLastDrugCurve = new SimpleCurve
+        private static readonly SimpleCurve StaticMoodOffsetFromDaysSinceLastAlcoholCurve = new SimpleCurve
         {
-            new CurvePoint(DaysSatisfied, 3f),
-            new CurvePoint(DaysNoBonus, 0f),
-            new CurvePoint(DaysMissing, -1f),
-            new CurvePoint(DaysMissing_Major, -10f)
+            // First values are times from above, second values are mood multipliers for the XML value.
+            new CurvePoint(0.75f, 1f),
+            new CurvePoint(1f, 0f),
+            new CurvePoint(2f, 1f),
+            new CurvePoint(11f, 10f)
         };
-
-        protected override ThoughtState ShouldHaveThought(Pawn p)
-        {
-            if (!ThoughtUtility.ThoughtNullified(p, def))
-            {
-                float num = (float)(Find.TickManager.TicksGame - PawnComp.GetLastTakeAlcoholTick(p)) / 60000f;
-                if (num > DaysSatisfied && def.minExpectationForNegativeThought != null && p.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(p.MapHeld).order < def.minExpectationForNegativeThought.order)
-                    return false;
-                if (num < DaysSatisfied)
-                    return ThoughtState.ActiveAtStage(0);
-                if (num < DaysNoBonus)
-                    return ThoughtState.ActiveAtStage(1);
-                if (num < DaysMissing)
-                    return ThoughtState.ActiveAtStage(2);
-                return ThoughtState.ActiveAtStage(3);
-            }
-            return false;
-        }
-
-        public IEnumerable<NamedArgument> GetDescriptionArgs()
-        {
-            yield return DaysSatisfied.Named("DAYSSATISIFED");
-        }
     }
 
-// Again copy&paste&modify from HighLife.
-    public class Thought_Situational_Precept_Alcohol_Wanted : Thought_Situational
+    public class ThoughtWorker_Precept_Alcohol_Essential : ThoughtWorker_Precept_Alcohol_Base
     {
-        protected override float BaseMoodOffset
-        {
-            get
-            {
-                if (ThoughtUtility.ThoughtNullified(pawn, def))
-                    return 0f;
-                float x = (float)(Find.TickManager.TicksGame - PawnComp.GetLastTakeAlcoholTick(pawn)) / 60000f;
-                return Mathf.RoundToInt(ThoughtWorker_Precept_Alcohol_Wanted.MoodOffsetFromDaysSinceLastDrugCurve.Evaluate(x));
-            }
-        }
-    }
+        protected override float DaysSatisfied() => 0.75f;
+        protected override float DaysNoBonus() => 1f;
+        protected override float DaysMissing() => 1.2f;
+        protected override float DaysMissing_Major() => 3f;
+        protected override SimpleCurve MoodOffsetFromDaysSinceLastAlcoholCurve() => StaticMoodOffsetFromDaysSinceLastAlcoholCurve;
 
-    public class Thought_Situational_Precept_Alcohol_Essential : Thought_Situational
-    {
-        protected override float BaseMoodOffset
+        private static readonly SimpleCurve StaticMoodOffsetFromDaysSinceLastAlcoholCurve = new SimpleCurve
         {
-            get
-            {
-                if (ThoughtUtility.ThoughtNullified(pawn, def))
-                    return 0f;
-                float x = (float)(Find.TickManager.TicksGame - PawnComp.GetLastTakeAlcoholTick(pawn)) / 60000f;
-                return Mathf.RoundToInt(ThoughtWorker_Precept_Alcohol_Wanted.MoodOffsetFromDaysSinceLastDrugCurve.Evaluate(x));
-            }
-        }
+            // First values are times from above, second values are mood multipliers for the XML value.
+            new CurvePoint(0.75f, 1f),
+            new CurvePoint(1f, 0f),
+            new CurvePoint(1.2f, 1f),
+            new CurvePoint(3f, 10f)
+        };
     }
 
 }
