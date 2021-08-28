@@ -706,7 +706,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             if (!ThoughtUtility.ThoughtNullified(p, def))
             {
                 float num = (float)(Find.TickManager.TicksGame - PawnComp.GetLastTakeAlcoholTick(p)) / GenDate.TicksPerDay;
-                if (num > DaysSatisfied() && def.minExpectationForNegativeThought != null
+                if (num > DaysNoBonus() && def.minExpectationForNegativeThought != null
                     && p.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(p.MapHeld).order < def.minExpectationForNegativeThought.order)
                     return false;
                 if (num < DaysNoBonus())

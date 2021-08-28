@@ -44,24 +44,14 @@ namespace MorePrecepts
         }
     }
 
-    // Wanted aims to move once a year.
-    public class ThoughtWorker_Precept_Nomadism_Wanted : ThoughtWorker_Precept, IPreceptCompDescriptionArgs
+    public abstract class ThoughtWorker_Precept_Nomadism_Base : ThoughtWorker_Precept, IPreceptCompDescriptionArgs
     {
-        // The values are also hardcoded in the XML.
-        private const float DaysSatisfied = 5f;
-        private const float DaysNoBonus = 10f;
-        public const float DaysMissing = 46f;
-        public const float DaysMissing_Minor = 60f;
-        private const float DaysMissing_Major = 65f;
-
-        public static readonly SimpleCurve MoodOffsetFromDaysSinceLastDrugCurve = new SimpleCurve
-        {
-            new CurvePoint(DaysSatisfied, 5f),
-            new CurvePoint(DaysNoBonus, 0f),
-            new CurvePoint(DaysMissing, 0f),
-            new CurvePoint(DaysMissing_Minor, -1f),
-            new CurvePoint(DaysMissing_Major, -10f)
-        };
+        protected abstract float DaysSatisfied();
+        protected abstract float DaysNoBonus();
+        protected abstract float DaysMissing();
+        protected abstract float DaysMissing_Minor();
+        protected abstract float DaysMissing_Major();
+        protected abstract SimpleCurve MoodOffsetFromDaysSinceSettledCurve();
 
         protected override ThoughtState ShouldHaveThought(Pawn p)
         {
@@ -71,173 +61,100 @@ namespace MorePrecepts
                 float num = (float)(Find.TickManager.TicksGame - SettlementCreationTick.Get(p, out inSettlement)) / 60000f;
                 if(!inSettlement)
                     return ThoughtState.ActiveAtStage(1);
-                if (num > DaysSatisfied && def.minExpectationForNegativeThought != null && p.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(p.MapHeld).order < def.minExpectationForNegativeThought.order)
+                if (num > DaysNoBonus() && def.minExpectationForNegativeThought != null
+                    && p.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(p.MapHeld).order < def.minExpectationForNegativeThought.order)
                     return false;
-                if (num < DaysSatisfied)
+                if (num < DaysNoBonus())
                     return ThoughtState.ActiveAtStage(0);
-                if (num < DaysNoBonus)
+                if (num < DaysMissing())
                     return ThoughtState.ActiveAtStage(1);
-                if (num < DaysMissing)
-                    return ThoughtState.ActiveAtStage(2);
-                if (num < DaysMissing_Minor)
-                    return ThoughtState.ActiveAtStage(3);
-                return ThoughtState.ActiveAtStage(4);
+                return ThoughtState.ActiveAtStage(2);
             }
             return false;
         }
 
+        public override float MoodMultiplier(Pawn pawn)
+        {
+            bool inSettlement;
+            float num = (float)(Find.TickManager.TicksGame - SettlementCreationTick.Get(pawn, out inSettlement)) / 60000f;
+            if(!inSettlement)
+                return 0;
+            return Mathf.RoundToInt(MoodOffsetFromDaysSinceSettledCurve().Evaluate(num));
+        }
+
         public IEnumerable<NamedArgument> GetDescriptionArgs()
         {
-            yield return DaysMissing_Minor.Named("DAYSCHANGED");
+            yield return DaysMissing_Minor().Named("DAYSCHANGED");
         }
+    }
+
+    // Wanted aims to move once a year.
+    public class ThoughtWorker_Precept_Nomadism_Wanted : ThoughtWorker_Precept_Nomadism_Base
+    {
+        protected override float DaysSatisfied() => 5f;
+        protected override float DaysNoBonus() => 10f;
+        protected override float DaysMissing() => 46f;
+        protected override float DaysMissing_Minor() => 60f;
+        protected override float DaysMissing_Major() => 65f;
+        protected override SimpleCurve MoodOffsetFromDaysSinceSettledCurve() => StaticMoodOffsetFromDaysSinceSettledCurve;
+        public const float StaticDaysMissing = 46f;
+        public const float StaticDaysMissing_Minor = 60f;
+
+        public static readonly SimpleCurve StaticMoodOffsetFromDaysSinceSettledCurve = new SimpleCurve
+        {
+            // First values are times from above, second values are mood multipliers for the XML value.
+            new CurvePoint(5f, 1f),
+            new CurvePoint(10f, 0f),
+            new CurvePoint(46f, 1f),
+            new CurvePoint(60f, 1f),
+            new CurvePoint(65f, 10f)
+        };
     }
 
     // Important aims to move once every half a year.
-    public class ThoughtWorker_Precept_Nomadism_Important : ThoughtWorker_Precept, IPreceptCompDescriptionArgs
+    public class ThoughtWorker_Precept_Nomadism_Important : ThoughtWorker_Precept_Nomadism_Base
     {
-        // The values are also hardcoded in the XML.
-        private const float DaysSatisfied = 5f;
-        private const float DaysNoBonus = 10f;
-        public const float DaysMissing = 25f;
-        public const float DaysMissing_Minor = 30f;
-        private const float DaysMissing_Major = 35f;
+        protected override float DaysSatisfied() => 5f;
+        protected override float DaysNoBonus() => 10f;
+        protected override float DaysMissing() => 25f;
+        protected override float DaysMissing_Minor() => 30f;
+        protected override float DaysMissing_Major() => 35f;
+        protected override SimpleCurve MoodOffsetFromDaysSinceSettledCurve() => StaticMoodOffsetFromDaysSinceSettledCurve;
+        public const float StaticDaysMissing = 25f;
+        public const float StaticDaysMissing_Minor = 30f;
 
-        public static readonly SimpleCurve MoodOffsetFromDaysSinceLastDrugCurve = new SimpleCurve
+        public static readonly SimpleCurve StaticMoodOffsetFromDaysSinceSettledCurve = new SimpleCurve
         {
-            new CurvePoint(DaysSatisfied, 7f),
-            new CurvePoint(DaysNoBonus, 0f),
-            new CurvePoint(DaysMissing, -1f),
-            new CurvePoint(DaysMissing_Minor, -1f),
-            new CurvePoint(DaysMissing_Major, -10f)
+            // First values are times from above, second values are mood multipliers for the XML value.
+            new CurvePoint(5f, 1f),
+            new CurvePoint(10f, 0f),
+            new CurvePoint(25f, 1f),
+            new CurvePoint(30f, 1f),
+            new CurvePoint(35f, 10f)
         };
-
-        protected override ThoughtState ShouldHaveThought(Pawn p)
-        {
-            if (!ThoughtUtility.ThoughtNullified(p, def))
-            {
-                bool inSettlement;
-                float num = (float)(Find.TickManager.TicksGame - SettlementCreationTick.Get(p, out inSettlement)) / 60000f;
-                if(!inSettlement)
-                    return ThoughtState.ActiveAtStage(1);
-                if (num > DaysSatisfied && def.minExpectationForNegativeThought != null && p.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(p.MapHeld).order < def.minExpectationForNegativeThought.order)
-                    return false;
-                if (num < DaysSatisfied)
-                    return ThoughtState.ActiveAtStage(0);
-                if (num < DaysNoBonus)
-                    return ThoughtState.ActiveAtStage(1);
-                if (num < DaysMissing)
-                    return ThoughtState.ActiveAtStage(2);
-                if (num < DaysMissing_Minor)
-                    return ThoughtState.ActiveAtStage(3);
-                return ThoughtState.ActiveAtStage(4);
-            }
-            return false;
-        }
-
-        public IEnumerable<NamedArgument> GetDescriptionArgs()
-        {
-            yield return DaysMissing_Minor.Named("DAYSCHANGED");
-        }
     }
 
     // Essential aims to move once every quadrum.
-    public class ThoughtWorker_Precept_Nomadism_Essential : ThoughtWorker_Precept, IPreceptCompDescriptionArgs
+    public class ThoughtWorker_Precept_Nomadism_Essential : ThoughtWorker_Precept_Nomadism_Base
     {
-        // The values are also hardcoded in the XML.
-        private const float DaysSatisfied = 3f;
-        private const float DaysNoBonus = 5f;
-        public const float DaysMissing = 10f;
-        public const float DaysMissing_Minor = 15f;
-        private const float DaysMissing_Major = 17f;
+        protected override float DaysSatisfied() => 3f;
+        protected override float DaysNoBonus() => 5f;
+        protected override float DaysMissing() => 10f;
+        protected override float DaysMissing_Minor() => 15f;
+        protected override float DaysMissing_Major() => 17f;
+        protected override SimpleCurve MoodOffsetFromDaysSinceSettledCurve() => StaticMoodOffsetFromDaysSinceSettledCurve;
+        public const float StaticDaysMissing = 10f;
+        public const float StaticDaysMissing_Minor = 15f;
 
-        public static readonly SimpleCurve MoodOffsetFromDaysSinceLastDrugCurve = new SimpleCurve
+        public static readonly SimpleCurve StaticMoodOffsetFromDaysSinceSettledCurve = new SimpleCurve
         {
-            new CurvePoint(DaysSatisfied, 10f),
-            new CurvePoint(DaysNoBonus, 0f),
-            new CurvePoint(DaysMissing, 0f),
-            new CurvePoint(DaysMissing_Minor, -1f),
-            new CurvePoint(DaysMissing_Major, -10f)
+            // First values are times from above, second values are mood multipliers for the XML value.
+            new CurvePoint(3f, 1f),
+            new CurvePoint(5f, 0f),
+            new CurvePoint(10f, 1f),
+            new CurvePoint(15f, 1f),
+            new CurvePoint(17f, 10f)
         };
-
-        protected override ThoughtState ShouldHaveThought(Pawn p)
-        {
-            if (!ThoughtUtility.ThoughtNullified(p, def))
-            {
-                bool inSettlement;
-                float num = (float)(Find.TickManager.TicksGame - SettlementCreationTick.Get(p, out inSettlement)) / 60000f;
-                if(!inSettlement)
-                    return ThoughtState.ActiveAtStage(1);
-                if (num > DaysSatisfied && def.minExpectationForNegativeThought != null && p.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(p.MapHeld).order < def.minExpectationForNegativeThought.order)
-                    return false;
-                if (num < DaysSatisfied)
-                    return ThoughtState.ActiveAtStage(0);
-                if (num < DaysNoBonus)
-                    return ThoughtState.ActiveAtStage(1);
-                if (num < DaysMissing)
-                    return ThoughtState.ActiveAtStage(2);
-                if (num < DaysMissing_Minor)
-                    return ThoughtState.ActiveAtStage(3);
-                return ThoughtState.ActiveAtStage(4);
-            }
-            return false;
-        }
-
-        public IEnumerable<NamedArgument> GetDescriptionArgs()
-        {
-            yield return DaysMissing_Minor.Named("DAYSCHANGED");
-        }
-    }
-
-// Again copy&paste&modify from HighLife.
-    public class Thought_Situational_Precept_Nomadism_Wanted : Thought_Situational
-    {
-        protected override float BaseMoodOffset
-        {
-            get
-            {
-                if (ThoughtUtility.ThoughtNullified(pawn, def))
-                    return 0f;
-                bool inSettlement;
-                float x = (float)(Find.TickManager.TicksGame - SettlementCreationTick.Get(pawn, out inSettlement)) / 60000f;
-                if(!inSettlement)
-                    return 0;
-                return Mathf.RoundToInt(ThoughtWorker_Precept_Nomadism_Wanted.MoodOffsetFromDaysSinceLastDrugCurve.Evaluate(x));
-            }
-        }
-    }
-
-    public class Thought_Situational_Precept_Nomadism_Important : Thought_Situational
-    {
-        protected override float BaseMoodOffset
-        {
-            get
-            {
-                if (ThoughtUtility.ThoughtNullified(pawn, def))
-                    return 0f;
-                bool inSettlement;
-                float x = (float)(Find.TickManager.TicksGame - SettlementCreationTick.Get(pawn, out inSettlement)) / 60000f;
-                if(!inSettlement)
-                    return 0;
-                return Mathf.RoundToInt(ThoughtWorker_Precept_Nomadism_Important.MoodOffsetFromDaysSinceLastDrugCurve.Evaluate(x));
-            }
-        }
-    }
-
-    public class Thought_Situational_Precept_Nomadism_Essential : Thought_Situational
-    {
-        protected override float BaseMoodOffset
-        {
-            get
-            {
-                if (ThoughtUtility.ThoughtNullified(pawn, def))
-                    return 0f;
-                bool inSettlement;
-                float x = (float)(Find.TickManager.TicksGame - SettlementCreationTick.Get(pawn, out inSettlement)) / 60000f;
-                if(!inSettlement)
-                    return 0;
-                return Mathf.RoundToInt(ThoughtWorker_Precept_Nomadism_Essential.MoodOffsetFromDaysSinceLastDrugCurve.Evaluate(x));
-            }
-        }
     }
 
     // Block happy thought about having abandoned a settlement when in a settlement.
@@ -304,12 +221,12 @@ namespace MorePrecepts
                 if(!inSettlement)
                     continue;
                 int max = -1;
-                if(thought == ThoughtDefOf.Nomadism_Wanted && days > ThoughtWorker_Precept_Nomadism_Wanted.DaysMissing)
-                    max = (int)ThoughtWorker_Precept_Nomadism_Wanted.DaysMissing_Minor;
-                if(thought == ThoughtDefOf.Nomadism_Important && days > ThoughtWorker_Precept_Nomadism_Important.DaysMissing)
-                    max = (int)ThoughtWorker_Precept_Nomadism_Important.DaysMissing_Minor;
-                if(thought == ThoughtDefOf.Nomadism_Essential && days > ThoughtWorker_Precept_Nomadism_Essential.DaysMissing)
-                    max = (int)ThoughtWorker_Precept_Nomadism_Essential.DaysMissing_Minor;
+                if(thought == ThoughtDefOf.Nomadism_Wanted && days > ThoughtWorker_Precept_Nomadism_Wanted.StaticDaysMissing)
+                    max = (int)ThoughtWorker_Precept_Nomadism_Wanted.StaticDaysMissing_Minor;
+                if(thought == ThoughtDefOf.Nomadism_Important && days > ThoughtWorker_Precept_Nomadism_Important.StaticDaysMissing)
+                    max = (int)ThoughtWorker_Precept_Nomadism_Important.StaticDaysMissing_Minor;
+                if(thought == ThoughtDefOf.Nomadism_Essential && days > ThoughtWorker_Precept_Nomadism_Essential.StaticDaysMissing)
+                    max = (int)ThoughtWorker_Precept_Nomadism_Essential.StaticDaysMissing_Minor;
                 if(max > 0)
                     affectedPawns.Add(pawn, string.Format(
                         "MorePrecepts.AlertSettlementToLeaveColonistInfo".Translate(),
