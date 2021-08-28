@@ -305,7 +305,7 @@ namespace MorePrecepts
         public override float MoodMultiplier(Pawn pawn)
         {
             float num = (float)(Find.TickManager.TicksGame - PawnComp.GetLastViolenceTick(pawn)) / 60000f;
-            return Mathf.RoundToInt(MoodOffsetFromDaysSinceLastAttackCurve().Evaluate(num));
+            return MoodOffsetFromDaysSinceLastAttackCurve().Evaluate(num);
         }
 
         public IEnumerable<NamedArgument> GetDescriptionArgs()

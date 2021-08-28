@@ -721,7 +721,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         public override float MoodMultiplier(Pawn pawn)
         {
             float num = (float)(Find.TickManager.TicksGame - PawnComp.GetLastTakeAlcoholTick(pawn)) / GenDate.TicksPerDay;
-            return Mathf.RoundToInt(MoodOffsetFromDaysSinceLastAlcoholCurve().Evaluate(num));
+            return MoodOffsetFromDaysSinceLastAlcoholCurve().Evaluate(num);
         }
 
         public IEnumerable<NamedArgument> GetDescriptionArgs()

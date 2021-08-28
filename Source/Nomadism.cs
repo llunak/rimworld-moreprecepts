@@ -79,7 +79,7 @@ namespace MorePrecepts
             float num = (float)(Find.TickManager.TicksGame - SettlementCreationTick.Get(pawn, out inSettlement)) / 60000f;
             if(!inSettlement)
                 return 0;
-            return Mathf.RoundToInt(MoodOffsetFromDaysSinceSettledCurve().Evaluate(num));
+            return MoodOffsetFromDaysSinceSettledCurve().Evaluate(num);
         }
 
         public IEnumerable<NamedArgument> GetDescriptionArgs()

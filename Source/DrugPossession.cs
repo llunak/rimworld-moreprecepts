@@ -144,7 +144,7 @@ namespace MorePrecepts
         public override float MoodMultiplier(Pawn pawn)
         {
             float x = (float)(Find.TickManager.TicksGame - PawnComp.GetNoticedDrugsTick(pawn)) / GenDate.TicksPerHour;
-            return Mathf.RoundToInt(MoodOffsetFromHoursSinceNoticedDrugsCurve.Evaluate(x));
+            return MoodOffsetFromHoursSinceNoticedDrugsCurve.Evaluate(x);
         }
     }
 
