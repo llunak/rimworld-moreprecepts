@@ -10,7 +10,7 @@ using Verse.AI;
 // The complication is that many actions have interactions spots where furniture can be placed,
 // so we need to differentiate where its' necessary and where it's acceptable.
 // Generally Wanted will only want furniture for beds, eating and working tables,
-// Important will want all and Essential will refuse not having furniture.
+// Important and Essential will refuse not having furniture.
 namespace MorePrecepts
 {
 
@@ -78,6 +78,27 @@ namespace MorePrecepts
                 if (ingester.GetPosture() == PawnPosture.Standing && !ingester.IsWildMan() && thing.def.ingestible.tableDesired)
                     ComfortHelper.AddThoughtIfNeeded(ingester, (ingester.Position + ingester.Rotation.FacingCell).GetEdifice(ingester.Map),
                         min, ok, thoughtDef, precept);
+        }
+    }
+
+    [HarmonyPatch(typeof(CompAssignableToPawn_Bed))]
+    public static class CompAssignableToPawn_Bed_Patch
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(IdeoligionForbids))]
+        public static bool IdeoligionForbids(ref bool __result, CompAssignableToPawn_Bed __instance, Pawn pawn)
+        {
+            (float min, float ok, ThoughtDef thoughtDef, Precept precept) = ComfortHelper.GetComfort(pawn);
+            if(thoughtDef == null)
+                return true;
+            if(precept.def == PreceptDefOf.Comfort_Wanted)
+                return true; // Wanted allows all.
+            float comfort = __instance.parent.GetStatValue(StatDefOf.Comfort);
+            // Important and Essential require at least minimal comfort.
+            if(comfort >= min)
+                return true;
+            __result = true; // Forbid.
+            return false;
         }
     }
 
