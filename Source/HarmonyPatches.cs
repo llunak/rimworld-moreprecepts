@@ -45,6 +45,22 @@ namespace MorePrecepts
             }
             if(!done)
                 Log.Error("MorePrecepts: Failed to find TryFindIngestibleToNurse_validator for patching");
+
+            // Toils_Ingest.CarryIngestibleToChewSpot() needs special handling, see the transpiller.
+            done = false;
+            nestedClass = typeof(Toils_Ingest).GetNestedType("<>c__DisplayClass3_0", BindingFlags.NonPublic);
+            if(nestedClass != null)
+            {
+                MethodInfo oldMethod = AccessTools.Method(nestedClass, "<CarryIngestibleToChewSpot>b__0");
+                MethodInfo newMethod = typeof(Toils_Ingest_Patch).GetMethod("CarryIngestibleToChewSpot_delegate");
+                if(oldMethod != null)
+                {
+                    harmony.Patch(oldMethod, transpiler: new HarmonyMethod(newMethod));
+                    done = true;
+                }
+            }
+            if(!done)
+                Log.Error("MorePrecepts: Failed to find CarryIngestibleToChewSpot_delegate for patching");
         }
     }
 }
