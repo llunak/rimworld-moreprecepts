@@ -3,6 +3,8 @@
 
   <ThoughtDef Name="ComfortBase" Abstract="True">
     <durationDays>1</durationDays>
+    <stackLimit>2</stackLimit>
+    <stackedEffectMultiplier>0.6</stackedEffectMultiplier>
     <minExpectationForNegativeThought>Low</minExpectationForNegativeThought>
     <nullifyingTraits>
       <li>Ascetic</li>
@@ -22,12 +24,12 @@
       <li>
         <label>very uncomfortable furniture</label>
         <description>I had to use furniture that was very uncomfortable.</description>
-        <baseMoodEffect>-4</baseMoodEffect>
+        <baseMoodEffect>-3</baseMoodEffect>
       </li>
       <li>
         <label>no furniture</label>
         <description>I had to do without furniture.</description>
-        <baseMoodEffect>-6</baseMoodEffect>
+        <baseMoodEffect>-4</baseMoodEffect>
       </li>
     </stages>
   </ThoughtDef>
@@ -40,17 +42,17 @@
       <li>
         <label>uncomfortable furniture</label>
         <description>I had to use furniture that was not comfortable.</description>
-        <baseMoodEffect>-5</baseMoodEffect>
+        <baseMoodEffect>-4</baseMoodEffect>
       </li>
       <li>
         <label>very uncomfortable furniture</label>
         <description>I had to use furniture that was uncomfortable.</description>
-        <baseMoodEffect>-8</baseMoodEffect>
+        <baseMoodEffect>-6</baseMoodEffect>
       </li>
       <li>
         <label>no furniture</label>
         <description>I had to do without furniture. How shameful.</description>
-        <baseMoodEffect>-10</baseMoodEffect>
+        <baseMoodEffect>-8</baseMoodEffect>
       </li>
     </stages>
   </ThoughtDef>
@@ -68,12 +70,12 @@
       <li>
         <label>very uncomfortable furniture</label>
         <description>I had to use furniture that was not comfortable.</description>
-        <baseMoodEffect>-12</baseMoodEffect>
+        <baseMoodEffect>-10</baseMoodEffect>
       </li>
       <li>
         <label>no furniture</label>
         <description>I had to do without furniture. How humiliating.</description>
-        <baseMoodEffect>-18</baseMoodEffect>
+        <baseMoodEffect>-12</baseMoodEffect>
       </li>
     </stages>
   </ThoughtDef>
