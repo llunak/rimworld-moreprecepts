@@ -60,6 +60,13 @@ namespace MorePrecepts
             joySum += thing.def.ingestible.joy;
             ++drinksCount;
         }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref joySum, "joySum", 0);
+            Scribe_Values.Look(ref drinksCount, "drinksCount", 0);
+        }
     }
 
     public class RitualOutcomeComp_DrinkingPartyDrinks : RitualOutcomeComp_Quality

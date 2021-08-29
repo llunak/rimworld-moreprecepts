@@ -43,7 +43,8 @@ namespace MorePrecepts
 
     public class LordJob_Ritual_Feast : LordJob_Ritual
     {
-        public List<FoodPreferability> eatenMealQualities = new List<FoodPreferability>();
+        public int preferabilitySum = 0;
+        public int mealsCount = 0;
 
         public LordJob_Ritual_Feast()
         {
@@ -56,7 +57,15 @@ namespace MorePrecepts
 
         public void AddEatenMeal(Thing thing)
         {
-            eatenMealQualities.Add(thing.def.ingestible.preferability);
+            preferabilitySum += (int)thing.def.ingestible.preferability; // 0-9
+            ++mealsCount;
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref preferabilitySum, "preferabilitySum", 0);
+            Scribe_Values.Look(ref mealsCount, "mealsCount", 0);
         }
     }
 
@@ -67,9 +76,6 @@ namespace MorePrecepts
             LordJob_Ritual_Feast lordJob = ritual as LordJob_Ritual_Feast;
             if(lordJob == null)
                 return 0;
-            int sum = 0;
-            foreach( FoodPreferability preferability in lordJob.eatenMealQualities )
-                sum += (int)preferability; // 0-9
             int participantCount = 0;
             foreach (Pawn item in ritual.PawnsToCountTowardsPresence)
             {
@@ -81,9 +87,9 @@ namespace MorePrecepts
                 }
                 ++participantCount;
             }
-            if(lordJob.eatenMealQualities.Count < participantCount)
+            if(lordJob.mealsCount < participantCount)
                 return 0; // Not enough meals.
-            return sum * 10 / lordJob.eatenMealQualities.Count; // map to average 0-90
+            return lordJob.preferabilitySum * 10 / lordJob.mealsCount; // map to average 0-90
         }
 
         public override ExpectedOutcomeDesc GetExpectedOutcomeDesc(Precept_Ritual ritual, TargetInfo ritualTarget, RitualObligation obligation, RitualRoleAssignments assignments)
