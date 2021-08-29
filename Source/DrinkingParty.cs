@@ -108,8 +108,11 @@ namespace MorePrecepts
             PawnDuty duty = pawn.mindState.duty;
             if (duty == null)
                 return null;
-            if (Find.TickManager.TicksGame - PawnComp.GetLastTakeAlcoholTick(pawn) < GenDate.TicksPerHour / 2)
+            if (Find.TickManager.TicksGame - PawnComp.GetLastTakeAlcoholTick(pawn) < GenDate.TicksPerHour / 2
+                || Find.TickManager.TicksGame - pawn.mindState.lastTakeRecreationalDrugTick < GenDate.TicksPerHour / 2)
+            {
                 return null;
+            }
             IntVec3 cell = duty.focus.Cell;
             Thing thing = FindDrink(pawn, cell);
             if (thing == null)
@@ -127,7 +130,8 @@ namespace MorePrecepts
                     return false;
                 if (!GatheringsUtility.InGatheringArea(x.Position, gatheringSpot, pawn.Map))
                     return false;
-                if (!AlcoholHelper.IsAlcohol(x.def))
+                if (x.def.ingestible == null || (x.def.ingestible.foodType & FoodTypeFlags.Fluid) != FoodTypeFlags.Fluid
+                    || !x.def.IsDrug)
                     return false;
                 bool alcoholOverride = AlcoholHelper.NeedsAlcoholOverride(x.def,pawn);
                 AlcoholHelper.AddOverride(alcoholOverride);
@@ -148,11 +152,8 @@ namespace MorePrecepts
             DrugPolicy currentPolicy = pawn.drugs.CurrentPolicy;
             for (int i = 0; i < currentPolicy.Count; i++)
             {
-                if (currentPolicy[i].allowedForJoy && currentPolicy[i].drug.ingestible.nurseable
-                    && AlcoholHelper.IsAlcohol(currentPolicy[i].drug))
-                {
+                if (currentPolicy[i].allowedForJoy && currentPolicy[i].drug.ingestible.nurseable)
                     nurseableDrugs.Add(currentPolicy[i].drug);
-                }
             }
 
             nurseableDrugs.Shuffle();
@@ -162,7 +163,7 @@ namespace MorePrecepts
                 if (list.Count > 0)
                 {
                     Thing ingestible = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map,
-                        ThingRequest.ForGroup(ThingRequestGroup.FoodSourceNotPlantOrTree), PathEndMode.ClosestTouch,
+                        ThingRequest.ForGroup(ThingRequestGroup.Drug), PathEndMode.ClosestTouch,
                         TraverseParms.For(TraverseMode.NoPassClosedDoors), 14f, validator, null, 0, 12);
                     if (ingestible != null)
                         return ingestible;
