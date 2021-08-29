@@ -115,12 +115,24 @@ namespace MorePrecepts
         {
             // HACK: I do not understand why, but the feast rituals get called here with 'DateRitualConsumable' precept.
             // Force the proper precepts for it to make disabling the ritual work in the 'Add Ritual...' combobox.
-            if(pat == RitualPatternDefOf.Feast)
-                def = PreceptDefOf.Feast;
-            if(pat == RitualPatternDefOf.Feast_Meat)
-                def = PreceptDefOf.Feast_Meat;
-            if(pat == RitualPatternDefOf.Feast_Veg)
-                def = PreceptDefOf.Feast_Veg;
+            // UPDATE: Now that these are obsolete, block adding them.
+            if(pat == RitualPatternDefOf.Feast || pat == RitualPatternDefOf.Feast_Meat || pat == RitualPatternDefOf.Feast_Veg)
+            {
+                __result = false;
+                return false;
+            }
+            return true;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CanAddRitualPattern))]
+        public static bool CanAddRitualPattern(ref bool __result, Ideo ideo, RitualPatternDef pattern, IdeoEditMode editMode)
+        {
+            if(pattern == RitualPatternDefOf.Feast || pattern == RitualPatternDefOf.Feast_Meat || pattern == RitualPatternDefOf.Feast_Veg)
+            { // Block adding obsolete ones.
+                __result = false;
+                return false;
+            }
             return true;
         }
     }
