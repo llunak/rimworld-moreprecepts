@@ -1,5 +1,6 @@
 using HarmonyLib;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Linq;
 using RimWorld;
 using Verse;
@@ -22,7 +23,7 @@ namespace MorePrecepts
         }
     }
 
-    // Extra worker and lordjob for keeping tracks of meals eaten during the feast.
+    // Extra worker and lordjob for keeping track of meals eaten during the feast.
     public class RitualBehaviorWorker_Feast : RitualBehaviorWorker
     {
         public RitualBehaviorWorker_Feast()
@@ -95,6 +96,34 @@ namespace MorePrecepts
                 effect = ExpectedOffsetDesc(positive: true, 0),
                 positive = true
             };
+        }
+    }
+
+    // This is JobGiver_EatInGatheringArea, but eats more often.
+    public class JobGiver_FeastInGatheringArea : JobGiver_EatInGatheringArea
+    {
+        protected override Job TryGiveJob(Pawn pawn)
+        {
+            PawnDuty duty = pawn.mindState.duty;
+            if (duty == null)
+            {
+                return null;
+            }
+            if ((double)pawn.needs.food.CurLevelPercentage > 0.95)
+            {
+                return null;
+            }
+            IntVec3 cell = duty.focus.Cell;
+            // is private : Thing thing = FindFood(pawn, cell);
+            MethodInfo mi = AccessTools.Method(typeof(JobGiver_EatInGatheringArea),"FindFood");
+            Thing thing = (Thing)mi.Invoke(this, new object[]{ pawn, cell });
+            if (thing == null)
+            {
+                return null;
+            }
+            Job job = JobMaker.MakeJob(RimWorld.JobDefOf.Ingest, thing);
+            job.count = FoodUtility.WillIngestStackCountOf(pawn, thing.def, thing.def.GetStatValueAbstract(StatDefOf.Nutrition));
+            return job;
         }
     }
 

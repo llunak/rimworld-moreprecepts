@@ -210,6 +210,13 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         [HarmonyPatch(nameof(PostIngested))]
         public static bool PostIngested(CompDrug __instance, Pawn ingester)
         {
+            if(AlcoholHelper.IsAlcohol(__instance.parent.def))
+            {
+                // Do unconditionally alcohol-only things.
+                if (!ingester.Dead)
+                    PawnComp.SetLastTakeAlcoholTickToNow(ingester);
+                Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, ingester.Named(HistoryEventArgsNames.Doer)));
+            }
             if(!AlcoholHelper.NeedsAlcoholOverride(__instance.parent.def, ingester))
                 return true; // original processing
             // Big scary copy&paste&modify to remove drug events and use alcohol event instead.
@@ -234,15 +241,10 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
 					}
 				}
 			}
-			if (!ingester.Dead)
-			{
-				PawnComp.SetLastTakeAlcoholTickToNow(ingester);
-			}
 			if (ingester.drugs != null)
 			{
 				ingester.drugs.Notify_DrugIngested(__instance.parent);
 			}
-			Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, ingester.Named(HistoryEventArgsNames.Doer)));
             // End of big scary copy&paste&modify.
             return false; // no original processing
         }

@@ -2,23 +2,16 @@
 <Defs>
 
   <DutyDef>
-    <defName>MP_Feast</defName>
-    <label>feast</label>
+    <defName>MP_DrinkAtParty</defName>
+    <label>drink at party</label>
     <hook>MediumPriority</hook>
     <thinkNode Class="ThinkNode_Priority">
       <subNodes>
         <li Class="ThinkNode_ConditionalInGatheringArea">
           <subNodes>
-            <!-- Eat -->
+            <!-- Drink -->
             <li Class="ThinkNode_ConditionalRandom">
               <chance>0.5</chance>
-              <subNodes>
-                <li Class="MorePrecepts.JobGiver_FeastInGatheringArea" />
-              </subNodes>
-            </li>
-            <!-- Drink a bit -->
-            <li Class="ThinkNode_ConditionalRandom">
-              <chance>0.1</chance>
               <subNodes>
                 <li Class="MorePrecepts.JobGiver_DrinkInGatheringArea" />
               </subNodes>
@@ -26,7 +19,7 @@
             <!-- Stand where you are and be socially active -->
             <li Class="JobGiver_StandAndBeSociallyActive">
               <lookDirection>Invalid</lookDirection>
-              <ticksRange>350~750</ticksRange>
+              <ticksRange>450~750</ticksRange>
             </li>
           </subNodes>
         </li>
