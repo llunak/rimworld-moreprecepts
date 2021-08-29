@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <DutyDef>
+    <defName>MP_Feast</defName>
+    <label>feast</label>
+    <hook>MediumPriority</hook>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="ThinkNode_ConditionalInGatheringArea">
+          <subNodes>
+            <!-- Eat -->
+            <li Class="ThinkNode_ConditionalRandom">
+              <chance>0.7</chance>
+              <subNodes>
+                <li Class="JobGiver_EatInGatheringArea" />
+              </subNodes>
+            </li>
+            <!-- Stand where you are and be socially active -->
+            <li Class="ThinkNode_ConditionalRandom">
+              <chance>0.3</chance>
+              <subNodes>
+                <li Class="JobGiver_StandAndBeSociallyActive">
+                  <ticksRange>250~450</ticksRange>
+                </li>
+              </subNodes>
+            </li>
+          </subNodes>
+        </li>
+        <!-- Reach the feast area -->
+        <li Class="JobGiver_WanderInGatheringArea">
+          <ticksBetweenWandersRange>50~250</ticksBetweenWandersRange>
+          <locomotionUrgency>Jog</locomotionUrgency>
+        </li>
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+</Defs>
