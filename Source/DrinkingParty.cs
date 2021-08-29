@@ -115,8 +115,20 @@ namespace MorePrecepts
             PawnDuty duty = pawn.mindState.duty;
             if (duty == null)
                 return null;
-            if (Find.TickManager.TicksGame - PawnComp.GetLastTakeAlcoholTick(pawn) < GenDate.TicksPerHour / 2
-                || Find.TickManager.TicksGame - pawn.mindState.lastTakeRecreationalDrugTick < GenDate.TicksPerHour / 2)
+            int delay = GenDate.TicksPerHour / 2;
+            if(pawn.story != null)
+            {
+                Trait trait = pawn.story.traits.GetTrait(TraitDefOf.DrugDesire);
+                if (trait != null)
+                {   // Consume more often for drug desire.
+                    if (trait.Degree == 1)
+                        delay /= 2;
+                    if (trait.Degree == 2)
+                        delay /= 3;
+                }
+            }
+            if (Find.TickManager.TicksGame - PawnComp.GetLastTakeAlcoholTick(pawn) < delay
+                || Find.TickManager.TicksGame - pawn.mindState.lastTakeRecreationalDrugTick < delay)
             {
                 return null;
             }
