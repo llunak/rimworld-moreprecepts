@@ -17,13 +17,9 @@
               </subNodes>
             </li>
             <!-- Stand where you are and be socially active -->
-            <li Class="ThinkNode_ConditionalRandom">
-              <chance>0.3</chance>
-              <subNodes>
-                <li Class="JobGiver_StandAndBeSociallyActive">
-                  <ticksRange>250~450</ticksRange>
-                </li>
-              </subNodes>
+            <li Class="JobGiver_StandAndBeSociallyActive">
+              <lookDirection>Invalid</lookDirection>
+              <ticksRange>250~450</ticksRange>
             </li>
           </subNodes>
         </li>

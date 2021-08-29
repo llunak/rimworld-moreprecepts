@@ -4,7 +4,7 @@
   <RitualBehaviorDef ParentName="DateRitualBehavior">
     <defName>MP_Feast</defName>
     <workerClass>MorePrecepts.RitualBehaviorWorker_Feast</workerClass>
-    <durationTicks>10000</durationTicks>
+    <durationTicks>12500</durationTicks>
     <roles Inherit="False">
       <li Class="RitualRoleTag">
         <label>speaker</label>
@@ -89,7 +89,7 @@
         </curve>
       </li>
       <li Class="MorePrecepts.RitualOutcomeComp_FeastMeals">
-        <label>meals</label>
+        <label>meals eaten</label>
         <curve>
           <points>
             <!-- First is 0-90 quality based on FoodPreferability, 90 is lavish, 80 is fine, 70 is simple, etc. -->
