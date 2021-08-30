@@ -10,7 +10,7 @@
     <preceptClass>Precept_Ritual</preceptClass>
     <ritualPatternBase>Feast</ritualPatternBase>
     <iconPath>UI/Icons/Feast</iconPath>
-    <visible>false</visible>
+    <visible>true</visible>
     <countsTowardsPreceptLimit>true</countsTowardsPreceptLimit>
     <selectionWeight>1.0</selectionWeight>
     <conflictingMemes>
@@ -31,7 +31,7 @@
     <preceptClass>Precept_Ritual</preceptClass>
     <ritualPatternBase>Feast_Meat</ritualPatternBase>
     <iconPath>UI/Icons/Feast</iconPath>
-    <visible>false</visible>
+    <visible>true</visible>
     <countsTowardsPreceptLimit>true</countsTowardsPreceptLimit>
     <selectionWeight>1.0</selectionWeight>
     <conflictingMemes>
@@ -51,7 +51,7 @@
     <preceptClass>Precept_Ritual</preceptClass>
     <ritualPatternBase>Feast_Veg</ritualPatternBase>
     <iconPath>UI/Icons/Feast</iconPath>
-    <visible>false</visible>
+    <visible>true</visible>
     <countsTowardsPreceptLimit>true</countsTowardsPreceptLimit>
     <selectionWeight>1.0</selectionWeight>
     <conflictingMemes>
