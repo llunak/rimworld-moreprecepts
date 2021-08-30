@@ -34,8 +34,10 @@ namespace MorePrecepts
             return false;
         }
 
-        public static bool PawnsHaveDrugs(Pawn pawn, IsRelevantDrug isRelevantDrug, ref Thing drug)
+        public static bool MapPawnsHaveDrugs(Pawn pawn, IsRelevantDrug isRelevantDrug, ref Thing drug)
         {
+            if(pawn.Map == null)
+                return false;
             foreach(Pawn otherPawn in pawn.Map.mapPawns.FreeColonistsAndPrisoners)
                 if(PawnHasDrugs(otherPawn, isRelevantDrug, ref drug))
                     return true;
@@ -44,7 +46,7 @@ namespace MorePrecepts
 
         public static bool HomeMapHasDrugs(Pawn pawn, IsRelevantDrug isRelevantDrug, ref Thing drug)
         {
-            if(!pawn.Map.IsPlayerHome)
+            if(pawn.Map == null || !pawn.Map.IsPlayerHome)
                 return false;
             Thing thing = pawn.Map.listerThings.ThingsInGroup(ThingRequestGroup.Drug)
                 .FirstOrDefault((Thing t) => isRelevantDrug(t));
@@ -128,7 +130,7 @@ namespace MorePrecepts
                 {
                     Thing dummy = null;
                     if(DrugPossessionHelper.CaravanHasDrugs(pawn, isRelevantDrug, ref dummy)
-                        || DrugPossessionHelper.PawnsHaveDrugs(pawn, isRelevantDrug, ref dummy)
+                        || DrugPossessionHelper.MapPawnsHaveDrugs(pawn, isRelevantDrug, ref dummy)
                         || DrugPossessionHelper.HomeMapHasDrugs(pawn, isRelevantDrug, ref dummy))
                     {
                         PawnComp.SetNoticedDrugsTickIfNotSet(pawn, Find.TickManager.TicksGame);
@@ -202,7 +204,7 @@ namespace MorePrecepts
                     continue;
                 Thing drug = null;
                 if(DrugPossessionHelper.CaravanHasDrugs(pawn, isRelevantDrug, ref drug)
-                    || DrugPossessionHelper.PawnsHaveDrugs(pawn, isRelevantDrug, ref drug)
+                    || DrugPossessionHelper.MapPawnsHaveDrugs(pawn, isRelevantDrug, ref drug)
                     || DrugPossessionHelper.HomeMapHasDrugs(pawn, isRelevantDrug, ref drug))
                 {
                     affectedPawns.Add(pawn);
