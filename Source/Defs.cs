@@ -20,6 +20,8 @@ namespace MorePrecepts
             [MayRequireIdeology]
             public static JobDef EatAtFeast;
 
+            public static JobDef SitAndBeSociallyActive;
+
         static JobDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(JobDefOf));

@@ -24,7 +24,7 @@
               </subNodes>
             </li>
             <!-- Stand where you are and be socially active -->
-            <li Class="JobGiver_StandAndBeSociallyActive">
+            <li Class="MorePrecepts.JobGiver_SitAndBeSociallyActive">
               <lookDirection>Invalid</lookDirection>
               <ticksRange>350~750</ticksRange>
             </li>
