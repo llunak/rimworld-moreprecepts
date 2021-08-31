@@ -238,8 +238,9 @@ namespace MorePrecepts
             if(pawn != null && pawn.RaceProps.Humanlike && otherPawn.RaceProps.Humanlike)
             {
                 // There are 60000 ticks in a day. Body parts usually have 25-30 hp, so killing a pawn could
-                // average let's say 100-200 damage? Add 100 ticks per damage, so that 600 damage postpones by one day.
-                PawnComp.AddToLastViolenceTick(pawn, (int)(totalDamageDealt * 100));
+                // average let's say 100-200 damage? Add 600 ticks per damage, so that damage worth killing
+                // one enemy postpones by 1-2 days.
+                PawnComp.AddToLastViolenceTick(pawn, (int)(totalDamageDealt * 600));
             }
         }
 
