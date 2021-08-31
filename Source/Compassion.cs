@@ -36,7 +36,7 @@ namespace MorePrecepts
             Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.Compassion_IncapacitatedPawnLeftToDie_All,
                 pawn.Named(HistoryEventArgsNames.Victim), stage.Named(HistoryEventArgsNames.ExecutionThoughtStage)));
             // NonGuiltyEnemies (and everybody else who's not enemy):
-            if(!pawn.guilt.IsGuilty || !pawn.HostileTo(Faction.OfPlayer))
+            if(!(pawn.guilt != null && pawn.guilt.IsGuilty) || !pawn.HostileTo(Faction.OfPlayer))
             {
                 Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.Compassion_IncapacitatedPawnLeftToDie_NonGuiltyEnemies,
                     pawn.Named(HistoryEventArgsNames.Victim), stage.Named(HistoryEventArgsNames.ExecutionThoughtStage)));
