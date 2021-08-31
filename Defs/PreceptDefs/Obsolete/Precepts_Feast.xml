@@ -13,13 +13,6 @@
     <visible>true</visible>
     <countsTowardsPreceptLimit>true</countsTowardsPreceptLimit>
     <selectionWeight>1.0</selectionWeight>
-    <conflictingMemes>
-      <li>Guilty</li>
-      <li>PainIsVirtue</li>
-      <li>AnimalPersonhood</li>
-      <li>Cannibal</li>
-      <li>Rancher</li>
-    </conflictingMemes>
   </PreceptDef>
 
   <PreceptDef>
@@ -34,12 +27,6 @@
     <visible>true</visible>
     <countsTowardsPreceptLimit>true</countsTowardsPreceptLimit>
     <selectionWeight>1.0</selectionWeight>
-    <conflictingMemes>
-      <li>Guilty</li>
-      <li>PainIsVirtue</li>
-      <li>AnimalPersonhood</li>
-      <li>Cannibal</li>
-    </conflictingMemes>
   </PreceptDef>
 
   <PreceptDef>
@@ -54,12 +41,6 @@
     <visible>true</visible>
     <countsTowardsPreceptLimit>true</countsTowardsPreceptLimit>
     <selectionWeight>1.0</selectionWeight>
-    <conflictingMemes>
-      <li>Guilty</li>
-      <li>PainIsVirtue</li>
-      <li>Cannibal</li>
-      <li>Rancher</li>
-    </conflictingMemes>
   </PreceptDef>
 
   <RitualPatternDef ParentName="CelebrationConsumable">
