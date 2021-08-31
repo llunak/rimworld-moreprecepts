@@ -20,14 +20,10 @@
     <impact>Medium</impact>
     <displayOrderInIssue>20</displayOrderInIssue>
     <displayOrderInImpact>100</displayOrderInImpact>
-    <associatedMemes>
-      <li>Guilty</li>
-    </associatedMemes>
     <conflictingMemes>
       <li>Supremacist</li>
       <li>PainIsVirtue</li>
     </conflictingMemes>
-    <selectionWeight>0</selectionWeight>
     <comps>
       <li Class="PreceptComp_KnowsMemoryThought">
         <eventDef>Compassion_IncapacitatedPawnLeftToDie_All</eventDef>

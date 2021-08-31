@@ -16,7 +16,6 @@
     <conflictingMemes>
       <li>PainIsVirtue</li>
     </conflictingMemes>
-    <selectionWeight>1</selectionWeight>
     <comps>
       <li Class="MorePrecepts.PreceptComp_MemoryThought">
         <thought>Comfort_UsedUncomfortableFurniture_Wanted</thought>
@@ -40,7 +39,6 @@
     <conflictingMemes>
       <li>PainIsVirtue</li>
     </conflictingMemes>
-    <selectionWeight>0.5</selectionWeight>
     <comps>
       <li Class="MorePrecepts.PreceptComp_MemoryThought">
         <thought>Comfort_UsedUncomfortableFurniture_Important</thought>
@@ -64,7 +62,6 @@
     <conflictingMemes>
       <li>PainIsVirtue</li>
     </conflictingMemes>
-    <selectionWeight>0</selectionWeight>
     <allowedForNPCFactions>false</allowedForNPCFactions>
     <comps>
       <li Class="MorePrecepts.PreceptComp_MemoryThought">

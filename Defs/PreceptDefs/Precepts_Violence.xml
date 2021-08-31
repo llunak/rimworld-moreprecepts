@@ -23,7 +23,9 @@
       <li>Cannibal</li>
       <li>Raider</li>
     </conflictingMemes>
-    <selectionWeight>0</selectionWeight>
+    <associatedMemes>
+      <li>Pacifism</li>
+    </associatedMemes>
     <comps>
       <li Class="PreceptComp_UnwillingToDo">
         <eventDef>Violence_AttackedPerson</eventDef>
@@ -89,7 +91,9 @@
       <li>Cannibal</li>
       <li>Raider</li>
     </conflictingMemes>
-    <selectionWeight>0</selectionWeight>
+    <associatedMemes>
+      <li>Pacifism</li>
+    </associatedMemes>
     <comps>
       <li Class="PreceptComp_SelfTookMemoryThought">
         <eventDef>Violence_AttackedPerson</eventDef>
@@ -146,7 +150,6 @@
       <li>Cannibal</li>
       <li>Raider</li>
     </conflictingMemes>
-    <selectionWeight>0.2</selectionWeight>
     <comps>
       <li Class="PreceptComp_SelfTookMemoryThought">
         <eventDef>Violence_AttackedPerson</eventDef>
@@ -203,7 +206,6 @@
       <li>Cannibal</li>
       <li>Raider</li>
     </conflictingMemes>
-    <selectionWeight>0.5</selectionWeight>
     <comps>
       <li Class="PreceptComp_UnwillingToDo">
         <eventDef>Violence_AttackedHostilePerson</eventDef>
@@ -263,9 +265,6 @@
     <impact>Low</impact>
     <displayOrderInIssue>60</displayOrderInIssue>
     <allowedForNPCFactions>false</allowedForNPCFactions>
-    <associatedMemes>
-      <li>Raider</li>
-    </associatedMemes>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Violence_Wanted</thought>
@@ -295,10 +294,6 @@
     <impact>Medium</impact>
     <displayOrderInIssue>70</displayOrderInIssue>
     <allowedForNPCFactions>false</allowedForNPCFactions>
-    <associatedMemes>
-      <li>Raider</li>
-    </associatedMemes>
-    <selectionWeight>0.2</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Violence_Essential</thought>

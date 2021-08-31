@@ -20,10 +20,6 @@
     <impact>High</impact>
     <displayOrderInIssue>20</displayOrderInIssue>
     <displayOrderInImpact>100</displayOrderInImpact>
-    <associatedMemes>
-      <li>NaturePrimacy</li>
-    </associatedMemes>
-    <selectionWeight>0.2</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>HasTraps_Prohibited</thought>
@@ -44,10 +40,6 @@
     <impact>High</impact>
     <displayOrderInIssue>10</displayOrderInIssue>
     <displayOrderInImpact>100</displayOrderInImpact>
-    <associatedMemes>
-      <li>NaturePrimacy</li>
-    </associatedMemes>
-    <selectionWeight>0.5</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>HasTraps_Horrible</thought>
@@ -64,10 +56,6 @@
     <impact>Medium</impact>
     <displayOrderInIssue>0</displayOrderInIssue>
     <displayOrderInImpact>100</displayOrderInImpact>
-    <associatedMemes>
-      <li>NaturePrimacy</li>
-    </associatedMemes>
-    <selectionWeight>0.5</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>HasTraps_Disapproved</thought>

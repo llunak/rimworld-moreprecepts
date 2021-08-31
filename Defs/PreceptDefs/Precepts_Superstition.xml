@@ -18,7 +18,6 @@
     <description>There are signs guiding our life, we must pay attention to them.</description>
     <impact>Low</impact>
     <displayOrderInIssue>50</displayOrderInIssue>
-    <selectionWeight>0.5</selectionWeight>
     <comps>
       <li Class="PreceptComp_SelfTookMemoryThought">
         <eventDef>Superstition_Superstitious_Strong_Plus</eventDef>

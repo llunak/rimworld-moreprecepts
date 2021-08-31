@@ -19,10 +19,6 @@
     <impact>Medium</impact>
     <displayOrderInIssue>70</displayOrderInIssue>
     <displayOrderInImpact>100</displayOrderInImpact>
-    <associatedMemes>
-      <li>Loyalist</li>
-    </associatedMemes>
-    <selectionWeight>0.5</selectionWeight>
     <comps>
       <li Class="PreceptComp_SelfTookMemoryThought">
         <eventDef>Nomadism_AbandonedSettlement</eventDef>
@@ -39,9 +35,6 @@
     <impact>Low</impact>
     <displayOrderInIssue>60</displayOrderInIssue>
     <displayOrderInImpact>100</displayOrderInImpact>
-    <associatedMemes>
-      <li>Loyalist</li>
-    </associatedMemes>
     <comps>
       <li Class="PreceptComp_SelfTookMemoryThought">
         <eventDef>Nomadism_AbandonedSettlement</eventDef>
@@ -81,7 +74,6 @@
     <displayOrderInIssue>40</displayOrderInIssue>
     <displayOrderInImpact>1000</displayOrderInImpact>
     <allowedForNPCFactions>false</allowedForNPCFactions>
-    <selectionWeight>0.3</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Nomadism_Important</thought>
@@ -104,7 +96,6 @@
     <displayOrderInIssue>30</displayOrderInIssue>
     <displayOrderInImpact>1000</displayOrderInImpact>
     <allowedForNPCFactions>false</allowedForNPCFactions>
-    <selectionWeight>0.1</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Nomadism_Essential</thought>

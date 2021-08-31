@@ -19,7 +19,6 @@
     <impact>Low</impact>
     <displayOrderInIssue>60</displayOrderInIssue>
     <allowedForNPCFactions>false</allowedForNPCFactions>
-    <selectionWeight>0.5</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Revered</thought>
@@ -111,7 +110,6 @@
     <impact>Low</impact>
     <displayOrderInIssue>10</displayOrderInIssue>
     <allowedForNPCFactions>false</allowedForNPCFactions>
-    <selectionWeight>0.2</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Abhorred</thought>
