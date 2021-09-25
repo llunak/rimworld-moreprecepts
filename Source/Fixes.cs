@@ -77,5 +77,69 @@ namespace MorePrecepts
             }
         }
     }
+    
+    // remove requirement of Ideo if the pawn is prisoner or downed to prevent comfort precept issue
+    [HarmonyPatch(typeof(RestUtility), nameof(RestUtility.IsValidBedFor))]
+	internal static class RimWorld__RestUtility__IsValidBedFor {
+
+		internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+			var info1 = AccessTools.DeclaredMethod(typeof(CompAssignableToPawn), nameof(CompAssignableToPawn.IdeoligionForbids));
+			var info2 = AccessTools.PropertyGetter(typeof(Pawn), nameof(Pawn.Downed));
+			foreach(var code in instructions) {
+				yield return code;
+				if(code.Calls(info1)) {
+					yield return new CodeInstruction(OpCodes.Ldloc_1);
+					yield return new CodeInstruction(OpCodes.Ldc_I4_0);
+					yield return new CodeInstruction(OpCodes.Ceq);
+					yield return new CodeInstruction(OpCodes.Ldarg_1);
+					yield return new CodeInstruction(OpCodes.Call, info2);
+					yield return new CodeInstruction(OpCodes.Ldc_I4_0);
+					yield return new CodeInstruction(OpCodes.Ceq);
+					yield return new CodeInstruction(OpCodes.And);
+					yield return new CodeInstruction(OpCodes.And);
+				}
+			}
+		}
+
+
+	}
+
+    // remove the annoying warning caused by assigning bed with ideo restriction
+	[HarmonyPatch(typeof(Pawn_Ownership), nameof(Pawn_Ownership.ClaimBedIfNonMedical))]
+	internal static class RimWorld__Pawn_Ownership__ClaimBedIfNonMedical {
+
+		internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+			var info1 = AccessTools.PropertyGetter(typeof(Building_Bed), nameof(Building_Bed.CompAssignableToPawn));
+			var info2 = AccessTools.DeclaredField(typeof(Pawn_Ownership), "pawn");
+			var info3 = AccessTools.DeclaredMethod(typeof(CompAssignableToPawn), nameof(CompAssignableToPawn.IdeoligionForbids));
+			var info4 = AccessTools.DeclaredMethod(typeof(Log), nameof(Log.Error), new Type[] { typeof(string) });
+			var list = instructions.ToList();
+			int i = 0;
+			while(i < list.Count) {
+				if(CodeSection(list, i,
+					new CodeInstruction(OpCodes.Ldarg_1),
+					new CodeInstruction(OpCodes.Callvirt, info1),
+					new CodeInstruction(OpCodes.Ldarg_0),
+					new CodeInstruction(OpCodes.Ldfld, info2),
+					new CodeInstruction(OpCodes.Callvirt, info3)
+				)) {
+					while(!list[i++].Calls(info4)) ;
+				}
+				yield return list[i];
+				//Log.Message(list[i].ToString());
+				i++;
+			}
+		}
+
+		internal static bool CodeSection(List<CodeInstruction> list, int index, params CodeInstruction[] instruction) {
+			for(int i = 0; i < instruction.Length; i++) {
+				var a = list[i + index];
+				var b = instruction[i];
+				if(!(i + index < list.Count && a.opcode == b.opcode && ((a.operand == null && b.operand == null) || (a.operand != null && b.operand != null && a.OperandIs(b.operand))))) return false;
+			}
+			return true;
+		}
+
+	}
 
 }
