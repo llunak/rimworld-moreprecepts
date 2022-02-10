@@ -110,6 +110,9 @@ namespace MorePrecepts
                 ThoughtDef thoughtDef, Precept precept) = ComfortHelper.GetComfort(ingester);
             if(thoughtDef == null)
                 return;
+            // Map is null when on caravan; don't give mood for comfort since the player can't control it
+            if (ingester.Map == null)
+                return;
             Thing thing = __instance;
             // The comfort+ingest code is in Toils_Ingest, but Thing.Ingested is easier to patch.
             // chair
