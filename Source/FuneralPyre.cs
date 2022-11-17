@@ -5,6 +5,12 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
+/*
+Cases to test:
+- burning a dead body on the pyre
+- burning a corpse to lose the body, then doing the ritual
+*/
+
 namespace MorePrecepts
 {
 
@@ -73,7 +79,7 @@ namespace MorePrecepts
         protected override RitualTargetUseReport CanUseTargetInternal(TargetInfo target, RitualObligation obligation)
         {
             Building_FuneralPyre building_FuneralPyre;
-            return target.HasThing && (building_FuneralPyre = target.Thing as Building_FuneralPyre) != null && building_FuneralPyre.Corpse == obligation.targetA.Thing;
+            return target.HasThing && (building_FuneralPyre = target.Thing as Building_FuneralPyre) != null && (building_FuneralPyre.Corpse == obligation.targetA.Thing || building_FuneralPyre.Corpse?.InnerPawn == obligation.targetA.Thing);
         }
 
         public override IEnumerable<string> GetTargetInfos(RitualObligation obligation)
@@ -83,14 +89,10 @@ namespace MorePrecepts
                 yield return "MorePrecepts.RitualTargetFuneralPyreInfoAbstract".Translate(parent.ideo.Named("IDEO"));
                 yield break;
             }
-            bool num = obligation.targetA.Thing.ParentHolder is Building_FuneralPyre;
-            Pawn innerPawn = ((Corpse)obligation.targetA.Thing).InnerPawn;
-            TaggedString taggedString = "MorePrecepts.RitualTargetFuneralPyreInfo".Translate(innerPawn.Named("PAWN"));
-            if (!num)
-            {
-                taggedString += " (" + "MorePrecepts.RitualTargetFuneralPyreInfoMustBePlaced".Translate(innerPawn.Named("PAWN")) + ")";
-            }
-            yield return taggedString;
+            Pawn pawn = obligation.targetA.Thing as Pawn;
+            if (pawn == null)
+                pawn = ((Corpse)obligation.targetA.Thing).InnerPawn;
+            yield return "MorePrecepts.RitualTargetFuneralPyreInfo".Translate(pawn.Named("PAWN"));
         }
 
         public override List<string> MissingTargetBuilding(Ideo ideo)
@@ -125,6 +127,7 @@ namespace MorePrecepts
 
         public override bool ObligationTargetsValid(RitualObligation obligation)
         {
+            Corpse corpse = (obligation.targetA.Thing as Pawn)?.Corpse;
             if (obligation.targetA.HasThing)
             {
                 Pawn pawn = obligation.targetA.Thing as Pawn;
@@ -133,7 +136,9 @@ namespace MorePrecepts
                     if(PawnComp.GetBurnedOnPyre(pawn))
                         return false;
                 }
-                return obligation.targetA.ThingDestroyed;
+                if (corpse != null)
+                    return !corpse.Destroyed;
+                return true;
             }
             return false;
         }
@@ -152,8 +157,7 @@ namespace MorePrecepts
                 yield break;
                 }
             Pawn arg = (Pawn)obligation.targetA.Thing;
-            TaggedString taggedString = "MorePrecepts.RitualTargetEmptyFuneralPyreInfo".Translate(arg.Named("PAWN"));
-            yield return taggedString;
+            yield return "MorePrecepts.RitualTargetEmptyFuneralPyreInfo".Translate(arg.Named("PAWN"));
         }
 
         public override List<string> MissingTargetBuilding(Ideo ideo)
@@ -165,6 +169,25 @@ namespace MorePrecepts
                     return null;
             }
             return new List<string> { "MorePrecepts.FuneralPyre".Translate() };
+        }
+    }
+
+    public class RitualObligationTrigger_MemberCorpseDestroyedNoPyreProperties : RitualObligationTrigger_MemberCorpseDestroyedProperties
+    {
+        public RitualObligationTrigger_MemberCorpseDestroyedNoPyreProperties()
+            : base()
+        {
+            triggerClass = typeof(RitualObligationTrigger_MemberCorpseDestroyedNoPyre);
+        }
+    }
+
+    public class RitualObligationTrigger_MemberCorpseDestroyedNoPyre : RitualObligationTrigger_MemberCorpseDestroyed
+    {
+        public override void Notify_MemberCorpseDestroyed(Pawn p)
+        {
+            if(PawnComp.GetBurnedOnPyre( p ))
+                return;
+            base.Notify_MemberCorpseDestroyed( p );
         }
     }
 

@@ -5,7 +5,7 @@
     <description>A gathering that occurs around a believer's funeral pyre after they die and are buried. If the body is destroyed, an empty funeral pyre can be used. Slaves don't get funerals.</description>
     <iconPath>UI/Icons/RitualFuneralPyre</iconPath>
     <selectionWeight>0</selectionWeight>
-    <classicExtra>false</classicExtra>
+    <classic>false</classic>
   </PreceptDef>
 
   <PreceptDef ParentName="FuneralPyreBase">
@@ -32,8 +32,8 @@
   <RitualPatternDef>
     <defName>FuneralPyreStandard</defName>
     <nameMaker>NamerRitualFuneralPyre</nameMaker>
-    <ritualExpectedDesc>Once a {IDEO} member dies, other {MEMBERS} gather around a funeral pyre for {RITUAL_labelDef}.</ritualExpectedDesc>
-    <ritualExpectedPostfix>{0} {1} want to carry out the funeral pyre as soon as possible.</ritualExpectedPostfix>
+    <ritualExpectedDesc>You can hold a {IDEOLIGION_adjective} funeral pyre for {PAWN_nameDef}.</ritualExpectedDesc>
+    <ritualExpectedDescNoAdjective>You can hold a funeral pyre for {PAWN_nameDef}.</ritualExpectedDescNoAdjective>
     <ritualObligationTriggers>
       <li Class="RitualObligationTrigger_MemberDiedProperties">
         <mustBePlayerIdeo>true</mustBePlayerIdeo>
@@ -49,9 +49,10 @@
 
   <RitualPatternDef>
     <defName>FuneralPyreNoCorpse</defName>
-    <ritualExpectedDesc>Once a {IDEO} member dies and the body is lost, other {MEMBERS} gather around an empty funeral pyre for {RITUAL_labelDef}.</ritualExpectedDesc>
+    <ritualExpectedDesc>You can hold a {IDEOLIGION_adjective} funeral pyre for {PAWN_nameDef} even though the body was lost.</ritualExpectedDesc>
+    <ritualExpectedDescNoAdjective>You can hold a funeral pyre for {PAWN_nameDef} even though the body was lost.</ritualExpectedDescNoAdjective>
     <ritualObligationTriggers>
-      <li Class="RitualObligationTrigger_MemberCorpseDestroyedProperties">
+      <li Class="MorePrecepts.RitualObligationTrigger_MemberCorpseDestroyedNoPyreProperties">
         <mustBePlayerIdeo>true</mustBePlayerIdeo>
       </li>
     </ritualObligationTriggers>
