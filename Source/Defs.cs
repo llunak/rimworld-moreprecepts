@@ -4,21 +4,9 @@ using Verse;
 namespace MorePrecepts
 {
     [DefOf]
-    public static class EffecterDefOf
-    {
-            public static EffecterDef EatVegetarian;
-
-        static EffecterDefOf()
-        {
-            DefOfHelper.EnsureInitializedInCtor(typeof(EffecterDefOf));
-        }
-    }
-
-    [DefOf]
     public static class JobDefOf
     {
             [MayRequireIdeology]
-            public static JobDef EatAtFeast;
 
             public static JobDef SitAndBeSociallyActive;
 
@@ -57,12 +45,6 @@ namespace MorePrecepts
 
         public static PreceptDef Alcohol_Essential;
 
-        public static PreceptDef Feast;
-
-        public static PreceptDef Feast_Meat;
-
-        public static PreceptDef Feast_Veg;
-
         public static PreceptDef Nomadism_Wanted;
 
         public static PreceptDef Nomadism_Important;
@@ -84,32 +66,6 @@ namespace MorePrecepts
         static PreceptDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(PreceptDefOf));
-        }
-    }
-
-    [DefOf]
-    public static class RitualPatternDefOf
-    {
-            public static RitualPatternDef Feast;
-
-            public static RitualPatternDef Feast_Meat;
-
-            public static RitualPatternDef Feast_Veg;
-
-        static RitualPatternDefOf()
-        {
-            DefOfHelper.EnsureInitializedInCtor(typeof(RitualPatternDefOf));
-        }
-    }
-
-    [DefOf]
-    public static class SoundDefOf
-    {
-            public static SoundDef Meal_Eat;
-
-        static SoundDefOf()
-        {
-            DefOfHelper.EnsureInitializedInCtor(typeof(SoundDefOf));
         }
     }
 
