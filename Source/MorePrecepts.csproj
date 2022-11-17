@@ -34,8 +34,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Defs.cs" />
+    <Compile Include="DrinkingParty.cs" />
+    <Compile Include="Feast.cs" />
     <Compile Include="FuneralPyre.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="PawnComp.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
 </Project>

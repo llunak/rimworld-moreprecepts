@@ -10,6 +10,21 @@ using Verse.AI.Group;
 namespace MorePrecepts
 {
 
+    // temporary
+    public static class AlcoholHelper
+    {
+        public static bool NeedsAlcoholOverride(ThingDef thing, Pawn pawn)
+        {
+            return false;
+        }
+        public static void AddOverride( bool doIt = true )
+        {
+        }
+        public static void RemoveOverride(bool doIt = true)
+        {
+        }
+    }
+
     [HarmonyPatch(typeof(Thing))]
     public static class Thing3_Patch
     {
@@ -92,7 +107,7 @@ namespace MorePrecepts
             return lordJob.joySum * 100 / participantCount; // map to average joy per pawn (17 is one beer, XML counts 50 as max)
         }
 
-        public override ExpectedOutcomeDesc GetExpectedOutcomeDesc(Precept_Ritual ritual, TargetInfo ritualTarget, RitualObligation obligation, RitualRoleAssignments assignments)
+        public override ExpectedOutcomeDesc GetExpectedOutcomeDesc(Precept_Ritual ritual, TargetInfo ritualTarget, RitualObligation obligation, RitualRoleAssignments assignments, RitualOutcomeComp_Data data)
         {
             return new ExpectedOutcomeDesc
             {

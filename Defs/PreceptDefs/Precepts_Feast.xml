@@ -22,7 +22,6 @@
     <descOverride>A celebratory gathering for your colonists to have fun and eat. A leader will give an encouraging speech, then everyone will socialize and eat meals prepared for the feast.</descOverride>
     <nameMaker>MP_NamerRitualFeast</nameMaker>
     <ritualExpectedDesc>Every year on {DATE}, {MEMBERS} feast and celebrate {RITUAL_labelDef}.</ritualExpectedDesc>
-    <ritualExpectedPostfix>{0} {1} want to hold the feast as soon as possible.</ritualExpectedPostfix>
     <iconPathOverride>UI/Icons/Feast</iconPathOverride>
     <canStartAnytime>true</canStartAnytime>
     <ritualObligationTriggers>

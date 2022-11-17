@@ -92,7 +92,7 @@ namespace MorePrecepts
             return lordJob.preferabilitySum * 10 / lordJob.mealsCount; // map to average 0-90
         }
 
-        public override ExpectedOutcomeDesc GetExpectedOutcomeDesc(Precept_Ritual ritual, TargetInfo ritualTarget, RitualObligation obligation, RitualRoleAssignments assignments)
+        public override ExpectedOutcomeDesc GetExpectedOutcomeDesc(Precept_Ritual ritual, TargetInfo ritualTarget, RitualObligation obligation, RitualRoleAssignments assignments, RitualOutcomeComp_Data data)
         {
             return new ExpectedOutcomeDesc
             {

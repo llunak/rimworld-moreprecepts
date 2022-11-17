@@ -22,7 +22,6 @@
     <descOverride>A celebratory gathering for your colonists to have fun and drink. A leader will give an encouraging speech, then everyone will socialize and drink drinks prepared for the party.</descOverride>
     <nameMaker>MP_NamerRitualDrinkingParty</nameMaker>
     <ritualExpectedDesc>Every year on {DATE}, {MEMBERS} drink and celebrate {RITUAL_labelDef}.</ritualExpectedDesc>
-    <ritualExpectedPostfix>{0} {1} want to hold the drinking party as soon as possible.</ritualExpectedPostfix>
     <iconPathOverride>UI/Icons/DrinkingParty</iconPathOverride>
     <canStartAnytime>true</canStartAnytime>
     <ritualObligationTriggers>
