@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputPath>..\1.3\Assemblies</OutputPath>
+    <OutputPath>..\1.4\Assemblies</OutputPath>
     <TargetFramework>net472</TargetFramework>
     <AssemblyTitle>More Precepts</AssemblyTitle>
     <AssemblyVersion>2021.0831.1</AssemblyVersion>
@@ -16,6 +16,9 @@
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
   </PropertyGroup>
+  <PropertyGroup>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Lib.Harmony">
       <Version>2.1.0</Version>
@@ -28,5 +31,11 @@
       <ExcludeAssets>runtime</ExcludeAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Defs.cs" />
+    <Compile Include="FuneralPyre.cs" />
+    <Compile Include="HarmonyPatches.cs" />
+    <Compile Include="PawnComp.cs" />
   </ItemGroup>
 </Project>
