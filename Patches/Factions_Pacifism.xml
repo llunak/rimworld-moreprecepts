@@ -29,14 +29,14 @@
   </Operation>
 
   <Operation Class="PatchOperationAdd">
-    <xpath>/Defs/FactionDef[defName="TribeRough"]/disallowedMemes</xpath>
+    <xpath>/Defs/FactionDef[@Name="TribeRoughBase"]/disallowedMemes</xpath>
     <value>
       <li MayRequire="Ludeon.RimWorld.Ideology">Pacifism</li>
     </value>
   </Operation>
 
   <Operation Class="PatchOperationAdd">
-    <xpath>/Defs/FactionDef[defName="TribeSavage"]/disallowedMemes</xpath>
+    <xpath>/Defs/FactionDef[@Name="TribeSavageBase"]/disallowedMemes</xpath>
     <value>
       <li MayRequire="Ludeon.RimWorld.Ideology">Pacifism</li>
     </value>
