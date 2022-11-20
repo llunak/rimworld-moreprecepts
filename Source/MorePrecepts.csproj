@@ -41,5 +41,6 @@
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="PawnComp.cs" />
     <Compile Include="Utils.cs" />
+    <Compile Include="Traps.cs" />
   </ItemGroup>
 </Project>
