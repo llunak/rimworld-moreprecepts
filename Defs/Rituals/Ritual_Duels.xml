@@ -14,6 +14,8 @@
         <substitutable>True</substitutable>
         <maxCount>1</maxCount>
         <countsAsParticipant>False</countsAsParticipant>
+        <allowChild>false</allowChild>
+        <mustBeAbleToReachTarget>True</mustBeAbleToReachTarget>
       </li>
       <li Class="RitualRolePrisonerOrSlave">
         <label>duelist</label>
@@ -26,14 +28,15 @@
         <maxCount>1</maxCount>
         <ignoreBleeding>true</ignoreBleeding>
         <countsAsParticipant>False</countsAsParticipant>
+        <allowChild>false</allowChild>
       </li>
       <li Class="RitualRoleAnimal">
         <label>animal</label>
+        <missingDesc>an animal with body size of at least 0.8</missingDesc>
         <id>duelistanimal</id> <!-- the code relies on 'duelist' being part of the id -->
         <maxCount>1</maxCount>
         <minBodySize>0.75</minBodySize>
         <required>True</required>
-        <missingDesc>an animal with body size of at least 0.8</missingDesc>
         <countsAsParticipant>False</countsAsParticipant>
         <ignoreBleeding>true</ignoreBleeding>
       </li>
@@ -137,6 +140,14 @@
             <takerId>escorte2</takerId>
             <takeeId>duelistanimal</takeeId>
             <desc>Animal is not reachable.</desc>
+          </li>
+          <li Class="StageFailTrigger_PawnAsleep">
+            <desc>escort asleep</desc>
+            <pawnId>escorte1</pawnId>
+          </li>
+          <li Class="StageFailTrigger_PawnAsleep">
+            <desc>escort asleep</desc>
+            <pawnId>escorte2</pawnId>
           </li>
         </failTriggers>
         <endTriggers>
