@@ -61,7 +61,7 @@ namespace MorePrecepts
 
         public static bool IsNonAlcohol(Thing thing)
         {
-            return !thing.def.IsNonMedicalDrug && !AlcoholHelper.IsAlcohol(thing.def);
+            return thing.def.IsNonMedicalDrug && !AlcoholHelper.IsAlcohol(thing.def);
         }
 
         public static bool IsHardDrug(Thing thing)
