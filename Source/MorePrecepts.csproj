@@ -33,9 +33,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alcohol.cs" />
     <Compile Include="Compassion.cs" />
     <Compile Include="Defs.cs" />
     <Compile Include="DrinkingParty.cs" />
+    <Compile Include="DrugPossession.cs" />
     <Compile Include="Duels.cs" />
     <Compile Include="Elderly.cs" />
     <Compile Include="Feast.cs" />

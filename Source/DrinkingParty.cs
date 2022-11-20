@@ -10,21 +10,6 @@ using Verse.AI.Group;
 namespace MorePrecepts
 {
 
-    // temporary
-    public static class AlcoholHelper
-    {
-        public static bool NeedsAlcoholOverride(ThingDef thing, Pawn pawn)
-        {
-            return false;
-        }
-        public static void AddOverride( bool doIt = true )
-        {
-        }
-        public static void RemoveOverride(bool doIt = true)
-        {
-        }
-    }
-
     [HarmonyPatch(typeof(Thing))]
     public static class Thing3_Patch
     {

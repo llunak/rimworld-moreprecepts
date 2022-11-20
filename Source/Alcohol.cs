@@ -26,6 +26,12 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
 
     public static class AlcoholHelper
     {
+#if true
+        public static bool NeedsAlcoholOverride(ThingDef thing, Pawn pawn)
+        {
+            return false;
+        }
+#else
         public static bool NeedsAlcoholOverride(ThingDef thing, Pawn pawn)
         {
             if(!HasAlcoholPrecept(pawn))
@@ -52,6 +58,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             return pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Prohibited)
                 || pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Disapproved);
         }
+#endif
         // This only checks if the thing is alcohol, normally we need to call NeedsAlcoholOverride()
         // to also check if alcohol should be treated specially.
         public static bool IsAlcohol(ThingDef thing)
@@ -84,6 +91,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         }
     }
 
+#if false
 // We need to patch IsTeetotaler() to not return true if only DrugUse:MedicalOnly is set (in which
 // the case function would normally return true). That means we also need to check all calls
 // to IsTeetotaler() and add a drug use check if needed. If the item is actually alcohol, we'll
@@ -767,5 +775,6 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             new CurvePoint(3f, 10f)
         };
     }
+#endif
 
 }

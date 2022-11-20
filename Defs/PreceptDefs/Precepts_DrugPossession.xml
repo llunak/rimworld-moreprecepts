@@ -25,7 +25,7 @@
     <conflictingMemes>
       <li>HighLife</li>
     </conflictingMemes>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <selectionWeight>0.1</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
@@ -57,7 +57,7 @@
     <conflictingMemes>
       <li>HighLife</li>
     </conflictingMemes>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <selectionWeight>0.2</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
@@ -89,7 +89,7 @@
     <conflictingMemes>
       <li>HighLife</li>
     </conflictingMemes>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <selectionWeight>0.5</selectionWeight>
     <comps>
       <li Class="PreceptComp_SituationalThought">
