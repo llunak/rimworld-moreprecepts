@@ -35,6 +35,7 @@
   <ItemGroup>
     <Compile Include="Defs.cs" />
     <Compile Include="DrinkingParty.cs" />
+    <Compile Include="Elderly.cs" />
     <Compile Include="Feast.cs" />
     <Compile Include="Fixes.cs" />
     <Compile Include="FuneralPyre.cs" />

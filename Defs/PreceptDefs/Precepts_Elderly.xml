@@ -18,7 +18,7 @@
     <description>Elders have life-long wisdom. We should heed their words and treat them with utmost respect.</description>
     <impact>Low</impact>
     <displayOrderInIssue>60</displayOrderInIssue>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Revered</thought>
@@ -109,7 +109,7 @@
     <description>Old people are useless and we should not waste our resources on them.</description>
     <impact>Low</impact>
     <displayOrderInIssue>10</displayOrderInIssue>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Elderly_Abhorred</thought>
