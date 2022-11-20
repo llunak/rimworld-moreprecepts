@@ -3,27 +3,27 @@
 
   <HistoryEventDef>
     <defName>Superstition_Superstitious_Generic</defName>
-    <label>Was superstitious</label>
+    <label>was superstitious</label>
   </HistoryEventDef>
 
   <HistoryEventDef>
     <defName>Superstition_Superstitious_Strong_Plus</defName>
-    <label>Watched an event with superstitious awe</label>
+    <label>watched an event with superstitious awe</label>
   </HistoryEventDef>
 
   <HistoryEventDef>
     <defName>Superstition_Superstitious_Strong_Minus</defName>
-    <label>Watched an event with superstitious respect</label>
+    <label>watched an event with superstitious respect</label>
   </HistoryEventDef>
 
   <HistoryEventDef>
     <defName>Superstition_Superstitious_Mild_Plus</defName>
-    <label>Watched an event with superstitious terror</label>
+    <label>watched an event with superstitious terror</label>
   </HistoryEventDef>
 
   <HistoryEventDef>
     <defName>Superstition_Superstitious_Mild_Minus</defName>
-    <label>Watched an event with superstitious fear</label>
+    <label>watched an event with superstitious fear</label>
   </HistoryEventDef>
 
 </Defs>
