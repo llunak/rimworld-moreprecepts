@@ -47,5 +47,6 @@
     <Compile Include="Superstition.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Traps.cs" />
+    <Compile Include="Violence.cs" />
   </ItemGroup>
 </Project>

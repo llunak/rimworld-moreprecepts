@@ -18,7 +18,7 @@
     <description>Harming other person is an absolutely immoral thing to do.</description>
     <impact>High</impact>
     <displayOrderInIssue>30</displayOrderInIssue>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <conflictingMemes>
       <li>Cannibal</li>
       <li>Raider</li>
@@ -86,7 +86,7 @@
     <description>Harming other person is a horrible thing to do.</description>
     <impact>High</impact>
     <displayOrderInIssue>40</displayOrderInIssue>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <conflictingMemes>
       <li>Cannibal</li>
       <li>Raider</li>
@@ -145,7 +145,7 @@
     <description>Harming other person is an ugly thing to do.</description>
     <impact>Medium</impact>
     <displayOrderInIssue>50</displayOrderInIssue>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <conflictingMemes>
       <li>Cannibal</li>
       <li>Raider</li>
@@ -201,7 +201,7 @@
     <description>Harming others is acceptable only in self-defense.</description>
     <impact>Low</impact>
     <displayOrderInIssue>55</displayOrderInIssue>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <conflictingMemes>
       <li>Cannibal</li>
       <li>Raider</li>
@@ -264,7 +264,7 @@
     <description>Harming others is fun.</description>
     <impact>Low</impact>
     <displayOrderInIssue>60</displayOrderInIssue>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Violence_Wanted</thought>
@@ -293,7 +293,7 @@
     <description>Harming others is the way of life.</description>
     <impact>Medium</impact>
     <displayOrderInIssue>70</displayOrderInIssue>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Violence_Essential</thought>
