@@ -131,7 +131,7 @@
         <baseOpinionOffset>-5</baseOpinionOffset>
       </li>
       <li>
-        <label>Teenager</label>
+        <label>Too young</label>
         <baseOpinionOffset>-10</baseOpinionOffset>
       </li>
     </stages>
