@@ -16,7 +16,7 @@
     <issue>Compassion</issue>
     <label>all</label>
     <description>We must not leave anybody helpless to die, even enemies.</description>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <impact>Medium</impact>
     <displayOrderInIssue>20</displayOrderInIssue>
     <displayOrderInImpact>100</displayOrderInImpact>
@@ -38,7 +38,7 @@
     <issue>Compassion</issue>
     <label>except guilty enemies</label>
     <description>We must not leave anybody helpless to die if they are not guilty enemies.</description>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <impact>Low</impact>
     <displayOrderInIssue>30</displayOrderInIssue>
     <displayOrderInImpact>100</displayOrderInImpact>

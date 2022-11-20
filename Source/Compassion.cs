@@ -30,7 +30,7 @@ namespace MorePrecepts
                 stage = 3; // The most severe thought.
             // If there's any active threat on the map, lower the death to the least severe stage. This is
             // primarily to reduce debuffs for killing downed pawns during a fight (e.g. grenades killing them).
-            if(pawn.Map != null && GenHostility.AnyHostileActiveThreatToPlayer_NewTemp(pawn.Map))
+            if(pawn.Map != null && GenHostility.AnyHostileActiveThreatToPlayer(pawn.Map))
                 stage = 0;
             // All:
             Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.Compassion_IncapacitatedPawnLeftToDie_All,
