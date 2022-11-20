@@ -41,6 +41,7 @@
     <Compile Include="FuneralPyre.cs" />
     <Compile Include="HarmonyPatches.cs" />
     <Compile Include="PawnComp.cs" />
+    <Compile Include="RitualOutcomeRaid.cs" />
     <Compile Include="Superstition.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Traps.cs" />
