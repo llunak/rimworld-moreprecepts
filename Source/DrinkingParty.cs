@@ -154,7 +154,7 @@ namespace MorePrecepts
                     return false;
                 bool alcoholOverride = AlcoholHelper.NeedsAlcoholOverride(x.def,pawn);
                 AlcoholHelper.AddOverride(alcoholOverride);
-                if (!pawn.WillEat(x) || pawn.IsTeetotaler())
+                if (!pawn.WillEat_NewTemp(x) || pawn.IsTeetotaler())
                 {
                     AlcoholHelper.RemoveOverride(alcoholOverride);
                     return false;
