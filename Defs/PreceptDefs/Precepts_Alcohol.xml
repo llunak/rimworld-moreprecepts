@@ -117,7 +117,7 @@
     <impact>Low</impact>
     <displayOrderInIssue>0</displayOrderInIssue>
     <displayOrderInImpact>1000</displayOrderInImpact>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Alcohol_Wanted</thought>
@@ -135,7 +135,7 @@
     <impact>Medium</impact>
     <displayOrderInIssue>0</displayOrderInIssue>
     <displayOrderInImpact>1000</displayOrderInImpact>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Alcohol_Essential</thought>

@@ -26,12 +26,6 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
 
     public static class AlcoholHelper
     {
-#if true
-        public static bool NeedsAlcoholOverride(ThingDef thing, Pawn pawn)
-        {
-            return false;
-        }
-#else
         public static bool NeedsAlcoholOverride(ThingDef thing, Pawn pawn)
         {
             if(!HasAlcoholPrecept(pawn))
@@ -58,7 +52,6 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             return pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Prohibited)
                 || pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Disapproved);
         }
-#endif
         // This only checks if the thing is alcohol, normally we need to call NeedsAlcoholOverride()
         // to also check if alcohol should be treated specially.
         public static bool IsAlcohol(ThingDef thing)
@@ -91,7 +84,6 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         }
     }
 
-#if false
 // We need to patch IsTeetotaler() to not return true if only DrugUse:MedicalOnly is set (in which
 // the case function would normally return true). That means we also need to check all calls
 // to IsTeetotaler() and add a drug use check if needed. If the item is actually alcohol, we'll
@@ -201,7 +193,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             {
                 // Override return value for alcohol.
                 AlcoholHelper.AddOverride();
-                if (food.IsNutritionGivingIngestible && pawn.WillEat(food, null, careIfNotAcceptableForTitle: false)
+                if (food.IsNutritionGivingIngestible && pawn.WillEat_NewTemp(food, null, careIfNotAcceptableForTitle: false)
                     && (int)food.ingestible.preferability > 1 && !pawn.IsTeetotaler() && food.ingestible.canAutoSelectAsFoodForCaravan)
                 {
                     __result = new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo();
@@ -230,22 +222,46 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             // Big scary copy&paste&modify to remove drug events and use alcohol event instead.
 			if (__instance.Props.Addictive && ingester.RaceProps.IsFlesh)
 			{
-				float num = ingester.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.DrugOverdose)?.Severity ?? 0f;
-				if (num < 0.9f && Rand.Value < __instance.Props.largeOverdoseChance)
+				float num = 1f;
+				if (ModsConfig.BiotechActive && ingester.genes != null)
 				{
-					float num2 = Rand.Range(0.85f, 0.99f);
-					HealthUtility.AdjustSeverity(ingester, HediffDefOf.DrugOverdose, num2 - num);
-					if (ingester.Faction == Faction.OfPlayer)
+					foreach (Gene item in ingester.genes.GenesListForReading)
 					{
-						Messages.Message("MessageAccidentalOverdose".Translate(ingester.Named("INGESTER"), __instance.parent.LabelNoCount, __instance.parent.Named("DRUG")), ingester, MessageTypeDefOf.NegativeHealthEvent);
+						num *= item.def.overdoseChanceFactor;
 					}
 				}
-				else
+				if (Rand.Chance(num))
 				{
-					float num3 = __instance.Props.overdoseSeverityOffset.RandomInRange / ingester.BodySize;
-					if (num3 > 0f)
+					float num2 = ingester.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.DrugOverdose)?.Severity ?? 0f;
+					bool flag = false;
+					if (ModsConfig.BiotechActive && ingester.genes != null)
 					{
-						HealthUtility.AdjustSeverity(ingester, HediffDefOf.DrugOverdose, num3);
+						foreach (Gene item2 in ingester.genes.GenesListForReading)
+						{
+							Gene_ChemicalDependency gene_ChemicalDependency;
+							if ((gene_ChemicalDependency = item2 as Gene_ChemicalDependency) != null && gene_ChemicalDependency.def.chemical == __instance.Props.chemical)
+							{
+								flag = true;
+								break;
+							}
+						}
+					}
+					if (num2 < 0.9f && !flag && Rand.Value < __instance.Props.largeOverdoseChance)
+					{
+						float num3 = Rand.Range(0.85f, 0.99f);
+						HealthUtility.AdjustSeverity(ingester, HediffDefOf.DrugOverdose, num3 - num2);
+						if (ingester.Faction == Faction.OfPlayer)
+						{
+							Messages.Message("MessageAccidentalOverdose".Translate(ingester.Named("INGESTER"), __instance.parent.LabelNoCount, __instance.parent.Named("DRUG")), ingester, MessageTypeDefOf.NegativeHealthEvent);
+						}
+					}
+					else
+					{
+						float num4 = __instance.Props.overdoseSeverityOffset.RandomInRange / ingester.BodySize;
+						if (num4 > 0f)
+						{
+							HealthUtility.AdjustSeverity(ingester, HediffDefOf.DrugOverdose, num4);
+						}
 					}
 				}
 			}
@@ -296,15 +312,19 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
 				{
 					text = text + ": " + "ReservedForPrisoners".Translate().CapitalizeFirst();
 				}
-				if (!t2.def.IsDrug || !ModsConfig.IdeologyActive || new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).Notify_PawnAboutToDo(out var opt, text))
+				else if (FoodUtility.MoodFromIngesting(pawn, t2, t2.def) < 0f)
 				{
-					if (t2.def.IsNonMedicalDrug && pawn.IsTeetotaler())
+					text = string.Format("{0}: ({1})", text, "WarningFoodDisliked".Translate());
+				}
+				if (!t2.def.IsDrug || !ModsConfig.IdeologyActive || new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).Notify_PawnAboutToDo(out var opt, text) || PawnUtility.CanTakeDrugForDependency(pawn, t2.def))
+				{
+					if (t2.def.IsNonMedicalDrug && !pawn.CanTakeDrug(t2.def))
 					{
 						opt = new FloatMenuOption(text + ": " + TraitDefOf.DrugDesire.DataAtDegree(-1).GetLabelCapFor(pawn), null);
 					}
 					else if (FoodUtility.InappropriateForTitle(t2.def, pawn, allowIfStarving: true))
 					{
-						opt = new FloatMenuOption(text + ": " + "FoodBelowTitleRequirements".Translate(pawn.royalty.MostSeniorTitle.def.GetLabelFor(pawn).CapitalizeFirst()), null);
+						opt = new FloatMenuOption(text + ": " + "FoodBelowTitleRequirements".Translate(pawn.royalty.MostSeniorTitle.def.GetLabelFor(pawn).CapitalizeFirst()).CapitalizeFirst(), null);
 					}
 					else if (!pawn.CanReach(t2, PathEndMode.OnCell, Danger.Deadly))
 					{
@@ -313,16 +333,16 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
 					else
 					{
 						MenuOptionPriority priority = ((t2 is Corpse) ? MenuOptionPriority.Low : MenuOptionPriority.Default);
-						int maxAmountToPickup = FoodUtility.GetMaxAmountToPickup(t2, pawn, FoodUtility.WillIngestStackCountOf(pawn, t2.def, t2.GetStatValue(StatDefOf.Nutrition)));
+						int maxAmountToPickup = FoodUtility.GetMaxAmountToPickup(t2, pawn, FoodUtility.WillIngestStackCountOf(pawn, t2.def, FoodUtility.NutritionForEater(pawn, t2)));
 						opt = FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(text, delegate
 						{
-							int maxAmountToPickup2 = FoodUtility.GetMaxAmountToPickup(t2, pawn, FoodUtility.WillIngestStackCountOf(pawn, t2.def, t2.GetStatValue(StatDefOf.Nutrition)));
+							int maxAmountToPickup2 = FoodUtility.GetMaxAmountToPickup(t2, pawn, FoodUtility.WillIngestStackCountOf(pawn, t2.def, FoodUtility.NutritionForEater(pawn, t2)));
 							if (maxAmountToPickup2 != 0)
 							{
 								t2.SetForbidden(value: false);
-								Job job23 = JobMaker.MakeJob(RimWorld.JobDefOf.Ingest, t2);
-								job23.count = maxAmountToPickup2;
-								pawn.jobs.TryTakeOrderedJob(job23, JobTag.Misc);
+								Job job30 = JobMaker.MakeJob(RimWorld.JobDefOf.Ingest, t2);
+								job30.count = maxAmountToPickup2;
+								pawn.jobs.TryTakeOrderedJob(job30, JobTag.Misc);
 							}
 						}, priority), pawn, t2);
 						if (maxAmountToPickup == 0)
@@ -435,15 +455,15 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
     // PawnInventoryGenerator, Pawn_InventoryTracker and JobGiver_TakeCombatEnhancingDrug are about combat
     // enhancing drugs, which alcohol is not, so let's ignore it.
 
-    // The BestFoodSourceOnMap() function gets called from several other places (FoodUtility.TryFindBestFoodSourceFor(),
+    // The BestFoodSourceOnMap_NewTemp() function gets called from several other places (FoodUtility.TryFindBestFoodSourceFor(),
     // JobGiver_GetFood, WorkGiver_InteractAnimal), but they all basically pass !pawn.IsTeetotaler() to allowDrug
     // (or false for animals), so just ignore the argument and check pawn settings ourselves.
     [HarmonyPatch(typeof(FoodUtility))]
     public static class FoodUtility_Patch
     {
         [HarmonyTranspiler]
-        [HarmonyPatch(nameof(BestFoodInInventory))]
-        public static IEnumerable<CodeInstruction> BestFoodInInventory(IEnumerable<CodeInstruction> instructions)
+        [HarmonyPatch(nameof(BestFoodInInventory_NewTemp))]
+        public static IEnumerable<CodeInstruction> BestFoodInInventory_NewTemp(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
             bool found = false;
@@ -492,9 +512,9 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         }
 
         // This transpiller is set up manually, as Harmony cannot find the method to patch (or I don't know how to set it up).
-        // The catch is that the code to patch is an internal predicate function in FoodUtility.BestFoodSourceOnMap(),
+        // The catch is that the code to patch is an internal predicate function in FoodUtility.BestFoodSourceOnMap_NewTemp(),
         // which is implemented as a method in a nested private class.
-        public static IEnumerable<CodeInstruction> BestFoodSourceOnMap_foodValidator(IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> BestFoodSourceOnMap_NewTemp_foodValidator(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
             bool found = false;
@@ -503,7 +523,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                 // The function has code:
                 // .. || (!allowDrug && thing.def.IsDrug) || ..
                 // Replace it with:
-                // .. || (BestFoodSourceOnMap_Hook(eater, thing.def)) || ..
+                // .. || (BestFoodSourceOnMap_NewTemp_Hook(eater, thing.def)) || ..
                 // Log.Message("T:" + i + ":" + codes[i].opcode + "::" + (codes[i].operand != null ? codes[i].operand.ToString() : codes[i].operand));
                 // T:165:ldarg.0::
                 // T:166:ldfld::System.Boolean allowDrug
@@ -517,7 +537,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                     && codes[i+2].opcode == OpCodes.Brtrue_S
                     && codes[i+5].opcode == OpCodes.Callvirt && codes[i+5].operand.ToString() == "Boolean get_IsDrug()")
                 {
-                    Type nestedClass = typeof(FoodUtility).GetNestedType("<>c__DisplayClass12_0", BindingFlags.NonPublic);
+                    Type nestedClass = typeof(FoodUtility).GetNestedType("<>c__DisplayClass19_0", BindingFlags.NonPublic);
                     if(nestedClass != null)
                     {
                         FieldInfo eaterField = AccessTools.Field(nestedClass, "eater");
@@ -525,7 +545,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                         {
                             codes[i+1] = new CodeInstruction(OpCodes.Ldfld, eaterField);
                             codes[i+2] = new CodeInstruction(OpCodes.Nop);
-                            codes[i+5] = new CodeInstruction(OpCodes.Call, typeof(FoodUtility_Patch).GetMethod(nameof(BestFoodSourceOnMap_Hook)));
+                            codes[i+5] = new CodeInstruction(OpCodes.Call, typeof(FoodUtility_Patch).GetMethod(nameof(BestFoodSourceOnMap_NewTemp_Hook)));
                             found = true;
                             break;
                         }
@@ -533,11 +553,11 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                 }
             }
             if(!found)
-                Log.Error("MorePrecepts: Failed to patch FoodUtility.BestFoodSourceOnMap() validator");
+                Log.Error("MorePrecepts: Failed to patch FoodUtility.BestFoodSourceOnMap_NewTemp() validator");
             return codes;
         }
 
-        public static bool BestFoodSourceOnMap_Hook(Pawn eater, ThingDef thing)
+        public static bool BestFoodSourceOnMap_NewTemp_Hook(Pawn eater, ThingDef thing)
         {
             // If this returns true, the thing will not be used.
             if(AlcoholHelper.NeedsAlcoholOverride(thing, eater))
@@ -775,6 +795,4 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             new CurvePoint(3f, 10f)
         };
     }
-#endif
-
 }
