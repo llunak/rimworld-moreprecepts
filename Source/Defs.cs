@@ -31,6 +31,8 @@ namespace MorePrecepts
 
         public static PreceptDef Violence_Defense;
 
+        public static PreceptDef Violence_DefenseMild;
+
         public static PreceptDef Violence_Wanted;
 
         public static PreceptDef Violence_Essential;

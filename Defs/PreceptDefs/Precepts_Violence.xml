@@ -198,8 +198,8 @@
     <defName>Violence_Defense</defName>
     <issue>Violence</issue>
     <label>defense</label>
-    <description>Harming others is acceptable only in self-defense.</description>
-    <impact>Low</impact>
+    <description>Harming others is acceptable only in self-defense and otherwise a horrible thing to do.</description>
+    <impact>Medium</impact>
     <displayOrderInIssue>55</displayOrderInIssue>
     <enabledForNPCFactions>false</enabledForNPCFactions>
     <conflictingMemes>
@@ -253,6 +253,69 @@
       <li Class="PreceptComp_KnowsMemoryThought">
         <eventDef>PerformedHarmfulSurgery</eventDef>
         <thought>Violence_Know_Defense</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Violence_DefenseMild</defName>
+    <issue>Violence</issue>
+    <label>defense mild</label>
+    <description>Harming others is acceptable only in self-defense and otherwise an ugly thing to do</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>57</displayOrderInIssue>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
+    <conflictingMemes>
+      <li>Cannibal</li>
+      <li>Raider</li>
+    </conflictingMemes>
+    <comps>
+      <li Class="PreceptComp_UnwillingToDo">
+        <eventDef>Violence_AttackedNonHostilePerson</eventDef>
+        <description>attacked non-hostile person</description>
+        <nullifyingTraits>
+          <li>Psychopath</li>
+        </nullifyingTraits>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Violence_AttackedNonHostilePerson</eventDef>
+        <thought>Violence_DefenseMild</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>Violence_AttackedNonHostilePerson</eventDef>
+        <thought>Violence_Know_DefenseMild</thought>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>QuestPawnArrested</eventDef>
+        <thought>Violence_DefenseMild</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>QuestPawnArrested</eventDef>
+        <thought>Violence_Know_DefenseMild</thought>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>UsedHarmfulAbility</eventDef>
+        <thought>Violence_DefenseMild</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>UsedHarmfulAbility</eventDef>
+        <thought>Violence_Know_DefenseMild</thought>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>UsedHarmfulItem</eventDef>
+        <thought>Violence_DefenseMild</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>UsedHarmfulItem</eventDef>
+        <thought>Violence_Know_DefenseMild</thought>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>PerformedHarmfulSurgery</eventDef>
+        <thought>Violence_DefenseMild</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>PerformedHarmfulSurgery</eventDef>
+        <thought>Violence_Know_DefenseMild</thought>
       </li>
     </comps>
   </PreceptDef>

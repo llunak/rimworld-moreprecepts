@@ -104,7 +104,7 @@
     <stages>
       <li>
         <label>harmed somebody</label>
-        <baseOpinionOffset>-10</baseOpinionOffset>
+        <baseOpinionOffset>-20</baseOpinionOffset>
       </li>
     </stages>
     <nullifyingTraits>
@@ -142,6 +142,43 @@
       <li>
         <label>harmed somebody who was not hostile</label>
         <baseOpinionOffset>-100</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
+  <!-- DefenseMild -->
+
+  <ThoughtDef>
+    <defName>Violence_DefenseMild</defName>
+    <durationDays>7</durationDays>
+    <stackLimit>5</stackLimit>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>harmed somebody</label>
+        <description>I harmed somebody who did not mean to harm me. I feel ashamed.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Violence_Know_DefenseMild</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>7</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>harmed somebody who was not hostile</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
       </li>
     </stages>
     <nullifyingTraits>

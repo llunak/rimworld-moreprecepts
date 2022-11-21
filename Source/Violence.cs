@@ -99,6 +99,8 @@ namespace MorePrecepts
                     __result = Mathf.Max( 0.01f, __result / 2 );
                 else if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Violence_Defense))
                     __result = Mathf.Max( 0.01f, __result / 4 );
+                else if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Violence_DefenseMild))
+                    __result = Mathf.Max( 0.01f, __result / 2 );
             }
         }
     }
