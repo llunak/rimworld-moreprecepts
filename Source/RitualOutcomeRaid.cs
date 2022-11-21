@@ -12,7 +12,6 @@ namespace MorePrecepts
         {
             extraOutcomeDesc = null;
             float chance = 0.5f;
-#if false
             // Rituals with violent precepts are more likely to cause a raid.
             foreach(Pawn pawn in jobRitual.assignments.Participants)
             {
@@ -22,7 +21,6 @@ namespace MorePrecepts
                     break;
                 }
             }
-#endif
             if (!Rand.Chance(chance))
                 return;
             IncidentParms incidentParms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatBig, jobRitual.Map);
