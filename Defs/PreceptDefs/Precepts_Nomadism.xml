@@ -51,7 +51,7 @@
     <impact>Low</impact>
     <displayOrderInIssue>50</displayOrderInIssue>
     <displayOrderInImpact>1000</displayOrderInImpact>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Nomadism_Wanted</thought>
@@ -73,7 +73,7 @@
     <impact>Medium</impact>
     <displayOrderInIssue>40</displayOrderInIssue>
     <displayOrderInImpact>1000</displayOrderInImpact>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Nomadism_Important</thought>
@@ -95,7 +95,7 @@
     <impact>Medium</impact>
     <displayOrderInIssue>30</displayOrderInIssue>
     <displayOrderInImpact>1000</displayOrderInImpact>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <comps>
       <li Class="PreceptComp_SituationalThought">
         <thought>Nomadism_Essential</thought>
