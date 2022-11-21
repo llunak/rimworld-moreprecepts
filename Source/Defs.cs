@@ -130,7 +130,7 @@ namespace MorePrecepts
 
         public static HistoryEventDef Violence_AttackedPerson;
 
-        public static HistoryEventDef Violence_AttackedHostilePerson;
+        public static HistoryEventDef Violence_AttackedNonHostilePerson;
 
         public static HistoryEventDef Nomadism_AbandonedSettlement;
 

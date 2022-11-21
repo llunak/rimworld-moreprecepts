@@ -7,8 +7,8 @@
   </HistoryEventDef>
 
   <HistoryEventDef>
-    <defName>Violence_AttackedHostilePerson</defName>
-    <label>attacked hostile person</label>
+    <defName>Violence_AttackedNonHostilePerson</defName>
+    <label>attacked non-hostile person</label>
   </HistoryEventDef>
 
 </Defs>

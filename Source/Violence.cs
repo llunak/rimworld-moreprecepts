@@ -28,7 +28,7 @@ namespace MorePrecepts
         public static bool NotWillingToAttackNonHostile(Pawn attacker)
         {
             if( attacker.RaceProps.Humanlike
-                && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedHostilePerson, attacker.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+                && !new HistoryEvent(HistoryEventDefOf.Violence_AttackedNonHostilePerson, attacker.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
             {
                 return true;
             }
@@ -222,7 +222,7 @@ namespace MorePrecepts
                 Find.HistoryEventsManager.RecordEvent(historyEvent);
                 if(!otherPawn.HostileTo(pawn))
                 {
-                    HistoryEvent historyEventNonHostile = new HistoryEvent(HistoryEventDefOf.Violence_AttackedHostilePerson,
+                    HistoryEvent historyEventNonHostile = new HistoryEvent(HistoryEventDefOf.Violence_AttackedNonHostilePerson,
                         pawn.Named(HistoryEventArgsNames.Doer));
                     Find.HistoryEventsManager.RecordEvent(historyEventNonHostile);
                 }

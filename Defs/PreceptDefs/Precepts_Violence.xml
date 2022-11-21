@@ -208,18 +208,18 @@
     </conflictingMemes>
     <comps>
       <li Class="PreceptComp_UnwillingToDo">
-        <eventDef>Violence_AttackedHostilePerson</eventDef>
-        <description>attacked hostile person</description>
+        <eventDef>Violence_AttackedNonHostilePerson</eventDef>
+        <description>attacked non-hostile person</description>
         <nullifyingTraits>
           <li>Psychopath</li>
         </nullifyingTraits>
       </li>
       <li Class="PreceptComp_SelfTookMemoryThought">
-        <eventDef>Violence_AttackedHostilePerson</eventDef>
+        <eventDef>Violence_AttackedNonHostilePerson</eventDef>
         <thought>Violence_Defense</thought>
       </li>
       <li Class="PreceptComp_KnowsMemoryThought">
-        <eventDef>Violence_AttackedHostilePerson</eventDef>
+        <eventDef>Violence_AttackedNonHostilePerson</eventDef>
         <thought>Violence_Know_Defense</thought>
       </li>
       <li Class="PreceptComp_SelfTookMemoryThought">
