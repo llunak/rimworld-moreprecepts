@@ -62,7 +62,7 @@
     <conflictingMemes>
       <li>PainIsVirtue</li>
     </conflictingMemes>
-    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
     <comps>
       <li Class="MorePrecepts.PreceptComp_MemoryThought">
         <thought>Comfort_UsedUncomfortableFurniture_Essential</thought>
