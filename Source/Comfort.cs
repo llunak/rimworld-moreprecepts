@@ -114,11 +114,13 @@ namespace MorePrecepts
             // The comfort+ingest code is in Toils_Ingest, but Thing.Ingested is easier to patch.
             // chair
             if(thing.def.ingestible.chairSearchRadius > 0f)
-                ComfortHelper.AddThoughtIfNeeded(ingester, ingester.Position.GetEdifice(ingester.Map), chairMin, chairOk, thoughtDef, precept);
+                ComfortHelper.AddThoughtIfNeeded(ingester, ingester.Map != null ? ingester.Position.GetEdifice(ingester.Map) : null,
+                    chairMin, chairOk, thoughtDef, precept);
             // table
             if (ingester.needs.mood != null && thing.def.IsNutritionGivingIngestible && thing.def.ingestible.chairSearchRadius > 10f)
                 if (ingester.GetPosture() == PawnPosture.Standing && !ingester.IsWildMan() && thing.def.ingestible.tableDesired)
-                    ComfortHelper.AddThoughtIfNeeded(ingester, (ingester.Position + ingester.Rotation.FacingCell).GetEdifice(ingester.Map),
+                    ComfortHelper.AddThoughtIfNeeded(ingester,
+                        ingester.Map != null ? (ingester.Position + ingester.Rotation.FacingCell).GetEdifice(ingester.Map) : null,
                         tableMin, tableOk, thoughtDef, precept);
         }
     }
