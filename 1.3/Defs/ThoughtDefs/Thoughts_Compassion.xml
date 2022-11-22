@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ThoughtDef Name="CompassionBase" Abstract="True">
+    <durationDays>7</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
+  <!-- All -->
+
+  <ThoughtDef ParentName="CompassionBase">
+    <defName>Compassion_PawnLeftToDie_All</defName>
+    <stages>
+      <li>
+        <label>somebody left to die</label>
+        <description>We have left somebody helpless to die.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+      <li>
+        <label>somebody left to die</label>
+        <description>We have left somebody helpless to die.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+      <li>
+        <label>somebody left to die</label>
+        <description>We have left somebody helpless to die.</description>
+        <baseMoodEffect>-6</baseMoodEffect>
+      </li>
+      <li>
+        <label>somebody left to die</label>
+        <description>We have left somebody helpless to die.</description>
+        <baseMoodEffect>-8</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- NonGuiltyEnemies -->
+
+  <ThoughtDef ParentName="CompassionBase">
+    <defName>Compassion_NonGuiltyEnemies_PawnLeftToDie</defName>
+    <stages>
+      <li>
+        <label>somebody not guilty left to die</label>
+        <description>We have left somebody helpless and not guilty enemy to die.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+      <li>
+        <label>somebody not guilty left to die</label>
+        <description>We have left somebody helpless and not guilty enemy to die.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+      <li>
+        <label>somebody not guilty left to die</label>
+        <description>We have left somebody helpless and not guilty enemy to die.</description>
+        <baseMoodEffect>-6</baseMoodEffect>
+      </li>
+      <li>
+        <label>somebody not guilty left to die</label>
+        <description>We have left somebody helpless and not guilty enemy to die.</description>
+        <baseMoodEffect>-8</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- NonHostile -->
+
+  <ThoughtDef ParentName="CompassionBase">
+    <defName>Compassion_NonHostile_PawnLeftToDie</defName>
+    <stages>
+      <li>
+        <label>somebody not hostile left to die</label>
+        <description>We have left somebody helpless and not hostile to die.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+      <li>
+        <label>somebody not hostile left to die</label>
+        <description>We have left somebody helpless and not hostile to die.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+      <li>
+        <label>somebody not hostile left to die</label>
+        <description>We have left somebody helpless and not hostile to die.</description>
+        <baseMoodEffect>-6</baseMoodEffect>
+      </li>
+      <li>
+        <label>somebody not hostile left to die</label>
+        <description>We have left somebody helpless and not hostile to die.</description>
+        <baseMoodEffect>-8</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Allies -->
+
+  <ThoughtDef ParentName="CompassionBase">
+    <defName>Compassion_Allies_PawnLeftToDie</defName>
+    <stages>
+      <li>
+        <label>ally left to die</label>
+        <description>We have left a helpless ally to die.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+      <li>
+        <label>ally left to die</label>
+        <description>We have left a helpless ally to die.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+      <li>
+        <label>ally left to die</label>
+        <description>We have left a helpless ally to die.</description>
+        <baseMoodEffect>-6</baseMoodEffect>
+      </li>
+      <li>
+        <label>ally left to die</label>
+        <description>We have left a helpless ally to die.</description>
+        <baseMoodEffect>-8</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

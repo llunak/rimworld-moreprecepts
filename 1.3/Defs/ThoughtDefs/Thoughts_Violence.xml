@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Pacifism -->
+
+  <ThoughtDef>
+    <defName>Violence_Pacifism</defName>
+    <durationDays>7</durationDays>
+    <stackLimit>5</stackLimit>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>harmed somebody</label>
+        <description>I harmed somebody. I have violated my deepest beliefs.</description>
+        <baseMoodEffect>-30</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Violence_Know_Pacifism</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>7</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>harmed somebody</label>
+        <baseOpinionOffset>-100</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
+  <!-- Horrible -->
+
+  <ThoughtDef>
+    <defName>Violence_Horrible</defName>
+    <durationDays>7</durationDays>
+    <stackLimit>5</stackLimit>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>harmed somebody</label>
+        <description>I harmed somebody. Such a shameful and horrible act.</description>
+        <baseMoodEffect>-20</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Violence_Know_Horrible</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>7</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>harmed somebody</label>
+        <baseOpinionOffset>-50</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
+  <!-- Disapproved -->
+
+  <ThoughtDef>
+    <defName>Violence_Disapproved</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>5</stackLimit>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>harmed somebody</label>
+        <description>I harmed somebody. I feel ashamed.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Violence_Know_Disapproved</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>2</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>harmed somebody</label>
+        <baseOpinionOffset>-10</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
+  <!-- Defense -->
+
+  <ThoughtDef>
+    <defName>Violence_Defense</defName>
+    <durationDays>7</durationDays>
+    <stackLimit>5</stackLimit>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>harmed somebody</label>
+        <description>I harmed somebody who did not mean to harm me. I have violated my deepest beliefs.</description>
+        <baseMoodEffect>-30</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Violence_Know_Defense</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>7</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>harmed somebody who was not hostile</label>
+        <baseOpinionOffset>-100</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
+  <!-- Wanted -->
+
+  <ThoughtDef>
+    <defName>Violence_Wanted</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Violence_Wanted</workerClass>
+    <minExpectationForNegativeThought>Low</minExpectationForNegativeThought>
+    <validWhileDespawned>true</validWhileDespawned>
+    <nullifyingTraits>
+      <li>Wimp</li>
+      <li>Kind</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>recent violence</label>
+        <description>I feel so powerful.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+      <li>
+        <label>violence</label>
+        <visible>false</visible>
+        <baseMoodEffect>0</baseMoodEffect>
+      </li>
+      <li>
+        <label>violence missing</label>
+        <description>I want to fight somebody. It makes me feel good.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+      <li>
+        <visible>false</visible> <!-- Only for precept tooltip to show range. -->
+        <label>violence missing</label>
+        <description>I want to fight somebody. It makes me feel good.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Violence_Know_Wanted</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>1</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>5</stackLimitForSameOtherPawn>
+    <stages>
+      <li>
+        <label>fought somebody</label>
+        <baseOpinionOffset>3</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
+  <!-- Essential -->
+
+  <ThoughtDef>
+    <defName>Violence_Essential</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Violence_Essential</workerClass>
+    <minExpectationForNegativeThought>Low</minExpectationForNegativeThought>
+    <validWhileDespawned>true</validWhileDespawned>
+    <nullifyingTraits>
+      <li>Wimp</li>
+      <li>Kind</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>recent violence</label>
+        <description>Violence is my life.</description>
+        <baseMoodEffect>3</baseMoodEffect>
+      </li>
+      <li>
+        <label>violence</label>
+        <visible>false</visible>
+        <baseMoodEffect>0</baseMoodEffect>
+      </li>
+      <li>
+        <label>violence missing</label>
+        <description>I want to fight somebody. Violence is my life.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+      <li>
+        <visible>false</visible> <!-- Only for precept tooltip to show range. -->
+        <label>violence missing</label>
+        <description>I want to fight somebody. Violence is my life.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Violence_Know_Essential</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>1</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>5</stackLimitForSameOtherPawn>
+    <stages>
+      <li>
+        <label>fought somebody</label>
+        <baseOpinionOffset>5</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Violence_Know_NoViolence</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_NoViolence</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <!-- first group is for wanted, second group is for essential -->
+      <li>
+        <label>no recent violence</label>
+        <baseOpinionOffset>-10</baseOpinionOffset>
+      </li>
+      <li>
+        <label>no violence for a long time</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+      <li>
+        <label>no recent violence</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+      <li>
+        <label>no violence for a long time</label>
+        <baseOpinionOffset>-50</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

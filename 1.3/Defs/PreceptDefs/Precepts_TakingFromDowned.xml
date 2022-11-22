@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Issue -->
+
+  <IssueDef>
+    <defName>TakingFromDowned</defName>
+    <label>taking from downed</label>
+    <iconPath>UI/Issues/TakingFromDowned</iconPath>
+  </IssueDef>
+
+  <!-- Precepts -->
+
+  <PreceptDef>
+    <defName>TakingFromDowned_Abhorrent</defName>
+    <issue>TakingFromDowned</issue>
+    <label>abhorrent</label>
+    <description>Taking things from downed helpless people is abhorrent and should never be done.</description>
+    <impact>Medium</impact>
+    <displayOrderInIssue>20</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <conflictingMemes>
+      <li>Supremacist</li>
+      <li>Raider</li>
+    </conflictingMemes>
+    <comps>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>TakingFromDowned_DownedStripped</eventDef>
+        <thought>TakingFromDowned_DownedStripped_Abhorrent</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>TakingFromDowned_Horrible</defName>
+    <issue>TakingFromDowned</issue>
+    <label>horrible</label>
+    <description>Taking things from downed helpless people is horrible.</description>
+    <impact>Medium</impact>
+    <displayOrderInIssue>30</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <conflictingMemes>
+      <li>Supremacist</li>
+      <li>Raider</li>
+    </conflictingMemes>
+    <comps>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>TakingFromDowned_DownedStripped</eventDef>
+        <thought>TakingFromDowned_DownedStripped_Horrible</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>TakingFromDowned_Disapproved</defName>
+    <issue>TakingFromDowned</issue>
+    <label>disapproved</label>
+    <description>It is not right to take things from downed helpless people.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>40</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <conflictingMemes>
+      <li>Supremacist</li>
+      <li>Raider</li>
+    </conflictingMemes>
+    <comps>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>TakingFromDowned_DownedStripped</eventDef>
+        <thought>TakingFromDowned_DownedStripped_Disapproved</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+</Defs>

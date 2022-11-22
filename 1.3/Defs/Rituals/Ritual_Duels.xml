@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <RitualBehaviorDef>
+    <defName>AnimalDuel</defName>
+    <workerClass>RitualBehaviorWorker_Duel</workerClass>
+    <roles>
+      <li Class="RitualRoleTag">
+        <label>speaker</label>
+        <tag>Leader</tag>
+        <id>leader</id>
+        <precept>IdeoRole_Leader</precept>
+        <required>True</required>
+        <substitutable>True</substitutable>
+        <maxCount>1</maxCount>
+        <countsAsParticipant>False</countsAsParticipant>
+      </li>
+      <li Class="RitualRolePrisonerOrSlave">
+        <label>duelist</label>
+        <categoryLabel>duelist</categoryLabel>
+        <missingDesc>prisoner / slave (duelist)</missingDesc>
+        <id>duelist</id>
+        <mergeId>duelist</mergeId>
+        <mustBeCapableToFight>true</mustBeCapableToFight>
+        <required>True</required>
+        <maxCount>1</maxCount>
+        <ignoreBleeding>true</ignoreBleeding>
+        <countsAsParticipant>False</countsAsParticipant>
+      </li>
+      <li Class="RitualRoleAnimal">
+        <label>animal</label>
+        <id>duelistanimal</id> <!-- the code relies on 'duelist' being part of the id -->
+        <maxCount>1</maxCount>
+        <minBodySize>0.75</minBodySize>
+        <required>True</required>
+        <missingDesc>an animal with body size of at least 0.8</missingDesc>
+        <countsAsParticipant>False</countsAsParticipant>
+        <ignoreBleeding>true</ignoreBleeding>
+      </li>
+      <li Class="RitualRoleColonist">
+        <label>duelist escort</label>
+        <categoryLabel>duelist escorts</categoryLabel>
+        <missingDesc>non-downed colonists capable of hauling</missingDesc>
+        <id>escorte1</id>
+        <mergeId>escorte</mergeId>
+        <required>True</required>
+        <maxCount>1</maxCount>
+      </li>
+      <li Class="RitualRoleColonist">
+        <label>duelist escort</label>
+        <categoryLabel>duelist escorts</categoryLabel>
+        <missingDesc>non-downed colonists capable of hauling</missingDesc>
+        <id>escorte2</id>
+        <mergeId>escorte</mergeId>
+        <required>True</required>
+        <maxCount>1</maxCount>
+      </li>
+    </roles>
+    <spectatorsLabel>Spectators</spectatorsLabel>
+    <spectatorGerund>participate</spectatorGerund>
+    <stages>
+      <!-- Duelists drop weapons -->
+      <li>
+        <defaultDuty>SpectateCircle</defaultDuty>
+        <spectateDistanceOverride>5~7</spectateDistanceOverride>
+        <endTriggers>
+          <li Class="StageEndTrigger_RolesUnarmed">
+            <roleIds>
+              <li>duelist</li>
+            </roleIds>
+          </li>
+        </endTriggers>
+        <roleBehaviors>
+          <li>
+            <roleId>duelist</roleId>
+            <dutyDef>DropWeapon</dutyDef>
+          </li>
+          <li>
+            <roleId>duelistanimal</roleId>
+            <dutyDef>Idle</dutyDef>
+          </li>
+        </roleBehaviors>
+      </li>
+      <!-- People gather up -->
+      <li>
+        <defaultDuty>SpectateCircle</defaultDuty>
+        <spectateDistanceOverride>5~7</spectateDistanceOverride>
+        <endTriggers>
+          <li Class="StageEndTrigger_RolesArrived">
+            <roleIds>
+              <li>leader</li>
+            </roleIds>
+          </li>
+        </endTriggers>
+        <roleBehaviors>
+          <li>
+            <roleId>leader</roleId>
+            <dutyDef>ArriveToCell</dutyDef>
+            <customPositions>
+              <li Class="RitualPosition_InCircle">
+                <preferredRotation>North</preferredRotation>
+                <distRange>3~3</distRange>
+              </li>
+            </customPositions>
+          </li>
+          <li>
+            <roleId>duelist</roleId>
+            <dutyDef>Idle</dutyDef>
+          </li>
+          <li>
+            <roleId>duelistanimal</roleId>
+            <dutyDef>Idle</dutyDef>
+          </li>
+        </roleBehaviors>
+      </li>
+      <!-- Duelists are taken -->
+      <li Class="RitualStage_InteractWithRole">
+        <targets>
+          <li>
+            <pawnId>escorte1</pawnId>
+            <targetId>duelist</targetId>
+          </li>
+          <li>
+            <pawnId>escorte2</pawnId>
+            <targetId>duelistanimal</targetId>
+          </li>
+        </targets>
+        <defaultDuty>SpectateCircle</defaultDuty>
+        <spectateDistanceOverride>5~7</spectateDistanceOverride>
+        <failTriggers>
+          <li Class="StageFailTrigger_TargetPawnUnreachable">
+            <takerId>escorte1</takerId>
+            <takeeId>duelist</takeeId>
+            <desc>Duelist is not reachable.</desc>
+          </li>
+          <li Class="StageFailTrigger_TargetPawnUnreachable">
+            <takerId>escorte2</takerId>
+            <takeeId>duelistanimal</takeeId>
+            <desc>Animal is not reachable.</desc>
+          </li>
+        </failTriggers>
+        <endTriggers>
+          <li Class="StageEndTrigger_RolesArrived">
+            <roleIds>
+              <li>escorte1</li>
+              <li>escorte2</li>
+            </roleIds>
+            <clearTag>true</clearTag>
+          </li>
+        </endTriggers>
+        <roleBehaviors>
+          <li>
+            <roleId>leader</roleId>
+            <dutyDef>Idle</dutyDef>
+            <customPositions>
+              <li Class="RitualPosition_InCircle">
+                <preferredRotation>North</preferredRotation>
+                <distRange>3~3</distRange>
+              </li>
+            </customPositions>
+          </li>
+          <li>
+            <roleId>escorte1</roleId>
+            <dutyDef>DeliverPawnToCellIfAliveThenIdle</dutyDef>
+            <customPositions>
+              <li Class="RitualPosition_DuelistStart">
+                <distFromTarget>2</distFromTarget>
+                <duelistIndex>0</duelistIndex>
+              </li>
+            </customPositions>
+          </li>
+          <li>
+            <roleId>escorte2</roleId>
+            <dutyDef>DeliverPawnToCellIfAliveThenIdle</dutyDef>
+            <customPositions>
+              <li Class="RitualPosition_DuelistStart">
+                <distFromTarget>2</distFromTarget>
+                <duelistIndex>1</duelistIndex>
+              </li>
+            </customPositions>
+          </li>
+          <li>
+            <roleId>duelist</roleId>
+            <dutyDef>Idle</dutyDef>
+          </li>
+          <li>
+            <roleId>duelistanimal</roleId>
+            <dutyDef>Idle</dutyDef>
+          </li>
+        </roleBehaviors>
+      </li>
+      <!-- Leader speak on cell -->
+      <li>
+        <defaultDuty>SpectateCircle</defaultDuty>
+        <spectateDistanceOverride>5~7</spectateDistanceOverride>
+        <ignoreDurationToFinishAfterStage>true</ignoreDurationToFinishAfterStage>
+        <postAction Class="RitualStageAction_SoundOneshotOnTarget">
+          <sound>GladiatorDuel_Start</sound>
+        </postAction>
+        <endTriggers>
+          <li Class="StageEndTrigger_DurationPercentage">
+            <percentage>0.33</percentage>
+          </li>
+        </endTriggers>
+        <roleBehaviors>
+          <li>
+            <roleId>leader</roleId>
+            <dutyDef>SpeakOnCell</dutyDef>
+            <speakerInteraction>Speech_Duel</speakerInteraction>
+            <customPositions>
+              <li Class="RitualPosition_InCircle">
+                <preferredRotation>North</preferredRotation>
+                <distRange>3~3</distRange>
+              </li>
+            </customPositions>
+          </li>
+          <li>
+            <roleId>duelist</roleId>
+            <dutyDef>Idle</dutyDef>
+          </li>
+          <li>
+            <roleId>duelistanimal</roleId>
+            <dutyDef>Idle</dutyDef>
+          </li>
+        </roleBehaviors>
+      </li>
+      <!-- Fight -->
+      <li>
+        <defaultDuty>SpectateCircle</defaultDuty>
+        <spectateDistanceOverride>5~7</spectateDistanceOverride>
+        <visualEffectDef>Duel</visualEffectDef>
+        <endTriggers>
+          <li Class="StageEndTrigger_DurationPercentage">
+            <percentage>1</percentage>
+          </li>
+          <li Class="StageEndTrigger_DuelEnded">
+            <roleIds>
+              <li>duelist</li>
+              <li>duelistanimal</li>
+            </roleIds>
+          </li>
+        </endTriggers>
+        <roleBehaviors>
+          <li>
+            <roleId>leader</roleId>
+            <dutyDef>Idle</dutyDef>
+            <customPositions>
+              <li Class="RitualPosition_InCircle">
+                <preferredRotation>North</preferredRotation>
+                <distRange>3~3</distRange>
+              </li>
+            </customPositions>
+          </li>
+          <li>
+            <roleId>duelist</roleId>
+            <dutyDef>Duel</dutyDef>
+          </li>
+          <li>
+            <roleId>duelistanimal</roleId>
+            <dutyDef>DuelAnimal</dutyDef>
+          </li>
+        </roleBehaviors>
+      </li>
+      <!-- Duelists drop weapons -->
+      <li>
+        <defaultDuty>SpectateCircle</defaultDuty>
+        <spectateDistanceOverride>5~7</spectateDistanceOverride>
+        <endTriggers>
+          <li Class="StageEndTrigger_RolesUnarmed">
+            <roleIds>
+              <li>duelist</li>
+            </roleIds>
+          </li>
+        </endTriggers>
+        <roleBehaviors>
+          <li>
+            <roleId>duelist</roleId>
+            <dutyDef>DropWeapon</dutyDef>
+          </li>
+          <li>
+            <roleId>duelistanimal</roleId>
+            <dutyDef>Idle</dutyDef>
+          </li>
+        </roleBehaviors>
+      </li>
+      <!-- Wait some time -->
+      <li>
+        <defaultDuty>SpectateCircle</defaultDuty>
+        <spectateDistanceOverride>5~7</spectateDistanceOverride>
+        <endTriggers>
+          <li Class="StageEndTrigger_DurationPercentage">
+            <percentage>0.05</percentage>
+          </li>
+        </endTriggers>
+        <roleBehaviors>
+          <li>
+            <roleId>duelist</roleId>
+            <dutyDef>Idle</dutyDef>
+          </li>
+          <li>
+            <roleId>duelistanimal</roleId>
+            <dutyDef>Idle</dutyDef>
+          </li>
+        </roleBehaviors>
+      </li>
+      <!-- Duelists are brought back -->
+      <li Class="RitualStage_InteractWithRole">
+        <targets>
+          <li>
+            <pawnId>escorte1</pawnId>
+            <targetId>duelist</targetId>
+          </li>
+          <li>
+            <pawnId>escorte2</pawnId>
+            <targetId>duelistanimal</targetId>
+          </li>
+        </targets>
+        <defaultDuty>SpectateCircle</defaultDuty>
+        <spectateDistanceOverride>5~7</spectateDistanceOverride>
+        <endTriggers>
+          <li Class="StageEndTrigger_RolesArrived">
+            <roleIds>
+              <li>escorte1</li>
+              <li>escorte2</li>
+            </roleIds>
+          </li>
+        </endTriggers>
+        <preAction Class="RitualStageAction_RemovePawnsFromLord"> <!-- This is required to keep pawns tucked in their bed. -->
+          <roleIds>
+            <li>duelist</li>
+            <li>duelistanimal</li>
+          </roleIds>
+        </preAction>
+        <roleBehaviors>
+          <li>
+            <roleId>leader</roleId>
+            <dutyDef>Idle</dutyDef>
+            <customPositions>
+              <li Class="RitualPosition_InCircle">
+                <preferredRotation>North</preferredRotation>
+                <distRange>3~3</distRange>
+              </li>
+            </customPositions>
+          </li>
+          <li>
+            <roleId>escorte1</roleId>
+            <dutyDef>DeliverPawnToBedIfAliveThenIdle</dutyDef>
+          </li>
+          <li>
+            <roleId>escorte2</roleId>
+            <dutyDef>DeliverPawnToBedIfAliveThenIdle</dutyDef>
+          </li>
+          <li>
+            <roleId>duelist</roleId>
+            <dutyDef>Idle</dutyDef>
+          </li>
+          <li>
+            <roleId>duelistanimal</roleId>
+            <dutyDef>Idle</dutyDef>
+          </li>
+        </roleBehaviors>
+      </li>
+
+    </stages>
+  </RitualBehaviorDef>
+
+  <RitualOutcomeEffectDef>
+    <defName>AnimalDuel</defName>
+    <description>Depending on ritual quality, participants will get between {MINMOOD} and {MAXMOOD} mood for {MOODDAYS} days.</description>
+    <workerClass>MorePrecepts.RitualOutcomeEffectWorker_AnimalDuel</workerClass>
+    <extraPredictedOutcomeDescriptions>
+      <li>Duelist and viewers will gain melee combat experience.</li>
+      <li>Spectators will gain a mood boost and fill their recreation bars.</li>
+    </extraPredictedOutcomeDescriptions>
+    <comps>
+      <li Class="RitualOutcomeComp_ParticipantCount">
+        <label>participant count</label>
+        <curve>
+          <points>
+            <li>(1,  0.0)</li>
+            <li>(5,  0.15)</li>
+            <li>(10, 0.2)</li>
+          </points>
+        </curve>
+      </li>
+      <li Class="RitualOutcomeComp_RolePresentNotSubstituted">
+        <roleId>leader</roleId>
+        <label>leader present</label>
+        <qualityOffset>0.2</qualityOffset>
+      </li>
+      <li Class="RitualOutcomeComp_DuelistDied">
+        <label>duelist dies</label>
+        <qualityOffset>1</qualityOffset>
+      </li>
+      <li Class="RitualOutcomeComp_WeaponUsed">
+        <label>weapon used</label>
+        <qualityOffset>0.2</qualityOffset>
+      </li>
+    </comps>
+    <outcomeChances>
+      <li>
+        <chance>0.05</chance>
+        <label>Terrible</label>
+        <memory>TerribleDuel</memory>
+        <roleIdsNotGainingMemory>
+          <li>duelist</li>
+          <li>duelistanimal</li>
+        </roleIdsNotGainingMemory>
+        <description>The duel was terrible! The fighter bumbled around, ineptly avoiding the animal in a extended display of cowardice and weakness. Watching it just made people sad.</description>
+        <positivityIndex>-2</positivityIndex>
+      </li>
+      <li>
+        <chance>0.15</chance>
+        <label>Boring</label>
+        <memory>BoringDuel</memory>
+        <roleIdsNotGainingMemory>
+          <li>duelist</li>
+          <li>duelistanimal</li>
+        </roleIdsNotGainingMemory>
+        <description>The duel was boring. The fighter wouldn't commit, so there were no exciting moments.</description>
+        <positivityIndex>-1</positivityIndex>
+      </li>
+      <li>
+        <chance>0.6</chance>
+        <label>Good</label>
+        <memory>GoodDuel</memory>
+        <roleIdsNotGainingMemory>
+          <li>duelist</li>
+          <li>duelistanimal</li>
+        </roleIdsNotGainingMemory>
+        <description>The duel was good. The fighter went for blood and showed real heart.</description>
+        <positivityIndex>1</positivityIndex>
+      </li>
+      <li>
+        <chance>0.2</chance>
+        <label>Unforgettable</label>
+        <memory>UnforgettableDuel</memory>
+        <roleIdsNotGainingMemory>
+          <li>duelist</li>
+          <li>duelistanimal</li>
+        </roleIdsNotGainingMemory>
+        <description>The duel was unforgettable! Both the fighter and the animal gave all they had, and the death showed their dedication.</description>
+        <positivityIndex>2</positivityIndex>
+      </li>
+    </outcomeChances>
+  </RitualOutcomeEffectDef>
+
+</Defs>

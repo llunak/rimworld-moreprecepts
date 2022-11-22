@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ThingDef ParentName="IdeoPyre">
+    <defName>FuneralPyre</defName>
+    <label>funeral pyre</label>
+    <description>A wooden tower for ritual burning of a believer's body after they die. If the body is destroyed, an empty funeral pyre can be used. Slaves don't get funerals.</description>
+    <ideoBuildingNamerBase>NamerFuneralPyre</ideoBuildingNamerBase>
+    <thingClass>MorePrecepts.Building_FuneralPyre</thingClass>
+    <building>
+      <ai_chillDestination>false</ai_chillDestination>
+      <expandHomeArea>false</expandHomeArea>
+      <isInert>true</isInert>
+      <haulToContainerDuration>0</haulToContainerDuration>
+      <artificialForMeditationPurposes>false</artificialForMeditationPurposes>
+      <gibbetCorposeDrawOffset>(0.5, 0, 0.7)</gibbetCorposeDrawOffset>
+      <fixedStorageSettings>
+        <filter>
+          <categories>
+            <li>Corpses</li>
+          </categories>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <categories>
+            <li>CorpsesHumanlike</li>
+          </categories>
+        </filter>
+      </defaultStorageSettings>
+      <buildingTags>
+        <li>RitualFocus</li>
+      </buildingTags>
+    </building>
+    <inspectorTabs>
+      <li>ITab_Storage</li>
+    </inspectorTabs>
+    <comps>
+      <li Class="CompProperties_AssignableToPawn">
+        <drawAssignmentOverlay>false</drawAssignmentOverlay>
+        <compClass>CompAssignableToPawn_Grave</compClass>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

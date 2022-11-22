@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <MemeDef>
+    <defName>Nomadism</defName>
+    <label>nomadism</label>
+    <description>We need to move from place to place as necessary.</description>
+    <iconPath>UI/Memes/Nomadism</iconPath>
+    <groupDef>Misc</groupDef>
+    <impact>3</impact>
+    <renderOrder>999</renderOrder>
+    <requireOne>
+      <li>
+        <li>Nomadism_Essential</li>
+        <li>Nomadism_Important</li>
+        <li>Nomadism_Wanted</li>
+      </li>
+    </requireOne>
+    <generalRules>
+      <rulesStrings>
+        <li>memeAdjective->nomadic</li>
+        <li>memeAdjective->traveling</li>
+        <li>memeAdjective->peaceful</li>
+        <li>memeAdjective->exploration</li>
+        <li>memeHyphenPrefix->traveling</li>
+        <li>memeConcept->nomadism</li>
+        <li>memeConcept->travels</li>
+        <li>memeConcept->explores</li>
+        <li>memeLeaderNoun->restless one</li>
+        <li>memeLeaderNoun->traveller</li>
+        <li>memeLeaderNoun->guide</li>
+        <li>memeLeaderNoun->explorer</li>
+      </rulesStrings>
+    </generalRules>
+    <descriptionMaker>
+      <rules>
+        <rulesStrings>
+          <!-- theist myth -->
+          <li>creation(tag=meme_Nomadism)           ->In the vast world, [deity0_name] looked on, and wished for a race of curious beings in [deity0_possessive] own image, and made mankind.</li>
+          <li>episode(uses=1,tag=meme_Nomadism)     ->The people went in all directions, looking up to [deity0_name] to guide their path, and the [deity0_type] led their path.</li>
+          <!-- theist founder -->
+          <!-- theist founder -->
+          <li>intro(tag=meme_Nomadism)              ->The [place_summary] [place_name] was enormous, and explorers traveled to explore the secrets, which pleased the [deity0_type].</li>
+          <li>conflict(tag=meme_Nomadism)           ->A cowardly [foeLeader] grew attached to [foeLeader_possesive] place, and tried to prevent others from leaving.</li>
+          <li>founderJoin(tag=meme_Nomadism)        ->[deity0_name]'s daring follower [founderName] sneaked out of [place_powerCenter], avoided [foeLeader]'s guards, and prepared way for others to follow.</li>
+          <li>victory(tag=meme_Nomadism)            ->One day, people saw a sign, which filled their hearts with determination, and they set on their path in footsteps of [founderName]. [foeLeader] could not stop them.</li>
+          <!-- ideological founder -->
+          <li>setup(tag=meme_Nomadism)              ->[founderName] learnt everything about the place where [founder_pronoun] was born, and there was nothing more to explore. One day, [founder_pronoun] decided to explore the whole world.</li>
+          <li>story(uses=1,tag=meme_Nomadism)       ->[founderName] preached knowing the world as the true way to knowing oneself.</li>
+          <!-- ideological lesson -->
+          <li>lessonIntro(tag=meme_Nomadism)         ->First, we lived in place, staying where we were, afraid to leave. But then we opened our eyes and saw the worlds on the horizon.</li>
+          <li>lesson(tag=meme_Nomadism)              ->And we decided to explore what we could.</li>
+          <li>lessonReinforcement(tag=meme_Nomadism) ->For if we want to know life, we must see the world.</li>
+          <!-- archist -->
+          <li>archistBasis(tag=meme_Nomadism)       ->Archotechs are machines of vast power, knowing the deepest secrets of the world.</li>
+          <li>archistFact(tag=meme_Nomadism)        ->Archotechs look upon the world, and observe those who are brave to seek out its secrets and resources.</li>
+          <li>archistProphecy(tag=meme_Nomadism)    ->[inTheEnd], the true travelers will join the archotechs and rule the world.</li>
+          <!-- animist -->
+          <li>animistFact(tag=meme_Nomadism)        ->A true spirit is restless, seeking to explore the world.</li>
+        </rulesStrings>
+      </rules>
+    </descriptionMaker>
+    <symbolPacks>
+      <li>
+        <ideoName>nomadism</ideoName>
+        <theme>nomadism</theme>
+        <adjective>nomadic</adjective>
+        <member>nomad</member>
+      </li>
+      <li>
+        <ideoName>traveling</ideoName>
+        <theme>travels</theme>
+        <adjective>traveling</adjective>
+        <member>traveler</member>
+      </li>
+      <li>
+        <ideoName>exploration</ideoName>
+        <theme>exploration</theme>
+        <adjective>exploring</adjective>
+        <member>explorer</member>
+      </li>
+    </symbolPacks>
+    <ritualsToMake>2</ritualsToMake>
+  </MemeDef>
+
+</Defs>

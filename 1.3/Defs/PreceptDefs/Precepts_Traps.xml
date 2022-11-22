@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Issue -->
+
+  <IssueDef>
+    <defName>Traps</defName>
+    <label>traps</label>
+    <iconPath>UI/Issues/Traps</iconPath>
+  </IssueDef>
+
+  <!-- Precepts -->
+
+  <PreceptDef>
+    <defName>Traps_Prohibited</defName>
+    <issue>Traps</issue>
+    <label>prohibited</label>
+    <description>Building traps to kill random people is an absolutely inhuman thing to do.</description>
+    <allowedForNPCFactions>false</allowedForNPCFactions>
+    <impact>High</impact>
+    <displayOrderInIssue>20</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>HasTraps_Prohibited</thought>
+        <description>Trap in colony</description>
+      </li>
+      <li Class="PreceptComp_UnwillingToDo">
+        <eventDef>BuiltTrap</eventDef>
+        <description>Build trap</description>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Traps_Horrible</defName>
+    <issue>Traps</issue>
+    <label>horrible</label>
+    <description>Building traps kill random people is a terrible thing.</description>
+    <impact>High</impact>
+    <displayOrderInIssue>10</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>HasTraps_Horrible</thought>
+        <description>Trap in colony</description>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Traps_Disapproved</defName>
+    <issue>Traps</issue>
+    <label>disapproved</label>
+    <description>Building traps to kill random people is an ugly thing.</description>
+    <impact>Medium</impact>
+    <displayOrderInIssue>0</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>HasTraps_Disapproved</thought>
+        <description>Trap in colony</description>
+      </li>
+    </comps>
+  </PreceptDef>
+
+</Defs>

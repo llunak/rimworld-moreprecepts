@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Issue -->
+
+  <IssueDef>
+    <defName>Superstition</defName>
+    <label>superstition</label>
+    <iconPath>UI/Issues/Superstition</iconPath>
+  </IssueDef>
+
+  <!-- Precepts -->
+
+  <PreceptDef>
+    <defName>Superstition_Strong</defName>
+    <issue>Superstition</issue>
+    <label>strong</label>
+    <description>There are signs guiding our life, we must pay attention to them.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>50</displayOrderInIssue>
+    <comps>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Superstition_Superstitious_Strong_Plus</eventDef>
+        <thought>Superstition_Superstitious_Strong_Plus</thought>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Superstition_Superstitious_Strong_Minus</eventDef>
+        <thought>Superstition_Superstitious_Strong_Minus</thought>
+      </li>
+      <!-- Since it doesn't seem possible to extend GameConditionDef to add a flag saying the superstition type,
+           let's cheat and store the list here. -->
+      <li Class="MorePrecepts.PreceptComp_SuperstitionGood">
+        <gameConditionDefs>
+          <li>Aurora</li>
+        </gameConditionDefs>
+      </li>
+      <li Class="MorePrecepts.PreceptComp_SuperstitionBad">
+        <gameConditionDefs>
+          <li>SolarFlare</li>
+          <li>Eclipse</li>
+          <li>ToxicFallout</li>
+          <li>VolcanicWinter</li>
+          <li>Flashstorm</li>
+        </gameConditionDefs>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Superstition_Mild</defName>
+    <issue>Superstition</issue>
+    <label>mild</label>
+    <description>There may be signs in life.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>30</displayOrderInIssue>
+    <comps>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Superstition_Superstitious_Mild_Plus</eventDef>
+        <thought>Superstition_Superstitious_Mild_Plus</thought>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Superstition_Superstitious_Mild_Minus</eventDef>
+        <thought>Superstition_Superstitious_Mild_Minus</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Superstition_Contempt</defName>
+    <issue>Superstition</issue>
+    <label>contempt</label>
+    <description>Random natural events are perfectly logical and assigning them a meaning is ignorant.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>10</displayOrderInIssue>
+    <comps>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>Superstition_Superstitious_Generic</eventDef>
+        <thought>Superstition_Disgusted</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>Superstition_Superstitious_Generic</eventDef>
+        <thought>Superstition_Disgusted_Social</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+</Defs>

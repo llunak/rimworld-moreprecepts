@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <HistoryEventDef>
+    <defName>Compassion_IncapacitatedPawnLeftToDie_All</defName>
+    <label>somebody was left to die</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>Compassion_IncapacitatedPawnLeftToDie_NonGuiltyEnemies</defName>
+    <label>somebody not guilty was left to die</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>Compassion_IncapacitatedPawnLeftToDie_NonHostile</defName>
+    <label>somebody not hostile was left to die</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>Compassion_IncapacitatedPawnLeftToDie_Allies</defName>
+    <label>ally was left to die</label>
+  </HistoryEventDef>
+
+</Defs>

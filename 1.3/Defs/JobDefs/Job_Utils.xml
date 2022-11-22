@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <JobDef>
+    <defName>SitAndBeSociallyActive</defName>
+    <driverClass>MorePrecepts.JobDriver_SitAndBeSociallyActive</driverClass>
+    <reportString>relaxing socially.</reportString>
+    <neverShowWeapon>true</neverShowWeapon>
+  </JobDef>
+
+</Defs>

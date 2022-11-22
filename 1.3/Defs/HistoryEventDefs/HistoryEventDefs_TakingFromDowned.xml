@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <HistoryEventDef>
+    <defName>TakingFromDowned_DownedStripped</defName>
+    <label>we took things from an incapacitated person</label>
+  </HistoryEventDef>
+
+</Defs>

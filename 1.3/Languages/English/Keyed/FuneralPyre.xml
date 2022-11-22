@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <MorePrecepts.FuneralPyre>funeral pyre</MorePrecepts.FuneralPyre>
+
+  <MorePrecepts.RitualTargetFuneralPyreInfo>A funeral pyre containing {PAWN_labelShort}'s corpse.</MorePrecepts.RitualTargetFuneralPyreInfo>
+  <MorePrecepts.RitualTargetEmptyFuneralPyreInfo>An empty funeral pyre to mourn {PAWN_labelShort}'s passing.</MorePrecepts.RitualTargetEmptyFuneralPyreInfo>
+  <MorePrecepts.RitualTargetFuneralPyreInfoAbstract>A funeral pyre containing {IDEO_memberNameIndef}'s corpse</MorePrecepts.RitualTargetFuneralPyreInfoAbstract>
+  <MorePrecepts.RitualTargetEmptyFuneralPyreInfoAbstract>An empty funeral pyre to mourn {IDEO_memberNameIndef}'s passing.</MorePrecepts.RitualTargetEmptyFuneralPyreInfoAbstract>
+  <MorePrecepts.RitualTargetFuneralPyreInfoMustBePlaced>{PAWN_labelShort}'s body must be placed first</MorePrecepts.RitualTargetFuneralPyreInfoMustBePlaced>
+
+  <MorePrecepts.IdeoAlreadyHasFuneral>can only have one funeral type</MorePrecepts.IdeoAlreadyHasFuneral>
+
+</LanguageData>

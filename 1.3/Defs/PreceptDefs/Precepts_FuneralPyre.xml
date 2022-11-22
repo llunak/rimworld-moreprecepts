@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <PreceptDef Name="FuneralPyreBase" ParentName="FuneralBase" Abstract="True">
+    <description>A gathering that occurs around a believer's funeral pyre after they die and are buried. If the body is destroyed, an empty funeral pyre can be used. Slaves don't get funerals.</description>
+    <iconPath>UI/Icons/RitualFuneralPyre</iconPath>
+    <selectionWeight>0</selectionWeight>
+    <classicExtra>false</classicExtra>
+  </PreceptDef>
+
+  <PreceptDef ParentName="FuneralPyreBase">
+    <defName>FuneralPyre</defName>
+    <label>funeral pyre</label>
+    <ritualPatternBase>FuneralPyreStandard</ritualPatternBase>
+    <alsoAdds>FuneralPyreNoCorpse</alsoAdds>
+    <extraTextPawnDeathLetter>{PAWN_nameDef} should be burned and given a funeral so {PAWN_possessive} friends and family can say farewell.</extraTextPawnDeathLetter>
+    <exclusionTags>
+      <li>Funeral</li>
+    </exclusionTags>
+  </PreceptDef>
+
+  <PreceptDef ParentName="FuneralPyreBase">
+    <defName>FuneralPyreNoCorpse</defName>
+    <canGenerateAsSpecialPrecept>false</canGenerateAsSpecialPrecept>
+    <label>funeral pyre (no corpse)</label>
+    <visible>false</visible>
+    <listedForRoles>false</listedForRoles>
+    <ritualPatternBase>FuneralPyreNoCorpse</ritualPatternBase>
+    <takeNameFrom>FuneralPyre</takeNameFrom>
+  </PreceptDef>
+
+  <RitualPatternDef>
+    <defName>FuneralPyreStandard</defName>
+    <nameMaker>NamerRitualFuneralPyre</nameMaker>
+    <ritualExpectedDesc>Once a {IDEO} member dies, other {MEMBERS} gather around a funeral pyre for {RITUAL_labelDef}.</ritualExpectedDesc>
+    <ritualExpectedPostfix>{0} {1} want to carry out the funeral pyre as soon as possible.</ritualExpectedPostfix>
+    <ritualObligationTriggers>
+      <li Class="RitualObligationTrigger_MemberDiedProperties">
+        <mustBePlayerIdeo>true</mustBePlayerIdeo>
+      </li>
+    </ritualObligationTriggers>
+    <ritualObligationTargetFilter>FuneralPyreWithTargetsCorpse</ritualObligationTargetFilter>
+    <ritualBehavior>FuneralPyre</ritualBehavior>
+    <ritualOutcomeEffect>AttendedFuneralPyre</ritualOutcomeEffect>
+    <tags>
+      <li>Consumable</li>
+    </tags>
+  </RitualPatternDef>
+
+  <RitualPatternDef>
+    <defName>FuneralPyreNoCorpse</defName>
+    <ritualExpectedDesc>Once a {IDEO} member dies and the body is lost, other {MEMBERS} gather around an empty funeral pyre for {RITUAL_labelDef}.</ritualExpectedDesc>
+    <ritualObligationTriggers>
+      <li Class="RitualObligationTrigger_MemberCorpseDestroyedProperties">
+        <mustBePlayerIdeo>true</mustBePlayerIdeo>
+      </li>
+    </ritualObligationTriggers>
+    <ritualObligationTargetFilter>AnyEmptyFuneralPyre</ritualObligationTargetFilter>
+    <ritualBehavior>FuneralPyre</ritualBehavior>
+    <ritualOutcomeEffect>AttendedFuneralPyre</ritualOutcomeEffect>
+    <tags>
+      <li>Consumable</li>
+    </tags>
+  </RitualPatternDef>
+
+</Defs>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Prohibited -->
+
+  <ThoughtDef>
+    <defName>DrugPossession_Prohibited</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_DrugPossession_Prohibited</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <nullifyingTraitDegrees>
+      <DrugDesire>1</DrugDesire>
+      <DrugDesire>2</DrugDesire>
+    </nullifyingTraitDegrees>
+    <stages>
+      <li>
+        <label>drugs present</label>
+        <description>There are abhorrent drugs present.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+      <li>
+        <visible>false</visible> <!-- Only for precept tooltip to show range. -->
+        <label>drug possession</label>
+        <description>drug possession</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>DrugPossession_TradedDrug_Prohibited</defName>
+    <validWhileDespawned>true</validWhileDespawned>
+    <durationDays>5</durationDays>
+    <stages>
+      <li>
+        <label>traded drugs</label>
+        <description>I traded drugs. I feel so ashamed.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifyingTraitDegrees>
+      <DrugDesire>2</DrugDesire>
+      <DrugDesire>1</DrugDesire>
+    </nullifyingTraitDegrees>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>DrugPossession_Know_TradedDrug_Prohibited</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <durationDays>5</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stages>
+      <li>
+        <label>traded drugs</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifyingTraitDegrees>
+      <DrugDesire>2</DrugDesire>
+      <DrugDesire>1</DrugDesire>
+    </nullifyingTraitDegrees>
+  </ThoughtDef>
+
+  <!-- Alcohol -->
+
+  <ThoughtDef>
+    <defName>DrugPossession_Alcohol</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_DrugPossession_Alcohol</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <nullifyingTraitDegrees>
+      <DrugDesire>1</DrugDesire>
+      <DrugDesire>2</DrugDesire>
+    </nullifyingTraitDegrees>
+    <stages>
+      <li>
+        <label>drugs present</label>
+        <description>There are abhorrent drugs present.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+      <li>
+        <visible>false</visible> <!-- Only for precept tooltip to show range. -->
+        <label>drug possession</label>
+        <description>drug possession</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>DrugPossession_TradedDrug_Alcohol</defName>
+    <validWhileDespawned>true</validWhileDespawned>
+    <durationDays>5</durationDays>
+    <stages>
+      <li>
+        <label>traded drugs</label>
+        <description>I traded drugs. I feel so ashamed.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifyingTraitDegrees>
+      <DrugDesire>2</DrugDesire>
+      <DrugDesire>1</DrugDesire>
+    </nullifyingTraitDegrees>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>DrugPossession_Know_TradedDrug_Alcohol</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <durationDays>5</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stages>
+      <li>
+        <label>traded drugs</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifyingTraitDegrees>
+      <DrugDesire>2</DrugDesire>
+      <DrugDesire>1</DrugDesire>
+    </nullifyingTraitDegrees>
+  </ThoughtDef>
+
+  <!-- Social -->
+
+  <ThoughtDef>
+    <defName>DrugPossession_Social</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_DrugPossession_Social</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <nullifyingTraitDegrees>
+      <DrugDesire>1</DrugDesire>
+      <DrugDesire>2</DrugDesire>
+    </nullifyingTraitDegrees>
+    <stages>
+      <li>
+        <label>hard drugs present</label>
+        <description>There are abhorrent hard drugs present.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+      <li>
+        <visible>false</visible> <!-- Only for precept tooltip to show range. -->
+        <label>drug possession</label>
+        <description>drug possession</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>DrugPossession_TradedDrug_Social</defName>
+    <validWhileDespawned>true</validWhileDespawned>
+    <durationDays>5</durationDays>
+    <stages>
+      <li>
+        <label>traded hard drugs</label>
+        <description>I traded hard drugs. I feel so ashamed.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifyingTraitDegrees>
+      <DrugDesire>2</DrugDesire>
+      <DrugDesire>1</DrugDesire>
+    </nullifyingTraitDegrees>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>DrugPossession_Know_TradedDrug_Social</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <durationDays>5</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stages>
+      <li>
+        <label>traded hard drugs</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifyingTraitDegrees>
+      <DrugDesire>2</DrugDesire>
+      <DrugDesire>1</DrugDesire>
+    </nullifyingTraitDegrees>
+  </ThoughtDef>
+
+  <!-- Generic -->
+
+  <ThoughtDef>
+    <defName>DrugPossession_HasDrugs</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_DrugPossession_HasDrugs</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>has drugs</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

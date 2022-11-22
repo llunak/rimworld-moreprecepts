@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- Strong -->
+
+  <Superstition_Superstitious_Strong_Plus.stages.0.label>좋은 징조</Superstition_Superstitious_Strong_Plus.stages.0.label>
+  <Superstition_Superstitious_Strong_Plus.stages.0.description>좋은 징조를 봤어. 좋은 일이 생길 조짐이야.</Superstition_Superstitious_Strong_Plus.stages.0.description>
+
+  <Superstition_Superstitious_Strong_Minus.stages.0.label>나쁜 징조</Superstition_Superstitious_Strong_Minus.stages.0.label>
+  <Superstition_Superstitious_Strong_Minus.stages.0.description>나쁜 징조를 봤어. 끔찍한 일이 일어날 거야!</Superstition_Superstitious_Strong_Minus.stages.0.description>
+
+
+  <!-- Mild -->
+
+  <Superstition_Superstitious_Mild_Plus.stages.0.label>좋은 징조</Superstition_Superstitious_Mild_Plus.stages.0.label>
+  <Superstition_Superstitious_Mild_Plus.stages.0.description>좋은 징조를 봤어.</Superstition_Superstitious_Mild_Plus.stages.0.description>
+
+  <Superstition_Superstitious_Mild_Minus.stages.0.label>나쁜 징조</Superstition_Superstitious_Mild_Minus.stages.0.label>
+  <Superstition_Superstitious_Mild_Minus.stages.0.description>나쁜 징조를 봤어.</Superstition_Superstitious_Mild_Minus.stages.0.description>
+
+
+  <!-- Contempt -->
+
+  <Superstition_Disgusted.stages.0.label>미신적인 사람</Superstition_Disgusted.stages.0.label>
+  <Superstition_Disgusted.stages.0.description>너무나도 무지한 사람들이 있어.</Superstition_Disgusted.stages.0.description>
+
+
+  <!-- A separate one, so that the mood ones are merged into one mood debuff. -->
+
+  <Superstition_Disgusted_Social.stages.0.labelSocial>미신적임</Superstition_Disgusted_Social.stages.0.labelSocial>
+
+
+</LanguageData>

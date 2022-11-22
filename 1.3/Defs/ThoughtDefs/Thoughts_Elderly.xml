@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Revered -->
+
+  <ThoughtDef>
+    <defName>Elderly_Revered</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Plus</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <stages>
+      <li>
+        <label>No elders</label>
+        <description>We have no elders to share wisdom with us.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+      <li>
+        <label>One elder</label>
+        <description>We have a wise elder.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+      <li>
+        <label>Two elders</label>
+        <description>We have two wise elders.</description>
+        <baseMoodEffect>4</baseMoodEffect>
+      </li>
+      <li>
+        <label>Several elders</label>
+        <description>We have several wise elders.</description>
+        <baseMoodEffect>6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Revered_Self</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Self_Plus</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <stages>
+      <li>
+        <label>Respected as an elder</label>
+        <description>I feel others treat me with high respect because of my age.</description>
+        <baseMoodEffect>5</baseMoodEffect>
+      </li>
+      <li>
+        <label>Respected as a very old elder</label>
+        <description>I feel others treat me with very high respect because of my high age.</description>
+        <baseMoodEffect>10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Revered_NoYoung</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_NoYoung</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <stages>
+      <li>
+        <label>No younger people</label>
+        <description>There are no younger people I could share my wisdom with.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Revered_Role</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Role</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <stages>
+      <li>
+        <label>Extremely young expert</label>
+        <description>I don't like it when very inexperienced people have important roles.</description>
+        <baseMoodEffect>-20</baseMoodEffect>
+      </li>
+      <li>
+        <label>Too young expert</label>
+        <description>I don't like it when inexperienced people have important roles.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Revered_Role_Self</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Role_Self</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <nullifyingTraitDegrees>
+      <Nerves>2</Nerves>
+      <Nerves>1</Nerves>
+    </nullifyingTraitDegrees>
+    <stages>
+      <li>
+        <label>Extremely young for role</label>
+        <description>Why do I have all this responsibility?</description>
+        <baseMoodEffect>-20</baseMoodEffect>
+      </li>
+      <li>
+        <label>Too young for role</label>
+        <description>I don't feel experienced enough for the responsibility I have.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Revered_Social</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Social_Plus</workerClass>
+    <stages>
+      <li>
+        <label>Elder</label>
+        <baseOpinionOffset>20</baseOpinionOffset>
+      </li>
+      <li>
+        <label>Very old elder</label>
+        <baseOpinionOffset>50</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Revered_Social_Young</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Social_Young</workerClass>
+    <nullifyingTraits>
+      <li>Kind</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>Too young</label>
+        <baseOpinionOffset>-5</baseOpinionOffset>
+      </li>
+      <li>
+        <label>Teenager</label>
+        <baseOpinionOffset>-10</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Respected -->
+
+  <ThoughtDef>
+    <defName>Elderly_Respected</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Respected</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <stages>
+      <li>
+        <label>An elder</label>
+        <description>We have a wise elder.</description>
+        <baseMoodEffect>1</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Respected_Self</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Self_Plus</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <stages>
+      <li>
+        <label>Respected as an elder</label>
+        <description>I feel others treat me with respect because of my age.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+      <li>
+        <label>Respected as a very old elder</label>
+        <description>I feel others treat me with respect because of my high age.</description>
+        <baseMoodEffect>4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Respected_NoYoung</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_NoYoung</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <stages>
+      <li>
+        <label>No younger people</label>
+        <description>There are no younger people I could share my wisdom with.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Respected_Role</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Role_Single</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <stages>
+      <li>
+        <label>Too young expert</label>
+        <description>I don't like it when inexperienced people have important roles.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Respected_Role_Self</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Role_Self_Single</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <nullifyingTraitDegrees>
+      <Nerves>2</Nerves>
+      <Nerves>1</Nerves>
+    </nullifyingTraitDegrees>
+    <stages>
+      <li>
+        <label>Too young for role</label>
+        <description>I don't feel experienced enough for the responsibility I have.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Respected_Social</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Social_Plus</workerClass>
+    <stages>
+      <li>
+        <label>Elder</label>
+        <baseOpinionOffset>10</baseOpinionOffset>
+      </li>
+      <li>
+        <label>Very old elder</label>
+        <baseOpinionOffset>20</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Disrespected -->
+
+  <ThoughtDef>
+    <defName>Elderly_Disrespected</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Minus</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <nullifyingTraits>
+      <li>Kind</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>Old person present</label>
+        <description>We have an old person, who is not that useful anymore.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+      <li>
+        <label>Two old people present</label>
+        <description>We have two old people, who are not that useful anymore.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+      <li>
+        <label>Several old people present</label>
+        <description>We have several old people, who are not that useful anymore.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Disrespected_Self</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Self_Minus</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <stages>
+      <li>
+        <label>Disrespected as old</label>
+        <description>I feel old and not respected anymore.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+      <li>
+        <label>Disrespected as very old</label>
+        <description>I feel very old and very disrespected.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Disrespected_Social</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Social_Minus</workerClass>
+    <nullifyingTraits>
+      <li>Kind</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>Old</label>
+        <baseOpinionOffset>-10</baseOpinionOffset>
+      </li>
+      <li>
+        <label>Very old</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Abhorred -->
+
+  <ThoughtDef>
+    <defName>Elderly_Abhorred</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Minus</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <nullifyingTraits>
+      <li>Kind</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>Old person present</label>
+        <description>We have an old person, who just eats our food and is useless.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+      <li>
+        <label>Two old people present</label>
+        <description>We have two old people, they just eat our food and are useless.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+      <li>
+        <label>Several old people present</label>
+        <description>We have several old people, why waste our resources on such useless people!</description>
+        <baseMoodEffect>-20</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Abhorred_Self</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Self_Minus</workerClass>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <stages>
+      <li>
+        <label>Abhorred as old</label>
+        <description>I feel old and useless.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+      <li>
+        <label>Abhorred as very old</label>
+        <description>I feel very old and very useless. Time to die.</description>
+        <baseMoodEffect>-20</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Elderly_Abhorred_Social</defName>
+    <thoughtClass>Thought_SituationalSocial</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Elderly_Social_Minus</workerClass>
+    <nullifyingTraits>
+      <li>Kind</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>Old</label>
+        <baseOpinionOffset>-50</baseOpinionOffset>
+      </li>
+      <li>
+        <label>Very old</label>
+        <baseOpinionOffset>-100</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

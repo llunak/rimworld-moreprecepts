@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/FactionDef[defName="TribeCannibal"]/disallowedMemes</xpath>
+    <value>
+      <li>Pacifism</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/FactionDef[categoryTag="Outlander"]/disallowedMemes</xpath>
+    <value>
+      <li MayRequire="Ludeon.RimWorld.Ideology">Pacifism</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/FactionDef[categoryTag="Tribal"]/disallowedMemes</xpath>
+    <value>
+      <li MayRequire="Ludeon.RimWorld.Ideology">Pacifism</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/FactionDef[defName="TribeCivil"]/disallowedMemes</xpath>
+    <value>
+      <li MayRequire="Ludeon.RimWorld.Ideology">Pacifism</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/FactionDef[defName="TribeRough"]/disallowedMemes</xpath>
+    <value>
+      <li MayRequire="Ludeon.RimWorld.Ideology">Pacifism</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/FactionDef[defName="TribeSavage"]/disallowedMemes</xpath>
+    <value>
+      <li MayRequire="Ludeon.RimWorld.Ideology">Pacifism</li>
+    </value>
+  </Operation>
+
+</Patch>
