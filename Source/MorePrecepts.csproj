@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputPath>..\1.4\Assemblies</OutputPath>
+    <OutputPath>..\Assemblies</OutputPath>
     <TargetFramework>net472</TargetFramework>
     <AssemblyTitle>More Precepts</AssemblyTitle>
     <AssemblyVersion>2022.1121.1</AssemblyVersion>
