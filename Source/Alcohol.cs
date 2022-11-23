@@ -160,7 +160,8 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             {
                 // If alcohol, send alcohol event.
                 if(billDoer != null)
-                    Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.AdministeredAlcohol, billDoer.Named(HistoryEventArgsNames.Doer)));
+                    Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.AdministeredAlcohol,
+                        billDoer.Named(HistoryEventArgsNames.Doer), pawn.Named(HistoryEventArgsNames.Victim)));
                 // And block sending drug events, which is inside 'billDoer' check, but rest of the original function will still do its work.
                 billDoer = null;
             }

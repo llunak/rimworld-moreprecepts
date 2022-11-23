@@ -220,12 +220,12 @@ namespace MorePrecepts
             if(pawn != null && pawn.RaceProps.Humanlike && otherPawn.RaceProps.Humanlike)
             {
                 HistoryEvent historyEvent = new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson,
-                    pawn.Named(HistoryEventArgsNames.Doer));
+                    pawn.Named(HistoryEventArgsNames.Doer), otherPawn.Named(HistoryEventArgsNames.Victim));
                 Find.HistoryEventsManager.RecordEvent(historyEvent);
                 if(!otherPawn.HostileTo(pawn))
                 {
                     HistoryEvent historyEventNonHostile = new HistoryEvent(HistoryEventDefOf.Violence_AttackedNonHostilePerson,
-                        pawn.Named(HistoryEventArgsNames.Doer));
+                        pawn.Named(HistoryEventArgsNames.Doer), otherPawn.Named(HistoryEventArgsNames.Victim));
                     Find.HistoryEventsManager.RecordEvent(historyEventNonHostile);
                 }
             }
