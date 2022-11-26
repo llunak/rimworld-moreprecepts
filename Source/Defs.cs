@@ -65,6 +65,14 @@ namespace MorePrecepts
 
         public static PreceptDef Comfort_Essential;
 
+        public static PreceptDef MP_NewcomerAttitude_Excited;
+
+        public static PreceptDef MP_NewcomerAttitude_Careful;
+
+        public static PreceptDef MP_NewcomerAttitude_Wary;
+
+        public static PreceptDef MP_NewcomerAttitude_Fearful;
+
         static PreceptDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(PreceptDefOf));

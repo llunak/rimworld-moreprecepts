@@ -45,6 +45,7 @@
     <Compile Include="Fixes.cs" />
     <Compile Include="FuneralPyre.cs" />
     <Compile Include="HarmonyPatches.cs" />
+    <Compile Include="NewcomerAttitude.cs" />
     <Compile Include="Nomadism.cs" />
     <Compile Include="PawnComp.cs" />
     <Compile Include="RitualOutcomeRaid.cs" />
