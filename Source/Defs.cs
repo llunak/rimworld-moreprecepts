@@ -150,6 +150,8 @@ namespace MorePrecepts
 
         public static HistoryEventDef Compassion_IncapacitatedPawnLeftToDie_Allies;
 
+        public static HistoryEventDef TakingFromDowned_DownedStripped;
+
         [MayRequireIdeology]
         public static HistoryEventDef BuiltTrap;
 

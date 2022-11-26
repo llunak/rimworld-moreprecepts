@@ -50,6 +50,7 @@
     <Compile Include="RitualOutcomeRaid.cs" />
     <Compile Include="RitualOutcomeVeneratedAnimals.cs" />
     <Compile Include="Superstition.cs" />
+    <Compile Include="TakingFromDowned.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Traps.cs" />
     <Compile Include="Violence.cs" />
