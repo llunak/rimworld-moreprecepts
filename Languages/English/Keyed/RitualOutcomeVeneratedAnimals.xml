@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <MorePrecepts.LetterLabelVeneratedAnimalsWanderIn>{0} enter the area</MorePrecepts.LetterLabelVeneratedAnimalsWanderIn>
+  <MorePrecepts.LetterVeneratedAnimalsWanderIn>A group of {0} have wandered into the area.</MorePrecepts.LetterVeneratedAnimalsWanderIn> 
+  <MorePrecepts.RitualAttachedOutcome_VeneratedAnimalsWanderIn_Desc>The commotion from the {0} has attracted some curious animals!</MorePrecepts.RitualAttachedOutcome_VeneratedAnimalsWanderIn_Desc>
+  <MorePrecepts.RitualAttachedRewardRequiredVeneratedAnimal>Requires a venerated animal</MorePrecepts.RitualAttachedRewardRequiredVeneratedAnimal>
+</LanguageData>

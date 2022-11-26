@@ -159,4 +159,30 @@ namespace MorePrecepts
         }
     }
 
+    [DefOf]
+    public static class IncidentDefOf
+    {
+        public static IncidentDef RaidEnemy;
+
+        [MayRequireIdeology]
+        public static IncidentDef MP_VeneratedAnimalsWanderIn;
+
+        static IncidentDefOf()
+        {
+            DefOfHelper.EnsureInitializedInCtor(typeof(IncidentDefOf));
+        }
+    }
+
+    [DefOf]
+    public static class RitualAttachableOutcomeEffectDefOf
+    {
+        [MayRequireIdeology]
+        public static RitualAttachableOutcomeEffectDef MP_VeneratedAnimalsWanderIn;
+
+        static RitualAttachableOutcomeEffectDefOf()
+        {
+            DefOfHelper.EnsureInitializedInCtor(typeof(RitualAttachableOutcomeEffectDefOf));
+        }
+    }
+
 }

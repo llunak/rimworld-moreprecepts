@@ -1,15 +1,16 @@
+using HarmonyLib;
 using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
+using RimWorld;
 
-namespace RimWorld
+// This is basically copy&paste of FarmAnimalsWanderIn code (can't quite just subclass,
+// some relevant code is private).
+namespace MorePrecepts
 {
-    public class IncidentWorker_FarmAnimalsWanderIn : IncidentWorker
+    public class IncidentWorker_VeneratedAnimalsWanderIn : IncidentWorker
     {
-        private const string FarmAnimalTradeTag = "AnimalFarm";
-
-        private const float MaxWildness = 0.35f;
-
         private const float TotalBodySizeToSpawn = 2.5f;
 
         private static SimpleCurve BaseChanceFactorByAnimalBodySizePerCapitaCurve = new SimpleCurve
@@ -24,11 +25,12 @@ namespace RimWorld
         {
             get
             {
-                if (!ModsConfig.IdeologyActive || !IdeoUtility.AnyColonistWithRanchingIssue())
+                if (!ModsConfig.IdeologyActive /*|| !IdeoUtility.AnyColonistWithRanchingIssue()*/)
                 {
                     return base.BaseChanceThisGame;
                 }
-                return base.BaseChanceThisGame * BaseChanceFactorByAnimalBodySizePerCapitaCurve.Evaluate(PawnUtility.PlayerAnimalBodySizePerCapita());
+                return base.BaseChanceThisGame
+                    * BaseChanceFactorByAnimalBodySizePerCapitaCurve.Evaluate(PawnUtility.PlayerAnimalBodySizePerCapita());
             }
         }
 
@@ -42,7 +44,7 @@ namespace RimWorld
             PawnKindDef kind;
             if (RCellFinder.TryFindRandomPawnEntryCell(out var _, map, CellFinder.EdgeRoadChance_Animal))
             {
-                return TryFindRandomPawnKind(map, out kind);
+                return TryFindRandomPawnKind(map, out kind, parms.pawnIdeo);
             }
             return false;
         }
@@ -54,11 +56,12 @@ namespace RimWorld
             {
                 return false;
             }
-            if (!TryFindRandomPawnKind(map, out var kind))
+            if (!TryFindRandomPawnKind(map, out var kind, parms.pawnIdeo))
             {
                 return false;
             }
-            int num = Mathf.Clamp(GenMath.RoundRandom(((parms.totalBodySize > 0f) ? parms.totalBodySize : 2.5f) / kind.RaceProps.baseBodySize), 2, 10);
+            int num = Mathf.Clamp(GenMath.RoundRandom(((parms.totalBodySize > 0f) ? parms.totalBodySize : 2.5f)
+                / kind.RaceProps.baseBodySize), 2, 10);
             if (num >= 2)
             {
                 SpawnAnimal(result, map, kind, Gender.Female);
@@ -69,26 +72,39 @@ namespace RimWorld
             {
                 SpawnAnimal(result, map, kind);
             }
-            SendStandardLetter(parms.customLetterLabel ?? ((string)"LetterLabelFarmAnimalsWanderIn".Translate(kind.GetLabelPlural()).CapitalizeFirst()), parms.customLetterText ?? ((string)"LetterFarmAnimalsWanderIn".Translate(kind.GetLabelPlural())), LetterDefOf.PositiveEvent, parms, new TargetInfo(result, map));
+            SendStandardLetter(parms.customLetterLabel
+                ?? ((string)"MorePrecepts.LetterLabelVeneratedAnimalsWanderIn".Translate(kind.GetLabelPlural()).CapitalizeFirst()),
+                parms.customLetterText ?? ((string)"MorePrecepts.LetterVeneratedAnimalsWanderIn".Translate(kind.GetLabelPlural())),
+                LetterDefOf.PositiveEvent, parms, new TargetInfo(result, map));
             return true;
         }
 
         private void SpawnAnimal(IntVec3 location, Map map, PawnKindDef pawnKind, Gender? gender = null)
         {
             IntVec3 loc = CellFinder.RandomClosewalkCellNear(location, map, 12);
-            Pawn pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(pawnKind, null, PawnGenerationContext.NonPlayer, -1, forceGenerateNewPawn: false, allowDead: false, allowDowned: false, canGeneratePawnRelations: true, mustBeCapableOfViolence: false, 1f, forceAddFreeWarmLayerIfNeeded: false, allowGay: true, allowPregnant: false, allowFood: true, allowAddictions: true, inhabitant: false, certainlyBeenInCryptosleep: false, forceRedressWorldPawnIfFormerColonist: false, worldPawnFactionDoesntMatter: false, 0f, 0f, null, 1f, null, null, null, null, null, null, null, gender));
+            Pawn pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(pawnKind, null, PawnGenerationContext.NonPlayer,
+                -1, forceGenerateNewPawn: false, allowDead: false, allowDowned: false, canGeneratePawnRelations: true,
+                mustBeCapableOfViolence: false, 1f, forceAddFreeWarmLayerIfNeeded: false, allowGay: true, allowPregnant: false,
+                allowFood: true, allowAddictions: true, inhabitant: false, certainlyBeenInCryptosleep: false,
+                forceRedressWorldPawnIfFormerColonist: false, worldPawnFactionDoesntMatter: false, 0f, 0f, null, 1f, null,
+                null, null, null, null, null, null, gender));
             GenSpawn.Spawn(pawn, loc, map, Rot4.Random);
-            pawn.SetFaction(Faction.OfPlayer);
+            /*pawn.SetFaction(Faction.OfPlayer);*/
         }
 
-        private bool TryFindRandomPawnKind(Map map, out PawnKindDef kind)
+        private bool TryFindRandomPawnKind(Map map, out PawnKindDef kind, Ideo ideo)
         {
-            return DefDatabase<PawnKindDef>.AllDefs.Where((PawnKindDef x) => x.RaceProps.Animal && x.RaceProps.wildness < 0.35f && map.mapTemperature.SeasonAndOutdoorTemperatureAcceptableFor(x.race) && !x.race.tradeTags.NullOrEmpty() && x.race.tradeTags.Contains("AnimalFarm") && !x.RaceProps.Dryad).TryRandomElementByWeight((PawnKindDef k) => SelectionChance(k), out kind);
+            return DefDatabase<PawnKindDef>.AllDefs.Where(
+                (PawnKindDef x) => x.RaceProps.Animal /*&& x.RaceProps.wildness < 0.35f*/
+                && map.mapTemperature.SeasonAndOutdoorTemperatureAcceptableFor(x.race)
+                /*&& !x.race.tradeTags.NullOrEmpty() && x.race.tradeTags.Contains("AnimalFarm")*/ && !x.RaceProps.Dryad
+                && (ideo != null ? ideo.IsVeneratedAnimal(x.race) : false)) // added
+                .TryRandomElementByWeight((PawnKindDef k) => SelectionChance(k), out kind);
         }
 
         private float SelectionChance(PawnKindDef pawnKind)
         {
-            float num = 0.42000002f - pawnKind.RaceProps.wildness;
+            float num = 1;/*0.42000002f - pawnKind.RaceProps.wildness;*/
             if (PawnUtility.PlayerHasReproductivePair(pawnKind))
             {
                 num *= 0.5f;
@@ -97,26 +113,44 @@ namespace RimWorld
         }
     }
 
-    public class RitualAttachableOutcomeEffectWorker_FarmAnimalsWanderIn : RitualAttachableOutcomeEffectWorker
+    public class RitualAttachableOutcomeEffectWorker_VeneratedAnimalsWanderIn : RitualAttachableOutcomeEffectWorker
     {
         public const float PositiveOutcomeBodysize = 2f;
 
         public const float BestOutcomeBodysize = 3f;
 
-        public override void Apply(Dictionary<Pawn, int> totalPresence, LordJob_Ritual jobRitual, OutcomeChance outcome, out string extraOutcomeDesc, ref LookTargets letterLookTargets)
+        public override void Apply(Dictionary<Pawn, int> totalPresence, LordJob_Ritual jobRitual,
+            OutcomeChance outcome, out string extraOutcomeDesc, ref LookTargets letterLookTargets)
         {
             extraOutcomeDesc = null;
             IncidentParms parms = new IncidentParms
             {
                 target = jobRitual.Map,
                 totalBodySize = (outcome.BestPositiveOutcome(jobRitual) ? 3f : 2f),
-                customLetterText = "RitualAttachedOutcome_FarmAnimalsWanderIn_Desc".Translate(jobRitual.RitualLabel)
+                customLetterText = "MorePrecepts.RitualAttachedOutcome_VeneratedAnimalsWanderIn_Desc".Translate(jobRitual.RitualLabel),
+                pawnIdeo = jobRitual.Ritual?.ideo
             };
-            if (IncidentDefOf.FarmAnimalsWanderIn.Worker.TryExecute(parms))
+            if (IncidentDefOf.MP_VeneratedAnimalsWanderIn.Worker.TryExecute(parms))
             {
                 extraOutcomeDesc = def.letterInfoText;
             }
         }
     }
 
+    [HarmonyPatch(typeof(RitualAttachableOutcomeEffectDef))]
+    public static class RitualAttachableOutcomeEffectDef_Patch
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CanAttachToRitual))]
+        public static bool CanAttachToRitual(ref AcceptanceReport __result, RitualAttachableOutcomeEffectDef __instance, Precept_Ritual ritual)
+        {
+            if( __instance == RitualAttachableOutcomeEffectDefOf.MP_VeneratedAnimalsWanderIn
+                && ritual.ideo.VeneratedAnimals.Count == 0)
+            {
+                __result = "MorePrecepts.RitualAttachedRewardRequiredVeneratedAnimal".Translate();
+                return false;
+            }
+            return true;
+        }
+    }
 }
