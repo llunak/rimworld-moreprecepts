@@ -5,6 +5,7 @@ using System.Reflection.Emit;
 using RimWorld;
 using Verse;
 using Verse.AI;
+using System;
 
 // Core game has both Comfort:Ignored and RoughLiving:Welcomed, and we need to do the inverse
 // of both here (it is bad to both use bad furniture and not have furniture at all).
@@ -54,30 +55,33 @@ namespace MorePrecepts
             return (bedMin, bedOk, chairMin, chairOk, tableMin, tableOk, thoughtDef, precept);
         }
 
-        public static void AddThoughtIfNeeded(Pawn pawn, Thing thing, float min, float ok, ThoughtDef thoughtDef, Precept precept)
+        public static int GetThoughtLevel(Thing thing, float min, float ok)
         {
             float comfort = thing?.GetStatValue(StatDefOf.Comfort) ?? 0;
             if(comfort >= ok)
-                return;
-            Thought_Memory thought = ThoughtMaker.MakeThought(thoughtDef, precept);
-            thought.SetForcedStage(comfort == 0 ? 2 : comfort < min ? 1 : 0);
-            pawn.needs.mood.thoughts.memories.TryGainMemory(thought);
+                return -1;
+            return comfort == 0 ? 2 : comfort < min ? 1 : 0;
         }
 
-        public static void AddThoughtIfNeeded(Pawn pawn, Thing thing, QualityCategory min, QualityCategory ok, ThoughtDef thoughtDef, Precept precept)
+        public static int GetThoughtLevel(Thing thing, QualityCategory min, QualityCategory ok)
         {
             QualityCategory quality;
-            int level;
             if(thing == null)
-                level = 0;
+                return 0;
             else if(thing.TryGetQuality(out quality))
             {
                 if(quality >= ok)
-                    return;
-                level = quality < min ? 1 : 0;
+                    return -1;
+                return quality < min ? 1 : 0;
             }
             else
-                return; // no quality setting, always consider acceptable
+                return -1; // no quality setting, always consider acceptable
+        }
+
+        public static void AddThoughtIfNeeded(Pawn pawn, int level, ThoughtDef thoughtDef, Precept precept)
+        {
+            if(level < 0)
+                return;
             Thought_Memory thought = ThoughtMaker.MakeThought(thoughtDef, precept);
             thought.SetForcedStage(level);
             pawn.needs.mood.thoughts.memories.TryGainMemory(thought);
@@ -95,7 +99,8 @@ namespace MorePrecepts
                 ThoughtDef thoughtDef, Precept precept) = ComfortHelper.GetComfort(actor);
             if(thoughtDef == null)
                 return;
-            ComfortHelper.AddThoughtIfNeeded(actor, actor.CurrentBed(), bedMin, bedOk, thoughtDef, precept);
+            ComfortHelper.AddThoughtIfNeeded(actor, ComfortHelper.GetThoughtLevel(actor.CurrentBed(), bedMin, bedOk),
+                thoughtDef, precept);
         }
     }
 
@@ -106,22 +111,22 @@ namespace MorePrecepts
         [HarmonyPatch(nameof(Ingested))]
         public static void Ingested(Thing __instance, Pawn ingester, float nutritionWanted)
         {
+            Thing thing = __instance;
             (float bedMin, float bedOk, float chairMin, float chairOk, QualityCategory tableMin, QualityCategory tableOk,
                 ThoughtDef thoughtDef, Precept precept) = ComfortHelper.GetComfort(ingester);
             if(thoughtDef == null)
                 return;
-            Thing thing = __instance;
             // The comfort+ingest code is in Toils_Ingest, but Thing.Ingested is easier to patch.
-            // chair
+            Thing chair = null;
             if(thing.def.ingestible.chairSearchRadius > 0f)
-                ComfortHelper.AddThoughtIfNeeded(ingester, ingester.Map != null ? ingester.Position.GetEdifice(ingester.Map) : null,
-                    chairMin, chairOk, thoughtDef, precept);
-            // table
+                chair = ingester.Map != null ? ingester.Position.GetEdifice(ingester.Map) : null;
+            Thing table = null;
             if (ingester.needs.mood != null && thing.def.IsNutritionGivingIngestible && thing.def.ingestible.chairSearchRadius > 10f)
                 if (ingester.GetPosture() == PawnPosture.Standing && !ingester.IsWildMan() && thing.def.ingestible.tableDesired)
-                    ComfortHelper.AddThoughtIfNeeded(ingester,
-                        ingester.Map != null ? (ingester.Position + ingester.Rotation.FacingCell).GetEdifice(ingester.Map) : null,
-                        tableMin, tableOk, thoughtDef, precept);
+                    table = ingester.Map != null ? (ingester.Position + ingester.Rotation.FacingCell).GetEdifice(ingester.Map) : null;
+            int chairLevel = ComfortHelper.GetThoughtLevel(chair, chairMin, chairOk);
+            int tableLevel = ComfortHelper.GetThoughtLevel(table, tableMin, tableOk);
+            ComfortHelper.AddThoughtIfNeeded(ingester, Math.Max(chairLevel, tableLevel), thoughtDef, precept);
         }
     }
 
