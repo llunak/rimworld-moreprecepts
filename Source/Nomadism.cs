@@ -10,7 +10,7 @@ using UnityEngine;
 namespace MorePrecepts
 {
 
-    public static class SettlementCreationTick
+    public static class TicksSinceLastSettled
     {
         public static int Get(Pawn pawn, out bool inSettlement)
         {
@@ -21,7 +21,12 @@ namespace MorePrecepts
             if(settlement == null)
                 return -1;
             inSettlement = true;
-            return settlement.creationGameTicks;
+            int ticksSinceSettlementCreated = Find.TickManager.TicksGame - settlement.creationGameTicks;
+            // If the pawn joined somewhen after the settlement was created, count only that time,
+            // to prevent newcomers from getting immediately unhappy. Note that this is technically
+            // incorrect if the pawn leaves and then joins again, but it's probably good enough.
+            int ticksSinceJoined = pawn.records.GetAsInt(RecordDefOf.TimeAsColonistOrColonyAnimal);
+            return Math.Min( ticksSinceSettlementCreated, ticksSinceJoined );
         }
     }
 
@@ -58,15 +63,15 @@ namespace MorePrecepts
             if (!ThoughtUtility.ThoughtNullified(p, def))
             {
                 bool inSettlement;
-                float num = (float)(Find.TickManager.TicksGame - SettlementCreationTick.Get(p, out inSettlement)) / 60000f;
+                int days = TicksSinceLastSettled.Get(p, out inSettlement) / GenDate.TicksPerDay;
                 if(!inSettlement)
                     return ThoughtState.ActiveAtStage(1);
-                if (num > DaysNoBonus() && def.minExpectationForNegativeThought != null
+                if (days > DaysNoBonus() && def.minExpectationForNegativeThought != null
                     && p.MapHeld != null && ExpectationsUtility.CurrentExpectationFor(p.MapHeld).order < def.minExpectationForNegativeThought.order)
                     return false;
-                if (num < DaysNoBonus())
+                if (days < DaysNoBonus())
                     return ThoughtState.ActiveAtStage(0);
-                if (num < DaysMissing())
+                if (days < DaysMissing())
                     return ThoughtState.ActiveAtStage(1);
                 return ThoughtState.ActiveAtStage(2);
             }
@@ -76,7 +81,7 @@ namespace MorePrecepts
         public override float MoodMultiplier(Pawn pawn)
         {
             bool inSettlement;
-            float num = (float)(Find.TickManager.TicksGame - SettlementCreationTick.Get(pawn, out inSettlement)) / 60000f;
+            float num = (float)TicksSinceLastSettled.Get(pawn, out inSettlement) / GenDate.TicksPerDay;
             if(!inSettlement)
                 return 0;
             return MoodOffsetFromDaysSinceSettledCurve().Evaluate(num);
@@ -163,7 +168,7 @@ namespace MorePrecepts
         private bool IsInSettlement()
         {
                 bool inSettlement;
-                SettlementCreationTick.Get(pawn, out inSettlement);
+                TicksSinceLastSettled.Get(pawn, out inSettlement);
                 return inSettlement;
         }
 
@@ -217,7 +222,7 @@ namespace MorePrecepts
                     && ExpectationsUtility.CurrentExpectationFor(pawn.MapHeld).order < thought.minExpectationForNegativeThought.order)
                     continue;
                 bool inSettlement;
-                int days = (Find.TickManager.TicksGame - SettlementCreationTick.Get(pawn, out inSettlement)) / 60000;
+                int days = TicksSinceLastSettled.Get(pawn, out inSettlement) / GenDate.TicksPerDay;
                 if(!inSettlement)
                     continue;
                 int max = -1;
