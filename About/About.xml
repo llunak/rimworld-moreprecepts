@@ -26,23 +26,26 @@ Precepts:
 - Compassion - Allied, not hostile, not guilty or all incapacitated pawns should not be left to die helplessly.
 - Drug posession - Pawns will dislike presence and trading of hard, social (non-alcohol) or all non-medical drugs.
 - Elderly - Old people may be viewed with respect or contempt. Results in mood and social buffs and debuffs. When elders are respected, too young pawns are considered inexperienced for important roles.
+- Newcomer attitude - Pawns may be excited when new pawns join the colony (even temporarily) but will get bored if that does not happen for a while, or will be distrustful of newcomers, especially if they walk around the colony armed.
 - Nomadism - Pawns will dislike or want to abandon their settlement.
 - Superstition - Strong, mild or contempt. Superstitious pawns will get mood changes from some events, pawns with contempt will dislike others being superstitious.
+- Taking from downed - Pawns will dislike stripping incapacitated pawns in order to take their equipment.
 - Traps - Use of traps may be disapproved. Analogous to the 'Autonomous weapons' precept, but for traps.
 - Violence - Harming other people, ranging from pacifists that refuse to harm others to essential that makes pawns unhappy after a while of no violence. Includes a defense-only option.
 
 Memes:
-- Pacifism - High impact, requires Violence:Pacifism or Violence:Horrible.
 - Nomadism - Hight impact, requires Nomadism:Essential or Nomadism:Wanted. Unlocks animal specialist role.
+- Pacifism - High impact, requires Violence:Pacifism or Violence:Horrible.
 
 Rituals:
+- Animal duel - Like gladiator duel, but one of the participants is an animal.
 - Drinking party - A party focused on drinking, pawns will gather and drink what drinks are available and allowed.
 - Feast - A party focused on eating meals, pawns will gather and eat available meals.
 - Funeral pyre - An alternative to funeral, body is burned on a pyre.
-- Animal duel - Like gladiator duel, but one of the participants is an animal.
 
 Ritual outcomes:
 - Raid - Colony may get raided after a noticeable ritual (drum party, sacrificing a prisoner or symbol burning). Chance is higher for Violence:Wanted or Violence:Essential precepts.
+- Venerated animals wander in - Like farm animals wandering in outcome, but for venerated animals.
 
 GitHub: https://github.com/llunak/rimworld-moreprecepts
 
