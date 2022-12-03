@@ -1,5 +1,7 @@
 #! /bin/sh
 echo Remember to update version!
+echo Make sure the built binary does not contain temporary code!
+echo
 
 echo git status:
 git status --porcelain
