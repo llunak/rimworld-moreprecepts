@@ -41,7 +41,7 @@ namespace MorePrecepts
             {
                 if(NotWillingToAttackAny(attacker))
                     return false;
-                if(!victim.HostileTo(attacker) && NotWillingToAttackNonHostile(attacker))
+                if(!GenHostility.IsActiveThreatToPlayer(victim) && NotWillingToAttackNonHostile(attacker))
                     return false;
             }
             return true;
