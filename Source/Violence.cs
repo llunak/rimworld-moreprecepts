@@ -44,7 +44,7 @@ namespace MorePrecepts
             if(attacker.IsColonist && GenHostility.IsActiveThreatToPlayer(victim))
                 return false;
             // Give grace period for when the pawn has just started fleeing.
-            if(victim.MentalStateDef == MentalStateDefOf.PanicFlee && victim.MentalState?.Age.TicksToSeconds() < 3)
+            if(victim.MentalStateDef == MentalStateDefOf.PanicFlee && victim.MentalState?.Age.TicksToSeconds() < 2)
                 return false;
             return true;
         }
