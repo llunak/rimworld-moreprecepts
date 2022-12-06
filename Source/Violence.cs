@@ -35,10 +35,18 @@ namespace MorePrecepts
             return false;
         }
 
-        private static bool IsKidnapper(Pawn pawn)
-        {   // I think kidnappers are considered a threat, but explicitly allow targeting them
+        private static bool IsConsideredNonHostile(Pawn attacker, Pawn victim)
+        {
+            // I think kidnappers are considered a threat, but explicitly allow targeting them
             // in defence, just in case.
-            return pawn.mindState?.duty != null && pawn.mindState.duty.def == DutyDefOf.Kidnap && pawn.carryTracker.CarriedThing is Pawn;
+            if(victim.mindState?.duty?.def == DutyDefOf.Kidnap && victim.carryTracker.CarriedThing is Pawn)
+                return false;
+            if(attacker.IsColonist && GenHostility.IsActiveThreatToPlayer(victim))
+                return false;
+            // Give grace period for when the pawn has just started fleeing.
+            if(victim.MentalStateDef == MentalStateDefOf.PanicFlee && victim.MentalState?.Age.TicksToSeconds() < 3)
+                return false;
+            return true;
         }
 
         public static bool WillingToAttack(Pawn attacker, Pawn victim)
@@ -47,7 +55,7 @@ namespace MorePrecepts
             {
                 if(NotWillingToAttackAny(attacker))
                     return false;
-                if(!GenHostility.IsActiveThreatToPlayer(victim) && !IsKidnapper(victim) && NotWillingToAttackNonHostile(attacker))
+                if(IsConsideredNonHostile(attacker, victim) && NotWillingToAttackNonHostile(attacker))
                     return false;
             }
             return true;
