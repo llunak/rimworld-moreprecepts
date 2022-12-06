@@ -157,7 +157,7 @@
       </li>
       <li Class="PreceptComp_KnowsMemoryThought">
         <eventDef>Violence_AttackedPerson</eventDef>
-        <thought>Violence_Disapproved</thought>
+        <thought>Violence_Know_Disapproved</thought>
       </li>
       <li Class="PreceptComp_SelfTookMemoryThought">
         <eventDef>QuestPawnArrested</eventDef>
