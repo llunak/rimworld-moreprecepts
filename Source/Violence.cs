@@ -35,13 +35,19 @@ namespace MorePrecepts
             return false;
         }
 
+        private static bool IsKidnapper(Pawn pawn)
+        {   // I think kidnappers are considered a threat, but explicitly allow targeting them
+            // in defence, just in case.
+            return pawn.mindState?.duty != null && pawn.mindState.duty.def == DutyDefOf.Kidnap && pawn.carryTracker.CarriedThing is Pawn;
+        }
+
         public static bool WillingToAttack(Pawn attacker, Pawn victim)
         {
             if( attacker.RaceProps.Humanlike && victim.RaceProps.Humanlike )
             {
                 if(NotWillingToAttackAny(attacker))
                     return false;
-                if(!GenHostility.IsActiveThreatToPlayer(victim) && NotWillingToAttackNonHostile(attacker))
+                if(!GenHostility.IsActiveThreatToPlayer(victim) && !IsKidnapper(victim) && NotWillingToAttackNonHostile(attacker))
                     return false;
             }
             return true;
