@@ -35,7 +35,7 @@ namespace MorePrecepts
             return false;
         }
 
-        private static bool IsConsideredNonHostile(Pawn attacker, Pawn victim)
+        public static bool IsConsideredNonHostile(Pawn attacker, Pawn victim)
         {
             // I think kidnappers are considered a threat, but explicitly allow targeting them
             // in defence, just in case.
@@ -176,7 +176,7 @@ namespace MorePrecepts
                         {
                             if(blockAll)
                                 return false;
-                            if(blockNonHostile && !target.HostileTo(pawn))
+                            if(blockNonHostile && ViolenceHelper.IsConsideredNonHostile(pawn, target))
                                 return false;
                         }
                         if(oldValidator != null && !oldValidator(thing))
@@ -236,7 +236,7 @@ namespace MorePrecepts
                 HistoryEvent historyEvent = new HistoryEvent(HistoryEventDefOf.Violence_AttackedPerson,
                     pawn.Named(HistoryEventArgsNames.Doer), otherPawn.Named(HistoryEventArgsNames.Victim));
                 Find.HistoryEventsManager.RecordEvent(historyEvent);
-                if(!otherPawn.HostileTo(pawn))
+                if(ViolenceHelper.IsConsideredNonHostile(pawn, otherPawn))
                 {
                     HistoryEvent historyEventNonHostile = new HistoryEvent(HistoryEventDefOf.Violence_AttackedNonHostilePerson,
                         pawn.Named(HistoryEventArgsNames.Doer), otherPawn.Named(HistoryEventArgsNames.Victim));
