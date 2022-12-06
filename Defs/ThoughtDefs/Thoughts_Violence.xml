@@ -30,7 +30,7 @@
     <stages>
       <li>
         <label>harmed somebody</label>
-        <baseOpinionOffset>-100</baseOpinionOffset>
+        <baseOpinionOffset>-50</baseOpinionOffset>
       </li>
     </stages>
     <nullifyingTraits>
@@ -67,7 +67,7 @@
     <stages>
       <li>
         <label>harmed somebody</label>
-        <baseOpinionOffset>-50</baseOpinionOffset>
+        <baseOpinionOffset>-30</baseOpinionOffset>
       </li>
     </stages>
     <nullifyingTraits>
@@ -104,7 +104,7 @@
     <stages>
       <li>
         <label>harmed somebody</label>
-        <baseOpinionOffset>-20</baseOpinionOffset>
+        <baseOpinionOffset>-10</baseOpinionOffset>
       </li>
     </stages>
     <nullifyingTraits>
@@ -141,7 +141,7 @@
     <stages>
       <li>
         <label>harmed somebody who was not hostile</label>
-        <baseOpinionOffset>-100</baseOpinionOffset>
+        <baseOpinionOffset>-50</baseOpinionOffset>
       </li>
     </stages>
     <nullifyingTraits>
@@ -178,7 +178,7 @@
     <stages>
       <li>
         <label>harmed somebody who was not hostile</label>
-        <baseOpinionOffset>-20</baseOpinionOffset>
+        <baseOpinionOffset>-10</baseOpinionOffset>
       </li>
     </stages>
     <nullifyingTraits>
