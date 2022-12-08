@@ -91,7 +91,7 @@
     <stackLimitForSameOtherPawn>5</stackLimitForSameOtherPawn>
     <stages>
       <li>
-        <labelSocial>superstitious</labelSocial>
+        <label>superstitious</label>
         <baseOpinionOffset>-10</baseOpinionOffset>
       </li>
     </stages>
