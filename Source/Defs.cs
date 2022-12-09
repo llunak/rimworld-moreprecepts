@@ -195,4 +195,16 @@ namespace MorePrecepts
         }
     }
 
+    [DefOf]
+    public static class MentalStateDefOf
+    {
+        public static MentalStateDef Tantrum;
+
+        public static MentalStateDef PanicFlee;
+
+        static MentalStateDefOf()
+        {
+            DefOfHelper.EnsureInitializedInCtor(typeof(MentalStateDefOf));
+        }
+    }
 }

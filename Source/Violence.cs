@@ -46,6 +46,11 @@ namespace MorePrecepts
             // Give grace period for when the pawn has just started fleeing.
             if(victim.MentalStateDef == MentalStateDefOf.PanicFlee && victim.MentalState?.Age.TicksToSeconds() < 2)
                 return false;
+            // Allow when the pawn has an aggressive mental state.
+            if(victim.MentalStateDef != null && victim.MentalStateDef.category == MentalStateCategory.Aggro
+                // This is Aggro even though it's not aggresive, it should be Malicious, filter it out.
+                && victim.MentalStateDef != MentalStateDefOf.Tantrum)
+                return false;
             return true;
         }
 
