@@ -50,9 +50,6 @@ namespace MorePrecepts
             return codes;
         }
 
-// ty self vs non-self though nejak prejmenovat, protoze se jim nedela merge a maji stejny text
-//MP_prefix pro veci v xml
-
         public static void MakeNewToils_Hook(Pawn pawn, Thing thing)
         {
             Pawn strippedPawn = thing as Pawn;
