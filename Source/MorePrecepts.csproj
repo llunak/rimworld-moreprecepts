@@ -16,9 +16,6 @@
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
   </PropertyGroup>
-  <PropertyGroup>
-    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Lib.Harmony">
       <Version>2.1.0</Version>
@@ -31,29 +28,5 @@
       <ExcludeAssets>runtime</ExcludeAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Alcohol.cs" />
-    <Compile Include="Comfort.cs" />
-    <Compile Include="Compassion.cs" />
-    <Compile Include="Defs.cs" />
-    <Compile Include="DrinkingParty.cs" />
-    <Compile Include="DrugPossession.cs" />
-    <Compile Include="Duels.cs" />
-    <Compile Include="Elderly.cs" />
-    <Compile Include="Feast.cs" />
-    <Compile Include="Fixes.cs" />
-    <Compile Include="FuneralPyre.cs" />
-    <Compile Include="HarmonyPatches.cs" />
-    <Compile Include="NewcomerAttitude.cs" />
-    <Compile Include="Nomadism.cs" />
-    <Compile Include="PawnComp.cs" />
-    <Compile Include="RitualOutcomeRaid.cs" />
-    <Compile Include="RitualOutcomeVeneratedAnimals.cs" />
-    <Compile Include="Superstition.cs" />
-    <Compile Include="TakingFromDowned.cs" />
-    <Compile Include="Utils.cs" />
-    <Compile Include="Traps.cs" />
-    <Compile Include="Violence.cs" />
   </ItemGroup>
 </Project>
