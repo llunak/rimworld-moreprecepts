@@ -9,19 +9,27 @@ using Verse;
 // When a pawn dies in the open (not in a bed), we'll send events about it,
 // together with thought stage computed from how long the pawn was incapacitated
 // before dying (leaving the pawn to die longer has bigger mood debuff).
+// Normally the length of the time a pawn was left there is calculated as
+// the difference of a recorded tick when downed and the current tick. But this could
+// be cheesed by beating the pawn, making the length shorter. So if a pawn is attacked
+// when downed outside of combat, a different calculation is used which
+// uses the expected time to die estimated when downed.
 namespace MorePrecepts
 {
     public static class CompassionHelper
     {
-        public static void CheckPawnLeftToDie(Pawn pawn)
+        public static int stageForLeftToDie(Pawn pawn)
         {
-            // ExecutionThoughtStage appears to be meant only for executions, but it works generically,
-            // so use it to set severity of the thought depending on how long the pawn has been left there.
-            int ticksUntilDeathWhenDowned = PawnComp.GetLastDownedTicksUntilDeath(pawn);
-            if(ticksUntilDeathWhenDowned <= 0)
-                return;
-            int hours = ticksUntilDeathWhenDowned / GenDate.TicksPerHour;
+            int ticksLeftToDie;
+            ( int tickWhenDowned, int ticksUntilDeath ) = PawnComp.GetLastDownedTicks(pawn);
+            if( tickWhenDowned >= 0 )
+                ticksLeftToDie = Find.TickManager.TicksGame - tickWhenDowned;
+            else
+                ticksLeftToDie = ticksUntilDeath;
+            if( ticksLeftToDie <= 0 )
+                return -1;
             int stage = 0; // The least severe thought.
+            int hours = ticksLeftToDie / GenDate.TicksPerHour;
             if( hours > 2 )
                 stage = 1;
             if( hours > 5 )
@@ -32,6 +40,16 @@ namespace MorePrecepts
             // primarily to reduce debuffs for killing downed pawns during a fight (e.g. grenades killing them).
             if(pawn.Map != null && GenHostility.AnyHostileActiveThreatToPlayer(pawn.Map))
                 stage = 0;
+            return stage;
+        }
+
+        public static void CheckPawnLeftToDie(Pawn pawn)
+        {
+            // ExecutionThoughtStage appears to be meant only for executions, but it works generically,
+            // so use it to set severity of the thought depending on how long the pawn has been left there.
+            int stage = stageForLeftToDie(pawn);
+            if( stage < 0 )
+                return;
             // All:
             Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.Compassion_IncapacitatedPawnLeftToDie_All,
                 pawn.Named(HistoryEventArgsNames.Victim), stage.Named(HistoryEventArgsNames.ExecutionThoughtStage)));
@@ -55,7 +73,7 @@ namespace MorePrecepts
             }
         }
 
-        public static int TicksToDie(Pawn pawn)
+        public static int EstimatedTicksToDie(Pawn pawn)
         {
             int ticks = HealthUtility.TicksUntilDeathDueToBloodLoss(pawn);
             if(ticks <= 0 || ticks > GenDate.TicksPerDay * 10)
@@ -74,7 +92,10 @@ namespace MorePrecepts
             FieldInfo fi = AccessTools.Field(typeof(Pawn_HealthTracker),"pawn");
             Pawn pawn = (Pawn)fi.GetValue(__instance);
             if(pawn.RaceProps.Humanlike && !pawn.Dead)
-                PawnComp.SetLastDownedTicksUntilDeath(pawn, CompassionHelper.TicksToDie(pawn));
+            {
+                PawnComp.SetLastDownedTicks(pawn, Find.TickManager.TicksGame,
+                    CompassionHelper.EstimatedTicksToDie(pawn));
+            }
         }
 
         [HarmonyPostfix]
@@ -84,7 +105,7 @@ namespace MorePrecepts
             FieldInfo fi = AccessTools.Field(typeof(Pawn_HealthTracker),"pawn");
             Pawn pawn = (Pawn)fi.GetValue(__instance);
             if(pawn.RaceProps.Humanlike && !pawn.Dead)
-                PawnComp.SetLastDownedTicksUntilDeath(pawn, -99999);
+                PawnComp.SetLastDownedTicks(pawn, -99999, -99999);
         }
     }
 
@@ -97,7 +118,10 @@ namespace MorePrecepts
         {
             // When a downed pawn is tended, reset the time it's been left to die.
             if(patient.Downed && patient.RaceProps.Humanlike && !patient.Dead)
-                PawnComp.SetLastDownedTicksUntilDeath(patient, CompassionHelper.TicksToDie(patient));
+            {
+                PawnComp.SetLastDownedTicks(patient, Find.TickManager.TicksGame,
+                    CompassionHelper.EstimatedTicksToDie(patient));
+            }
         }
     }
 
@@ -113,7 +137,7 @@ namespace MorePrecepts
             {
                 if(pawn.RaceProps.Humanlike && !pawn.Dead && pawn.Downed)
                 {
-                    if(CompassionHelper.TicksToDie(pawn) < 0)
+                    if(CompassionHelper.EstimatedTicksToDie(pawn) < 0)
                         continue; // Medically treated => ok.
                     CompassionHelper.CheckPawnLeftToDie(pawn);
                 }
@@ -136,6 +160,23 @@ namespace MorePrecepts
             if(pawn.InBed())
                 return; // Is in bed => somebody's tried to treat him.
             CompassionHelper.CheckPawnLeftToDie(pawn);
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(PreApplyDamage))]
+        public static void PreApplyDamage(Pawn __instance, DamageInfo dinfo, ref bool absorbed)
+        {
+            Pawn pawn = dinfo.Instigator as Pawn;
+            Pawn otherPawn = __instance;
+            // As said at the top of the file, if a colonist harms a downed pawn when there's
+            // no fight, do not count the time from when the pawn was downed, but as the expected
+            // time to die when downed.
+            if(pawn != null && pawn.IsColonist && pawn.RaceProps.Humanlike
+                && otherPawn.RaceProps.Humanlike && otherPawn.Downed
+                && (otherPawn.Map != null && !GenHostility.AnyHostileActiveThreatToPlayer(otherPawn.Map)))
+            {
+                PawnComp.ResetOnlyLastDownedTick(otherPawn);
+            }
         }
     }
 
