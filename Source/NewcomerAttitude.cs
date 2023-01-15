@@ -124,6 +124,8 @@ namespace MorePrecepts
         {
             if(!p.RaceProps.Humanlike)
                 return false;
+            if(p.DevelopmentalStage.Baby())
+                return false;
             float factor = NewcomerAttitudeHelper.daysFactor( p, p );
             if( factor > 0 )
                 return false; // do not give the thought if the pawn considers himself a newcomer
@@ -146,6 +148,8 @@ namespace MorePrecepts
         protected override ThoughtState ShouldHaveThought(Pawn p)
         {
             if(!p.RaceProps.Humanlike)
+                return false;
+            if(p.DevelopmentalStage.Baby())
                 return false;
             float selfFactor = NewcomerAttitudeHelper.daysFactor( p, p );
             if( selfFactor > 0 )
@@ -177,6 +181,8 @@ namespace MorePrecepts
             if(p.Faction != otherPawn.Faction)
                 return false;
             if(!RelationsUtility.PawnsKnowEachOther(p, otherPawn))
+                return false;
+            if(p.DevelopmentalStage.Baby() || otherPawn.DevelopmentalStage.Baby())
                 return false;
             float factor = NewcomerAttitudeHelper.daysFactor( p, otherPawn );
             if( factor <= 0 )
