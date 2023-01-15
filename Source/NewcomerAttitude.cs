@@ -82,6 +82,8 @@ namespace MorePrecepts
                 float factor = daysFactor( pawn, other );
                 if( factor <= 0 )
                     continue;
+                if( other.IsSlave )
+                    factor /= 2;
                 if(hasAnyArmed)
                 {
                     // If there are any armed and this one is not, reduce its weight by the ratio
@@ -112,7 +114,10 @@ namespace MorePrecepts
                 if( ticks > Find.TickManager.TicksGame - GenDate.TicksPerHour )
                     continue; // ignore initial colonists
                 float days = ticks / GenDate.TicksPerDay;
-                bestFactor = Mathf.Max( bestFactor, factorCurveExcited.Evaluate( days ));
+                float factor = factorCurveExcited.Evaluate( days );
+                if( other.IsSlave )
+                    factor /= 2;
+                bestFactor = Mathf.Max( bestFactor, factor );
             }
             return bestFactor;
         }
