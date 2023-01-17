@@ -147,6 +147,8 @@ namespace MorePrecepts
             // Important and Essential require at least minimal comfort.
             if(comfort >= bedMin)
                 return true;
+            if(pawn.Downed)
+                return true;
             __result = true; // Forbid.
             return false;
         }
