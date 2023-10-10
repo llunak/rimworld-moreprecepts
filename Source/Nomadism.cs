@@ -205,6 +205,8 @@ namespace MorePrecepts
         private void UpdatePawns()
         {
             affectedPawns.Clear();
+            if( !MorePreceptsMod.settings.showNomadsWantToLeave )
+                return;
             foreach(Pawn pawn in PawnsFinder.HomeMaps_FreeColonistsSpawned)
             {
                 if(pawn.Ideo == null)
@@ -251,5 +253,4 @@ namespace MorePrecepts
             return AlertReport.CulpritsAre(affectedPawns.Keys.ToList());
         }
     }
-
 }
