@@ -79,6 +79,52 @@
     </comps>
   </PreceptDef>
 
+  <!-- Like pacifism, but does not mind others doing it. -->
+  <PreceptDef>
+    <defName>Violence_Avoided</defName>
+    <issue>Violence</issue>
+    <label>avoided</label>
+    <description>We are not willing to harm another person, but we do not mind if others do it.</description>
+    <impact>High</impact>
+    <displayOrderInIssue>30</displayOrderInIssue>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
+    <conflictingMemes>
+      <li>Cannibal</li>
+      <li>Raider</li>
+    </conflictingMemes>
+    <comps>
+      <li Class="PreceptComp_UnwillingToDo">
+        <eventDef>Violence_AttackedPerson</eventDef>
+        <description>attacked person</description>
+        <nullifyingTraits>
+          <li>Psychopath</li>
+        </nullifyingTraits>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Violence_AttackedPerson</eventDef>
+        <thought>Violence_Avoided</thought>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>QuestPawnArrested</eventDef>
+        <thought>Violence_Avoided</thought>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>UsedHarmfulAbility</eventDef>
+        <thought>Violence_Avoided</thought>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>UsedHarmfulItem</eventDef>
+        <thought>Violence_Avoided</thought>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>PerformedHarmfulSurgery</eventDef>
+        <thought>Violence_Avoided</thought>
+      </li>
+      <!-- Executions have their own precept -->
+      <!-- Organ harvesting has its own precept -->
+    </comps>
+  </PreceptDef>
+
   <PreceptDef>
     <defName>Violence_Horrible</defName>
     <issue>Violence</issue>

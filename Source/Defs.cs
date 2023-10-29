@@ -25,6 +25,8 @@ namespace MorePrecepts
 
         public static PreceptDef Violence_Pacifism;
 
+        public static PreceptDef Violence_Avoided;
+
         public static PreceptDef Violence_Horrible;
 
         public static PreceptDef Violence_Disapproved;

@@ -112,6 +112,8 @@ namespace MorePrecepts
                 // Reduce social fight chance for violence-avoiding pawns, but still keep at least a small chance.
                 if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Violence_Pacifism))
                     __result = Mathf.Max( 0.01f, __result / 8 );
+                else if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Violence_Avoided))
+                    __result = Mathf.Max( 0.01f, __result / 8 );
                 else if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Violence_Horrible))
                     __result = Mathf.Max( 0.01f, __result / 4 );
                 else if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Violence_Disapproved))

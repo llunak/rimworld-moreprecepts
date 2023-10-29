@@ -38,6 +38,25 @@
     </nullifyingTraits>
   </ThoughtDef>
 
+  <!-- Avoided -->
+
+  <ThoughtDef>
+    <defName>Violence_Avoided</defName>
+    <durationDays>7</durationDays>
+    <stackLimit>5</stackLimit>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>harmed somebody</label>
+        <description>I harmed somebody. I have violated my deepest beliefs.</description>
+        <baseMoodEffect>-30</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
   <!-- Horrible -->
 
   <ThoughtDef>
