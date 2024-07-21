@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <MemeDef>
+    <defName>Pacifism</defName>
+    <label>pacifism</label>
+    <description>We should all be nice to each other. Violence is a sin.</description>
+    <iconPath>UI/Memes/Pacifism</iconPath>
+    <groupDef>Misc</groupDef>
+    <impact>3</impact>
+    <renderOrder>999</renderOrder>
+    <consumableBuildings>
+      <li>Effigy</li>
+    </consumableBuildings>
+    <requireOne>
+      <li>
+        <li>Violence_Pacifism</li>
+        <li>Violence_Horrible</li>
+      </li>
+      <li>
+        <li>Cannibalism_Abhorrent</li>
+      </li>
+      <li>
+        <li>Execution_Abhorrent</li>
+      </li>
+      <li>
+        <li>Slavery_Abhorrent</li>
+      </li>
+    </requireOne>
+    <exclusionTags>
+      <li>PacifismCannibal</li>
+      <li>PacifismRaider</li>
+      <li>PacifismSupremacist</li>
+    </exclusionTags>
+    <generalRules>
+      <rulesStrings>
+        <li>memeAdjective->pacifist</li>
+        <li>memeAdjective->kind</li>
+        <li>memeAdjective->peaceful</li>
+        <li>memeHyphenPrefix->loving</li>
+        <li>memeConcept->pacifism</li>
+        <li>memeConcept->peace</li>
+        <li>memeLeaderNoun->calm one</li>
+        <li>memeLeaderNoun->pacifist</li>
+        <li>memeLeaderNoun->peace-preacher</li>
+      </rulesStrings>
+    </generalRules>
+    <descriptionMaker>
+      <rules>
+        <rulesStrings>
+          <!-- theist myth -->
+          <li>creation(tag=meme_Pacifism)           ->In a pure and peaceful void, [deity0_name] looked on, and wished for a race of loving beings in [deity0_possessive] own image, and made mankind.</li>
+          <li>episode(uses=1,tag=meme_Pacifism)     ->The people spilled blood of others, and looked up at [deity0_name], exclaiming, "We are powerful!" And the [deity0_type] said, "Violence is weakness of the mind. Only those of pure heart will prevail."</li>
+          <!-- theist founder -->
+          <!-- theist founder -->
+          <li>intro(tag=meme_Pacifism)              ->On the [place_summary] [place_name], a tradition began at the [altarRoomLabel] of [deity0_name] where different people would meet together to pray in peace, and this pleased the [deity0_type].</li>
+          <li>conflict(tag=meme_Pacifism)           ->A violent [foeLeader] tried to seize power, and tried to kill many of pure heart.</li>
+          <li>founderJoin(tag=meme_Pacifism)        ->[deity0_name]'s truest follower [founderName] stood before the [place_powerCenter], faced [foeLeader_possessive] violent rage, and protected [founder_possesive] brothers and sisters.</li>
+          <li>victory(tag=meme_Pacifism)            ->[founderName] sacrificed [founder_objective]self to pass [founder_possesive] soul to [foeLeader] to save everybody.</li>
+          <!-- ideological founder -->
+          <li>setup(tag=meme_Pacifism)              ->[founderName] was forced to fight in wars, seeing much despair. One day, [founder_pronoun] threw away his weapon and went to seek the true way.</li>
+          <li>story(uses=1,tag=meme_Pacifism)       ->[founderName] preached the peaceful way as the true way to eternal life.</li>
+          <!-- ideological lesson -->
+          <li>lessonIntro(tag=meme_Pacifism)         ->First, we lived like animals, fighting each other. But then we opened our eyes and saw the suffering.</li>
+          <li>lesson(tag=meme_Pacifism)              ->And we decided to live the true life.</li>
+          <li>lessonReinforcement(tag=meme_Pacifism) ->For if we want to live happily, we must see that every person is a lovable being.</li>
+          <!-- archist -->
+          <li>archistBasis(tag=meme_Pacifism)       ->When the archotechs appeared they were never concerned for appearances; they showed us that the mind stands above the physical form.</li>
+          <li>archistFact(tag=meme_Pacifism)        ->Archotechs sometimes directly touch human minds, but if our flesh is shrouded like our minds, we will not understand.</li>
+          <li>archistProphecy(tag=meme_Pacifism)    ->[inTheEnd], they will find those that have risen above mindless violence, and will uplift them.</li>
+          <!-- animist -->
+          <li>animistFact(tag=meme_Pacifism)        ->Killing another person means killing its spirit, and harming your own spirit.</li>
+        </rulesStrings>
+      </rules>
+    </descriptionMaker>
+    <symbolPacks>
+      <li>
+        <ideoName>pacifism</ideoName>
+        <theme>pacifism</theme>
+        <adjective>pacifist</adjective>
+        <member>pacifist</member>
+      </li>
+      <li>
+        <ideoName>peacefulness</ideoName>
+        <theme>peace</theme>
+        <adjective>peaceful</adjective>
+        <member>peace-lover</member>
+      </li>
+    </symbolPacks>
+    <styleItemTags>
+      <li>
+        <tag>NoBeard</tag>
+        <baseWeight>0.5</baseWeight>
+        <weightFactor>1</weightFactor>
+      </li>
+    </styleItemTags>
+    <ritualsToMake>2</ritualsToMake>
+    <agreeableTraits>
+      <li>Kind</li>
+    </agreeableTraits>
+    <disagreeableTraits>
+      <li>Bloodlust</li>
+      <li>Brawler</li>
+      <li>Cannibal</li>
+    </disagreeableTraits>
+  </MemeDef>
+
+</Defs>

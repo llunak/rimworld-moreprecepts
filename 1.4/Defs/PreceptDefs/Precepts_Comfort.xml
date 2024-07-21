@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Add to the vanilla issue -->
+
+  <!-- Precepts -->
+
+  <PreceptDef>
+    <defName>Comfort_Wanted</defName>
+    <issue>Comfort</issue>
+    <label>wanted</label>
+    <description>Sleeping in or sitting on uncomfortable furniture is unpleasant.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>20</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <conflictingMemes>
+      <li>PainIsVirtue</li>
+    </conflictingMemes>
+    <comps>
+      <li Class="MorePrecepts.PreceptComp_MemoryThought">
+        <thought>Comfort_UsedUncomfortableFurniture_Wanted</thought>
+        <thoughtStageDescriptions>
+          <li>Uncomfortable furniture</li>
+          <li>Very uncomfortable furniture</li>
+          <li>No furniture</li>
+        </thoughtStageDescriptions>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Comfort_Important</defName>
+    <issue>Comfort</issue>
+    <label>important</label>
+    <description>It is important to sleep in and sit on comfortable furniture. Not using furniture is unpleasant.</description>
+    <impact>Medium</impact>
+    <displayOrderInIssue>30</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <conflictingMemes>
+      <li>PainIsVirtue</li>
+    </conflictingMemes>
+    <comps>
+      <li Class="MorePrecepts.PreceptComp_MemoryThought">
+        <thought>Comfort_UsedUncomfortableFurniture_Important</thought>
+        <thoughtStageDescriptions>
+          <li>Uncomfortable furniture</li>
+          <li>Very uncomfortable furniture</li>
+          <li>No furniture</li>
+        </thoughtStageDescriptions>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Comfort_Essential</defName>
+    <issue>Comfort</issue>
+    <label>essential</label>
+    <description>It is an outrage to sleep in and sit on anything but very comfortable furniture. Not using furniture is unthinkable.</description>
+    <impact>High</impact>
+    <displayOrderInIssue>40</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <conflictingMemes>
+      <li>PainIsVirtue</li>
+    </conflictingMemes>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
+    <comps>
+      <li Class="MorePrecepts.PreceptComp_MemoryThought">
+        <thought>Comfort_UsedUncomfortableFurniture_Essential</thought>
+        <thoughtStageDescriptions>
+          <li>Uncomfortable furniture</li>
+          <li>Very uncomfortable furniture</li>
+          <li>No furniture</li>
+        </thoughtStageDescriptions>
+      </li>
+    </comps>
+  </PreceptDef>
+
+<!-- Neutral is not needed, that's the default case. -->
+
+</Defs>

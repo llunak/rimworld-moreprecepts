@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <GoodwillSituationDef>
+    <defName>Pacifism_Pacifism</defName>
+    <label>pacifism agreement</label>
+    <workerClass>GoodwillSituationWorker_MemeCompatibility</workerClass>
+    <meme>Pacifism</meme>
+    <otherMeme>Pacifism</otherMeme>
+    <naturalGoodwillOffset>50</naturalGoodwillOffset>
+  </GoodwillSituationDef>
+
+  <!-- Agreement - different -->
+
+  <GoodwillSituationDef>
+    <defName>Pacifism_HighLife</defName>
+    <label>pacifism vs high life</label>
+    <workerClass>GoodwillSituationWorker_MemeCompatibility</workerClass>
+    <meme>Pacifism</meme>
+    <otherMeme>HighLife</otherMeme>
+    <naturalGoodwillOffset>10</naturalGoodwillOffset>
+  </GoodwillSituationDef>
+
+  <!-- Disagreement -->
+
+  <GoodwillSituationDef>
+    <defName>Pacifism_Cannibal</defName>
+    <label>pacifism vs cannibal</label>
+    <workerClass>GoodwillSituationWorker_MemeCompatibility</workerClass>
+    <meme>Pacifism</meme>
+    <otherMeme>Cannibal</otherMeme>
+    <naturalGoodwillOffset>-30</naturalGoodwillOffset>
+  </GoodwillSituationDef>
+
+</Defs>

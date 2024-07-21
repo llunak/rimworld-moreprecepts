@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/PreceptDef[defName="IdeoRole_AnimalsSpecialist"]/requiredMemes</xpath>
+    <value>
+      <li>Nomadism</li>
+    </value>
+  </Operation>
+
+<!-- Allow the use of RoughLiving and Temperature, but do not require them. For Temperature do not even default to it. -->
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/PreceptDef[defName="RoughLiving_Welcomed"]/associatedMemes</xpath>
+    <value>
+      <li>Nomadism</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/PreceptDef[defName="RoughLiving_Welcomed"]/requiredMemes</xpath>
+    <value>
+      <li>Nomadism</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/PreceptDef[defName="Temperature_Tough"]/requiredMemes</xpath>
+    <value>
+      <li>Nomadism</li>
+    </value>
+  </Operation>
+
+</Patch>

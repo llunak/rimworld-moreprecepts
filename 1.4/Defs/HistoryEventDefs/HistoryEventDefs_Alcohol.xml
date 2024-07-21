@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <HistoryEventDef>
+    <defName>IngestedAlcohol</defName> 
+    <label>drank alcohol</label>
+  </HistoryEventDef>
+
+  <HistoryEventDef>
+    <defName>AdministeredAlcohol</defName> 
+    <label>administered alcohol</label>
+  </HistoryEventDef>
+
+</Defs>

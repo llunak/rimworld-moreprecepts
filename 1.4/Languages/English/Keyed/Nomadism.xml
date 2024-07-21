@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <MorePrecepts.AlertSettlementToLeave>Nomads want to leave</MorePrecepts.AlertSettlementToLeave>
+  <MorePrecepts.AlertSettlementToLeaveDesc>Nomads want to change settlement.\n\nNomadic colonists want to abandon their settlement periodically. If they stay longer in one place, they will become unhappy.\n\nThese colonists are affected:\n\n{0}</MorePrecepts.AlertSettlementToLeaveDesc>
+  <MorePrecepts.AlertSettlementToLeaveColonistInfo>{0} ({1}/{2} days)</MorePrecepts.AlertSettlementToLeaveColonistInfo>
+</LanguageData>

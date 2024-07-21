@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <RitualObligationTargetFilterDef>
+    <defName>FuneralPyreWithTargetsCorpse</defName>
+    <workerClass>MorePrecepts.RitualObligationTargetWorker_FuneralPyreWithTarget</workerClass>
+    <thingDefs>
+      <li>FuneralPyre</li>
+    </thingDefs>
+  </RitualObligationTargetFilterDef>
+
+  <RitualObligationTargetFilterDef>
+    <defName>AnyEmptyFuneralPyre</defName>
+    <workerClass>MorePrecepts.RitualObligationTargetWorker_AnyEmptyFuneralPyre</workerClass>
+    <thingDefs>
+      <li>FuneralPyre</li>
+    </thingDefs>
+  </RitualObligationTargetFilterDef>
+
+  <RitualBehaviorDef ParentName="IdeoFuneral">
+    <defName>FuneralPyre</defName>
+    <stages Inherit="False">
+      <li>
+        <defaultDuty>SpectateFuneralPyre</defaultDuty>
+        <spectateDistanceOverride>2~3</spectateDistanceOverride>
+        <endTriggers>
+          <li Class="StageEndTrigger_DurationPercentage">
+            <percentage>1</percentage>
+          </li>
+        </endTriggers>
+        <roleBehaviors>
+          <li>
+            <roleId>moralist</roleId>
+            <dutyDef>SpeakOnCellFuneral</dutyDef>
+            <speakerInteraction>Speech_Funeral</speakerInteraction>
+            <customPositions>
+              <li Class="RitualPosition_Lectern">
+                <maxDistanceToFocus>5</maxDistanceToFocus>
+              </li>
+              <li Class="RitualPosition_BesideThing">
+<!--  TODO: It'd be nicer to have InCircle position here,
+      but then the speaker may try to use a cell that's meanwhile
+      reserved by a spectator, and RimWorld doesn't handle that well.
+               <distRange>2~3</distRange> -->
+              </li>
+            </customPositions>
+          </li>
+        </roleBehaviors>
+        <visualEffectDef>FuneralPyre</visualEffectDef>
+      </li>
+    </stages>
+  </RitualBehaviorDef>
+
+  <RitualVisualEffectDef>
+    <defName>FuneralPyre</defName>
+    <comps>
+      <li>
+        <compClass>CompRitualEffect_ConstantCenter</compClass>
+        <moteDef>Mote_RitualGlowSingleRay</moteDef>
+        <offset>(0.8, 0.5, 2.5)</offset>
+      </li>
+    </comps>
+  </RitualVisualEffectDef>
+
+  <RitualOutcomeEffectDef Name="AttendedFuneralPyreBase" ParentName="AttendedFuneralBase" Abstract="True">
+    <description>Depending on ritual quality, participants will get between {MINMOOD} and {MAXMOOD} mood for {MOODDAYS} days. The ritual target will be destroyed.</description>
+    <workerClass>MorePrecepts.RitualOutcomeEffectWorker_FuneralPyre</workerClass>
+    <effecter>VanishBurnable</effecter>
+    <filthDefToSpawn>Filth_Ash</filthDefToSpawn>
+    <filthCountToSpawn>2~4</filthCountToSpawn>
+  </RitualOutcomeEffectDef>
+
+  <RitualOutcomeEffectDef ParentName="AttendedFuneralPyreBase">
+    <defName>AttendedFuneralPyre</defName>
+    <comps>
+      <li Class="RitualOutcomeComp_RolePresentNotSubstituted">
+        <roleId>moralist</roleId>
+        <label>moral guide present</label>
+        <qualityOffset>0.3</qualityOffset>
+      </li>
+      <li Class="RitualOutcomeComp_ParticipantCount">
+        <label>participant count</label>
+        <curve>
+          <points>
+            <li>(1,  0.0)</li>
+            <li>(5,  0.5)</li>
+            <li>(10, 0.7)</li>
+          </points>
+        </curve>
+      </li>
+    </comps>
+  </RitualOutcomeEffectDef>
+
+  <RitualOutcomeEffectDef ParentName="AttendedFuneralPyreBase">
+    <defName>AttendedFuneralPyreNoCorpse</defName>
+    <comps>
+      <li Class="RitualOutcomeComp_RolePresentNotSubstituted">
+        <roleId>moralist</roleId>
+        <label>moral guide present</label>
+        <qualityOffset>0.2</qualityOffset>
+      </li>
+      <li Class="RitualOutcomeComp_ParticipantCount">
+        <label>participant count</label>
+        <curve>
+          <points>
+            <li>(1,  0.0)</li>
+            <li>(5,  0.4)</li>
+            <li>(10, 0.6)</li>
+          </points>
+        </curve>
+      </li>
+    </comps>
+  </RitualOutcomeEffectDef>
+
+</Defs>

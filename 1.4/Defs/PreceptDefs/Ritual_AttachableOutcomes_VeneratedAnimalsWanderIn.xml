@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <RitualAttachableOutcomeEffectDef>
+    <defName>MP_VeneratedAnimalsWanderIn</defName>
+    <workerClass>MorePrecepts.RitualAttachableOutcomeEffectWorker_VeneratedAnimalsWanderIn</workerClass>
+    <label>venerated animals wander in</label>
+    <effectDesc>a group of venerated animals will be attracted and enter the area.</effectDesc>
+    <letterInfoText>Curious venerated animals have wandered in, attracted by the commotion.</letterInfoText>
+  </RitualAttachableOutcomeEffectDef>
+
+  <IncidentDef>
+    <defName>MP_VeneratedAnimalsWanderIn</defName>
+    <label>venerated animals wander in</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>MorePrecepts.IncidentWorker_VeneratedAnimalsWanderIn</workerClass>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+
+</Defs>

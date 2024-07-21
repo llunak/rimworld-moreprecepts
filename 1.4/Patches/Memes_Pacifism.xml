@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MemeDef[defName="Cannibal"]/exclusionTags</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/MemeDef[defName="Cannibal"]</xpath>
+      <value>
+        <exclusionTags>
+          <li>PacifismCannibal</li>
+        </exclusionTags>
+      </value>
+    </nomatch>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MemeDef[defName="Cannibal"]/exclusionTags</xpath>
+      <value>
+        <li>Pacifism</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MemeDef[defName="Raider"]/exclusionTags</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/MemeDef[defName="Raider"]</xpath>
+      <value>
+        <exclusionTags>
+          <li>PacifismRaider</li>
+        </exclusionTags>
+      </value>
+    </nomatch>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MemeDef[defName="Raider"]/exclusionTags</xpath>
+      <value>
+        <li>Pacifism</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MemeDef[defName="Supremacist"]/exclusionTags</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/MemeDef[defName="Supremacist"]</xpath>
+      <value>
+        <exclusionTags>
+          <li>PacifismSupremacist</li>
+        </exclusionTags>
+      </value>
+    </nomatch>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MemeDef[defName="Supremacist"]/exclusionTags</xpath>
+      <value>
+        <li>PacifismSupremacist</li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/PreceptDef[defName="IdeoRole_MedicalSpecialist"]/requiredMemes</xpath>
+    <value>
+      <li>Pacifism</li>
+    </value>
+  </Operation>
+
+</Patch>

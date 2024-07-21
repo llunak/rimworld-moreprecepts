@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <MorePrecepts.ModName>More Precepts</MorePrecepts.ModName>
+  <MorePrecepts.ShowNomadsWantToLeave>Show 'Nomads want to leave' alert</MorePrecepts.ShowNomadsWantToLeave>
+  <MorePrecepts.ShowNomadsWantToLeaveTooltip>If enabled, the 'Nomads want to leave' alert will be active if some members of the colony with the Nomadism precept have a need to leave.</MorePrecepts.ShowNomadsWantToLeaveTooltip>
+
+</LanguageData>

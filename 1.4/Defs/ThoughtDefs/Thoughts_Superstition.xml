@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Strong -->
+
+  <ThoughtDef>
+    <defName>Superstition_Superstitious_Strong_Plus</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>Good omen</label>
+        <description>I saw a good omen. It is a promise of good things to come.</description>
+        <baseMoodEffect>10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Superstition_Superstitious_Strong_Minus</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
+    <gameCondition>Eclipse</gameCondition>
+    <stages>
+      <li>
+        <label>Bad omen</label>
+        <description>I saw a bad omen. Terrible things are going to happen!</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Mild -->
+
+  <ThoughtDef>
+    <defName>Superstition_Superstitious_Mild_Plus</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
+    <gameCondition>Aurora</gameCondition>
+    <stages>
+      <li>
+        <label>Good omen</label>
+        <description>I saw a good omen.</description>
+        <baseMoodEffect>3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Superstition_Superstitious_Mild_Minus</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
+    <gameCondition>Flashstorm</gameCondition>
+    <stages>
+      <li>
+        <label>Bad omen</label>
+        <description>I saw a bad omen.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Contempt -->
+
+  <ThoughtDef>
+    <defName>Superstition_Disgusted</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>1</durationDays>
+    <stackLimit>10</stackLimit>
+    <stackedEffectMultiplier>0.7</stackedEffectMultiplier>
+    <stages>
+      <li>
+        <label>Superstitious people</label>
+        <description>Some people are so ignorant.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- A separate one, so that the mood ones are merged into one mood debuff. -->
+  <ThoughtDef>
+    <defName>Superstition_Disgusted_Social</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>1</durationDays>
+    <stackLimit>10</stackLimit>
+    <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
+    <stackLimitForSameOtherPawn>5</stackLimitForSameOtherPawn>
+    <stages>
+      <li>
+        <label>superstitious</label>
+        <baseOpinionOffset>-10</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

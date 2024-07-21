@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+  <Operation Class="PatchOperationAttributeAdd">
+    <xpath>/Defs/ThingDef[defName="Pyre"]</xpath>
+    <attribute>Name</attribute>
+    <value>IdeoPyre</value>
+  </Operation>
+
+  <Operation Class="PatchOperationAttributeAdd">
+    <xpath>/Defs/RitualBehaviorDef[defName="Funeral"]</xpath>
+    <attribute>Name</attribute>
+    <value>IdeoFuneral</value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/PreceptDef[defName="IdeoBuilding"]/buildingDefChances</xpath>
+    <value>
+      <FuneralPyre>0</FuneralPyre>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/RitualAttachableOutcomeEffectDef[defName="RandomRecruit"]/disallowedRituals</xpath>
+    <value>
+      <li>FuneralPyreStandard</li>
+      <li>FuneralPyreNoCorpse</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PreceptDef[defName="Funeral"]/exclusionTags</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/PreceptDef[defName="Funeral"]</xpath>
+      <value>
+        <exclusionTags>
+          <li>Funeral</li>
+        </exclusionTags>
+      </value>
+    </nomatch>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/PreceptDef[defName="Funeral"]/exclusionTags</xpath>
+      <value>
+        <li>Funeral</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

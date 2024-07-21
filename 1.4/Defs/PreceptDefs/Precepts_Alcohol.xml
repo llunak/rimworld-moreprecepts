@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Issue -->
+
+  <IssueDef>
+    <defName>Alcohol</defName>
+    <label>alcohol</label>
+    <iconPath>UI/Issues/Alcohol</iconPath>
+  </IssueDef>
+
+  <!-- Precepts -->
+
+  <PreceptDef>
+    <defName>Alcohol_Prohibited</defName>
+    <issue>Alcohol</issue>
+    <label>prohibited</label>
+    <description>The body should absolutely not be poisoned by alcohol.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>30</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <associatedMemes>
+      <li>FleshPurity</li>
+    </associatedMemes>
+    <conflictingMemes>
+      <li>HighLife</li>
+    </conflictingMemes>
+    <selectionWeight>0.2</selectionWeight>
+    <comps>
+      <li Class="PreceptComp_UnwillingToDo">
+        <eventDef>IngestedAlcohol</eventDef>
+        <description>Ingest alcohol</description>
+        <nullifyingTraits>
+          <DrugDesire>2</DrugDesire>
+          <DrugDesire>1</DrugDesire>
+        </nullifyingTraits>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>IngestedAlcohol</eventDef>
+        <thought>IngestedAlcohol_Prohibited</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>IngestedAlcohol</eventDef>
+        <thought>IngestedAlcohol_Know_Prohibited</thought>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>AdministeredAlcohol</eventDef>
+        <thought>AdministeredAlcohol_Prohibited</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>AdministeredAlcohol</eventDef>
+        <thought>AdministeredAlcohol_Know_Prohibited</thought>
+      </li>
+      <li Class="PreceptComp_UnwillingToDo">
+        <eventDef>AdministeredAlcohol</eventDef>
+        <description>Administer alcohol</description>
+        <nullifyingTraits>
+          <DrugDesire>2</DrugDesire>
+          <DrugDesire>1</DrugDesire>
+        </nullifyingTraits>
+      </li>
+    </comps>
+    <defaultDrugPolicyOverride>NoDrugs</defaultDrugPolicyOverride>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Alcohol_Disapproved</defName>
+    <issue>Alcohol</issue>
+    <label>disapproved</label>
+    <description>Poisoning the body with alcohol is a deeply immoral act.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>20</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <associatedMemes>
+      <li>FleshPurity</li>
+    </associatedMemes>
+    <conflictingMemes>
+      <li>HighLife</li>
+    </conflictingMemes>
+    <selectionWeight>0.2</selectionWeight>
+    <comps>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>IngestedAlcohol</eventDef>
+        <thought>IngestedAlcohol_Disapproved</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>IngestedAlcohol</eventDef>
+        <thought>IngestedAlcohol_Know_Disapproved</thought>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>AdministeredAlcohol</eventDef>
+        <thought>AdministeredAlcohol_Disapproved</thought>
+      </li>
+      <li Class="PreceptComp_KnowsMemoryThought">
+        <eventDef>AdministeredAlcohol</eventDef>
+        <thought>AdministeredAlcohol_Know_Disapproved</thought>
+      </li>
+    </comps>
+    <defaultDrugPolicyOverride>NoDrugs</defaultDrugPolicyOverride>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Alcohol_Neutral</defName>
+    <issue>Alcohol</issue>
+    <label>neutral</label>
+    <description>Having a drink is fine.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>10</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Alcohol_Wanted</defName>
+    <issue>Alcohol</issue>
+    <label>wanted</label>
+    <description>Having a drink here and there makes life better.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>0</displayOrderInIssue>
+    <displayOrderInImpact>1000</displayOrderInImpact>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Alcohol_Wanted</thought>
+        <description>Alcohol drunk every {DAYSSATISIFED} days</description>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Alcohol_Essential</defName>
+    <issue>Alcohol</issue>
+    <label>essential</label>
+    <description>Life without alcohol is not worth living.</description>
+    <impact>Medium</impact>
+    <displayOrderInIssue>0</displayOrderInIssue>
+    <displayOrderInImpact>1000</displayOrderInImpact>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Alcohol_Essential</thought>
+        <description>Alcohol drunk every {DAYSSATISIFED} days</description>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+    </comps>
+  </PreceptDef>
+
+</Defs>

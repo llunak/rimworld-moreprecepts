@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <RulePackDef>
+    <defName>MP_NamerRitualFeast</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_ritualName->[ritNoun] of [keyDeity]</li>
+        <li>r_ritualName->[ritNoun] of [chosenTheme]</li>
+        <li>r_ritualName->[ritNoun] of [memeConcept]</li>
+        <li>r_ritualName->[memeAdjective] [ritNoun]</li>
+
+        <li>ritNoun->dinner</li>
+        <li>ritNoun->feast</li>
+        <li>ritNoun->banquet</li>
+        <li>ritNoun->dish</li>
+        <li>ritNoun->platter</li>
+
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+</Defs>

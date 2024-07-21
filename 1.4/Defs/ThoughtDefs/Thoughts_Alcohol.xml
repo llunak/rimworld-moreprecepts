@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Prohibited -->
+
+  <ThoughtDef>
+    <defName>IngestedAlcohol_Prohibited</defName>
+    <durationDays>3</durationDays>
+    <stages>
+      <li>
+        <label>used alcohol</label>
+        <description>I drank alcohol. Such poison in the body is a horrible offense against my beliefs.</description>
+        <baseMoodEffect>-15</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifyingTraitDegrees>
+      <DrugDesire>2</DrugDesire>
+      <DrugDesire>1</DrugDesire>
+    </nullifyingTraitDegrees>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>IngestedAlcohol_Know_Prohibited</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>5</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stages>
+      <li>
+        <label>drank alcohol</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifyingTraitDegrees>
+      <DrugDesire>2</DrugDesire>
+      <DrugDesire>1</DrugDesire>
+    </nullifyingTraitDegrees>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>AdministeredAlcohol_Prohibited</defName>
+    <durationDays>3</durationDays>
+    <stages>
+      <li>
+        <label>administered alcohol</label>
+        <description>I administered alcohol. It was a horrible offense against my beliefs.</description>
+        <baseMoodEffect>-15</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifyingTraitDegrees>
+      <DrugDesire>2</DrugDesire>
+      <DrugDesire>1</DrugDesire>
+    </nullifyingTraitDegrees>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>AdministeredAlcohol_Know_Prohibited</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>5</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stages>
+      <li>
+        <label>administered alcohol</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifyingTraitDegrees>
+      <DrugDesire>2</DrugDesire>
+      <DrugDesire>1</DrugDesire>
+    </nullifyingTraitDegrees>
+  </ThoughtDef>
+
+  <!-- Disapproved -->
+
+  <ThoughtDef>
+    <defName>IngestedAlcohol_Disapproved</defName>
+    <durationDays>3</durationDays>
+    <stages>
+      <li>
+        <label>used alcohol</label>
+        <description>I drank alcohol. I feel ashamed.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifyingTraitDegrees>
+      <DrugDesire>2</DrugDesire>
+      <DrugDesire>1</DrugDesire>
+    </nullifyingTraitDegrees>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>IngestedAlcohol_Know_Disapproved</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>5</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stages>
+      <li>
+        <label>drank alcohol</label>
+        <baseOpinionOffset>-10</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifyingTraitDegrees>
+      <DrugDesire>2</DrugDesire>
+      <DrugDesire>1</DrugDesire>
+    </nullifyingTraitDegrees>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>AdministeredAlcohol_Disapproved</defName>
+    <durationDays>3</durationDays>
+    <stages>
+      <li>
+        <label>administered alcohol</label>
+        <description>I administered alcohol. I should not have done it.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifyingTraitDegrees>
+      <DrugDesire>2</DrugDesire>
+      <DrugDesire>1</DrugDesire>
+    </nullifyingTraitDegrees>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>AdministeredAlcohol_Know_Disapproved</defName>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>5</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <stages>
+      <li>
+        <label>administered alcohol</label>
+        <baseOpinionOffset>-10</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifyingTraitDegrees>
+      <DrugDesire>2</DrugDesire>
+      <DrugDesire>1</DrugDesire>
+    </nullifyingTraitDegrees>
+  </ThoughtDef>
+
+  <!-- Neutral -->
+
+  <!-- Wanted -->
+
+  <ThoughtDef>
+    <defName>Alcohol_Wanted</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Alcohol_Wanted</workerClass>
+    <minExpectationForNegativeThought>Low</minExpectationForNegativeThought>
+    <validWhileDespawned>true</validWhileDespawned>
+    <nullifyingTraitDegrees>
+      <DrugDesire>-1</DrugDesire>
+    </nullifyingTraitDegrees>
+    <stages>
+      <li>
+        <label>alcohol</label>
+        <description>I feel relaxed.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+      <li>
+        <label>alcohol</label>
+        <visible>false</visible>
+        <baseMoodEffect>0</baseMoodEffect>
+      </li>
+      <li>
+        <label>alcohol missing</label>
+        <description>I want some alcohol. It's not right to be sober so long.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+      <li>
+        <visible>false</visible> <!-- Only for precept tooltip to show range. -->
+        <label>alcohol missing</label>
+        <description>I want some alcohol. It's not right to be sober so long.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Essential -->
+
+  <ThoughtDef>
+    <defName>Alcohol_Essential</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Alcohol_Essential</workerClass>
+    <minExpectationForNegativeThought>Low</minExpectationForNegativeThought>
+    <validWhileDespawned>true</validWhileDespawned>
+    <nullifyingTraitDegrees>
+      <DrugDesire>-1</DrugDesire>
+    </nullifyingTraitDegrees>
+    <stages>
+      <li>
+        <label>alcohol</label>
+        <description>Alcohol is my life.</description>
+        <baseMoodEffect>3</baseMoodEffect>
+      </li>
+      <li>
+        <label>alcohol</label>
+        <visible>false</visible>
+        <baseMoodEffect>0</baseMoodEffect>
+      </li>
+      <li>
+        <label>alcohol missing</label>
+        <description>I want some alcohol. It's not right to be sober so long.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+      <li>
+        <visible>false</visible> <!-- Only for precept tooltip to show range. -->
+        <label>alcohol missing</label>
+        <description>I want some alcohol. It's not right to be sober so long.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>
