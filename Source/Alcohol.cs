@@ -634,9 +634,8 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                     && codes[i+1].opcode == OpCodes.Brfalse_S
                     && codes[i+2].opcode == OpCodes.Ldarg_2)
                 {
-                    codes[i+2] = codes[i+1];
-                    codes[i+2].opcode = OpCodes.Br_S;
-                    codes[i+1] = new CodeInstruction(OpCodes.Pop); // need to pop the conditional branch argument
+                    codes.Insert(i+1, new CodeInstruction(OpCodes.Pop)); // need to pop the conditional branch argument
+                    codes[i+1+1].opcode = OpCodes.Br_S;
                     ++foundCount;
                 }
                 // T:14:ldsfld::RimWorld.HistoryEventDef IngestedRecreationalDrug
@@ -654,9 +653,8 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                     && codes[i+7].opcode == OpCodes.Brtrue_S
                     && codes[i+8].opcode == OpCodes.Ldarg_2)
                 {
-                    codes[i+8] = codes[i+7];
-                    codes[i+8].opcode = OpCodes.Br_S;
-                    codes[i+7] = new CodeInstruction(OpCodes.Pop); // need to pop the conditional branch argument
+                    codes.Insert(i+7, new CodeInstruction(OpCodes.Pop)); // need to pop the conditional branch argument
+                    codes[i+7+1].opcode = OpCodes.Br_S;
                     ++foundCount;
                 }
             }
