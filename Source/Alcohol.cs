@@ -538,7 +538,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                     && codes[i+2].opcode == OpCodes.Brtrue_S
                     && codes[i+5].opcode == OpCodes.Callvirt && codes[i+5].operand.ToString() == "Boolean get_IsDrug()")
                 {
-                    Type nestedClass = typeof(FoodUtility).GetNestedType("<>c__DisplayClass19_0", BindingFlags.NonPublic);
+                    Type nestedClass = typeof(FoodUtility).GetNestedType("<>c__DisplayClass14_0", BindingFlags.NonPublic);
                     if(nestedClass != null)
                     {
                         FieldInfo eaterField = AccessTools.Field(nestedClass, "eater");

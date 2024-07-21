@@ -18,7 +18,7 @@ namespace MorePrecepts
             bool done = false;
             MethodInfo oldMethod;
             MethodInfo newMethod;
-            Type nestedClass = typeof(FoodUtility).GetNestedType("<>c__DisplayClass19_0", BindingFlags.NonPublic);
+            Type nestedClass = typeof(FoodUtility).GetNestedType("<>c__DisplayClass14_0", BindingFlags.NonPublic);
             if(nestedClass != null)
             {
                 oldMethod = AccessTools.Method(nestedClass, "<BestFoodSourceOnMap>b__0");
