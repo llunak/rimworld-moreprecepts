@@ -14,15 +14,15 @@ namespace MorePrecepts
             var harmony = new Harmony("llunak.MorePrecepts");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-            // FoodUtility.BestFoodSourceOnMap_NewTemp() needs special handling, see the transpiller.
+            // FoodUtility.BestFoodSourceOnMap() needs special handling, see the transpiller.
             bool done = false;
             MethodInfo oldMethod;
             MethodInfo newMethod;
             Type nestedClass = typeof(FoodUtility).GetNestedType("<>c__DisplayClass19_0", BindingFlags.NonPublic);
             if(nestedClass != null)
             {
-                oldMethod = AccessTools.Method(nestedClass, "<BestFoodSourceOnMap_NewTemp>b__0");
-                newMethod = typeof(FoodUtility_Patch).GetMethod("BestFoodSourceOnMap_NewTemp_foodValidator");
+                oldMethod = AccessTools.Method(nestedClass, "<BestFoodSourceOnMap>b__0");
+                newMethod = typeof(FoodUtility_Patch).GetMethod("BestFoodSourceOnMap_foodValidator");
                 if(oldMethod != null)
                 {
                     harmony.Patch(oldMethod, transpiler: new HarmonyMethod(newMethod));
@@ -30,7 +30,7 @@ namespace MorePrecepts
                 }
             }
             if(!done)
-                Log.Error("MorePrecepts: Failed to find BestFoodSourceOnMap_NewTemp_foodValidator for patching");
+                Log.Error("MorePrecepts: Failed to find BestFoodSourceOnMap_foodValidator for patching");
 
             // JoyGiver_SocialRelax.TryFindIngestibleToNurse() needs special handling, see the transpiller.
             done = false;

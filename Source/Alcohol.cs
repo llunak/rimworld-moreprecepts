@@ -194,7 +194,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             {
                 // Override return value for alcohol.
                 AlcoholHelper.AddOverride();
-                if (food.IsNutritionGivingIngestible && pawn.WillEat_NewTemp(food, null, careIfNotAcceptableForTitle: false)
+                if (food.IsNutritionGivingIngestible && pawn.WillEat(food, null, careIfNotAcceptableForTitle: false)
                     && (int)food.ingestible.preferability > 1 && !pawn.IsTeetotaler() && food.ingestible.canAutoSelectAsFoodForCaravan)
                 {
                     __result = new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo();
@@ -456,15 +456,15 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
     // PawnInventoryGenerator, Pawn_InventoryTracker and JobGiver_TakeCombatEnhancingDrug are about combat
     // enhancing drugs, which alcohol is not, so let's ignore it.
 
-    // The BestFoodSourceOnMap_NewTemp() function gets called from several other places (FoodUtility.TryFindBestFoodSourceFor(),
+    // The BestFoodSourceOnMap() function gets called from several other places (FoodUtility.TryFindBestFoodSourceFor(),
     // JobGiver_GetFood, WorkGiver_InteractAnimal), but they all basically pass !pawn.IsTeetotaler() to allowDrug
     // (or false for animals), so just ignore the argument and check pawn settings ourselves.
     [HarmonyPatch(typeof(FoodUtility))]
     public static class FoodUtility_Patch
     {
         [HarmonyTranspiler]
-        [HarmonyPatch(nameof(BestFoodInInventory_NewTemp))]
-        public static IEnumerable<CodeInstruction> BestFoodInInventory_NewTemp(IEnumerable<CodeInstruction> instructions)
+        [HarmonyPatch(nameof(BestFoodInInventory))]
+        public static IEnumerable<CodeInstruction> BestFoodInInventory(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
             bool found = false;
@@ -513,9 +513,9 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         }
 
         // This transpiller is set up manually, as Harmony cannot find the method to patch (or I don't know how to set it up).
-        // The catch is that the code to patch is an internal predicate function in FoodUtility.BestFoodSourceOnMap_NewTemp(),
+        // The catch is that the code to patch is an internal predicate function in FoodUtility.BestFoodSourceOnMap(),
         // which is implemented as a method in a nested private class.
-        public static IEnumerable<CodeInstruction> BestFoodSourceOnMap_NewTemp_foodValidator(IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> BestFoodSourceOnMap_foodValidator(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
             bool found = false;
@@ -524,7 +524,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                 // The function has code:
                 // .. || (!allowDrug && thing.def.IsDrug) || ..
                 // Replace it with:
-                // .. || (BestFoodSourceOnMap_NewTemp_Hook(eater, thing.def)) || ..
+                // .. || (BestFoodSourceOnMap_Hook(eater, thing.def)) || ..
                 // Log.Message("T:" + i + ":" + codes[i].opcode + "::" + (codes[i].operand != null ? codes[i].operand.ToString() : codes[i].operand));
                 // T:165:ldarg.0::
                 // T:166:ldfld::System.Boolean allowDrug
@@ -546,7 +546,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                         {
                             codes[i+1] = new CodeInstruction(OpCodes.Ldfld, eaterField);
                             codes[i+2] = new CodeInstruction(OpCodes.Nop);
-                            codes[i+5] = new CodeInstruction(OpCodes.Call, typeof(FoodUtility_Patch).GetMethod(nameof(BestFoodSourceOnMap_NewTemp_Hook)));
+                            codes[i+5] = new CodeInstruction(OpCodes.Call, typeof(FoodUtility_Patch).GetMethod(nameof(BestFoodSourceOnMap_Hook)));
                             found = true;
                             break;
                         }
@@ -554,11 +554,11 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                 }
             }
             if(!found)
-                Log.Error("MorePrecepts: Failed to patch FoodUtility.BestFoodSourceOnMap_NewTemp() validator");
+                Log.Error("MorePrecepts: Failed to patch FoodUtility.BestFoodSourceOnMap() validator");
             return codes;
         }
 
-        public static bool BestFoodSourceOnMap_NewTemp_Hook(Pawn eater, ThingDef thing)
+        public static bool BestFoodSourceOnMap_Hook(Pawn eater, ThingDef thing)
         {
             // If this returns true, the thing will not be used.
             if(AlcoholHelper.NeedsAlcoholOverride(thing, eater))
