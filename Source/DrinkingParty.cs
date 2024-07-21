@@ -92,14 +92,14 @@ namespace MorePrecepts
             return lordJob.joySum * 100 / participantCount; // map to average joy per pawn (17 is one beer, XML counts 50 as max)
         }
 
-        public override ExpectedOutcomeDesc GetExpectedOutcomeDesc(Precept_Ritual ritual, TargetInfo ritualTarget, RitualObligation obligation, RitualRoleAssignments assignments, RitualOutcomeComp_Data data)
+        public override QualityFactor GetQualityFactor(Precept_Ritual ritual, TargetInfo ritualTarget, RitualObligation obligation, RitualRoleAssignments assignments, RitualOutcomeComp_Data data)
         {
-            return new ExpectedOutcomeDesc
+            return new QualityFactor
             {
                 label = label.CapitalizeFirst(),
                 present = false,
                 uncertainOutcome = true,
-                effect = ExpectedOffsetDesc(positive: true, 0),
+                qualityChange = ExpectedOffsetDesc(positive: true, 0),
                 positive = true
             };
         }

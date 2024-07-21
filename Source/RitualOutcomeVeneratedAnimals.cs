@@ -120,7 +120,7 @@ namespace MorePrecepts
         public const float BestOutcomeBodysize = 3f;
 
         public override void Apply(Dictionary<Pawn, int> totalPresence, LordJob_Ritual jobRitual,
-            OutcomeChance outcome, out string extraOutcomeDesc, ref LookTargets letterLookTargets)
+            RitualOutcomePossibility outcome, out string extraOutcomeDesc, ref LookTargets letterLookTargets)
         {
             extraOutcomeDesc = null;
             IncidentParms parms = new IncidentParms

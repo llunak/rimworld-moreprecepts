@@ -92,14 +92,14 @@ namespace MorePrecepts
             return lordJob.preferabilitySum * 10 / lordJob.mealsCount; // map to average 0-90
         }
 
-        public override ExpectedOutcomeDesc GetExpectedOutcomeDesc(Precept_Ritual ritual, TargetInfo ritualTarget, RitualObligation obligation, RitualRoleAssignments assignments, RitualOutcomeComp_Data data)
+        public override QualityFactor GetQualityFactor(Precept_Ritual ritual, TargetInfo ritualTarget, RitualObligation obligation, RitualRoleAssignments assignments, RitualOutcomeComp_Data data)
         {
-            return new ExpectedOutcomeDesc
+            return new QualityFactor
             {
                 label = label.CapitalizeFirst(),
                 present = false,
                 uncertainOutcome = true,
-                effect = ExpectedOffsetDesc(positive: true, 0),
+                qualityChange = ExpectedOffsetDesc(positive: true, 0),
                 positive = true
             };
         }

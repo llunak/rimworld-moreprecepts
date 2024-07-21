@@ -8,7 +8,8 @@ namespace MorePrecepts
 {
     public class RitualAttachableOutcomeEffectWorker_Raid : RitualAttachableOutcomeEffectWorker
     {
-        public override void Apply(Dictionary<Pawn, int> totalPresence, LordJob_Ritual jobRitual, OutcomeChance outcome, out string extraOutcomeDesc, ref LookTargets letterLookTargets)
+        public override void Apply(Dictionary<Pawn, int> totalPresence, LordJob_Ritual jobRitual, RitualOutcomePossibility outcome,
+            out string extraOutcomeDesc, ref LookTargets letterLookTargets)
         {
             extraOutcomeDesc = null;
             float chance = 0.5f;
