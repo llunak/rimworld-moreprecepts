@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using Verse;
+using UnityEngine;
 
 /*
 Cases to test:
@@ -19,17 +20,22 @@ namespace MorePrecepts
     {
         public override int OpenTicks => 10;
 
-        public override void Notify_CorpseBuried(Pawn worker)
+        public override void Notify_HauledTo(Pawn hauler, Thing thing, int count)
         {
             // Count this as burying, but ignore all the other grave things.
-            worker.records.Increment(RecordDefOf.CorpsesBuried);
+            hauler.records.Increment(RecordDefOf.CorpsesBuried);
         }
 
-        public override void Draw()
+        public override void DynamicDrawPhaseAt(DrawPhase phase, Vector3 drawLoc, bool flip = false)
         {
-            base.Draw();
+            base.DynamicDrawPhaseAt( phase, drawLoc, flip );
             if (base.HasCorpse)
-                base.Corpse.DrawAt(base.Position.ToVector3ShiftedWithAltitude(AltitudeLayer.BuildingOnTop) + def.building.gibbetCorposeDrawOffset);
+            {
+                Vector3 drawLoc2 = base.Position.ToVector3ShiftedWithAltitude(AltitudeLayer.BuildingOnTop) + def.building.gibbetCorposeDrawOffset;
+                float corpseRotation = 0;
+                base.Corpse.InnerPawn.Drawer.renderer.wiggler.SetToCustomRotation(corpseRotation);
+                base.Corpse.DynamicDrawPhaseAt(phase, drawLoc2);
+            }
         }
     }
 
