@@ -134,6 +134,18 @@ namespace MorePrecepts
             float factor = NewcomerAttitudeHelper.daysFactor( p, p );
             if( factor > 0 )
                 return false; // do not give the thought if the pawn considers himself a newcomer
+            bool anyNewcomer = false;
+            foreach (Pawn other in PawnsFinder.AllMaps_SpawnedPawnsInFaction(p.Faction))
+            {
+                if( !other.IsColonist || other == p )
+                    continue;
+                factor = NewcomerAttitudeHelper.daysFactor( p, other );
+                anyNewcomer = factor > 0;
+                if( anyNewcomer )
+                    break;
+            }
+            if( !anyNewcomer )
+                return ThoughtState.Inactive;
             if( NewcomerAttitudeHelper.calculateHasArmed( p ))
                 return ThoughtState.ActiveAtStage( 0 );
             return ThoughtState.ActiveAtStage( 1 );
