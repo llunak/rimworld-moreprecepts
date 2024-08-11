@@ -54,6 +54,19 @@ namespace MorePrecepts
             float limit = daysLimit( pawn );
             return factorCurve.Evaluate( ( limit - days ) / limit );
         }
+        public static float adjustDaysFactorForStatus(Pawn pawn, Pawn other, float factor)
+        {
+            if( other.IsSlave )
+                factor /= 2;
+            DevelopmentalStage developmentalStage = other.ageTracker.CurLifeStage.developmentalStage;
+            if( developmentalStage.Juvenile())
+                factor /= 2;
+            else if( developmentalStage.Baby())
+                factor /= 4;
+            else if( developmentalStage.Newborn())
+                factor /= 8;
+            return factor;
+        }
         public static bool calculateHasArmed(Pawn pawn)
         {
             if(pawn == null || pawn.Ideo == null || pawn.Faction == null)
@@ -82,8 +95,7 @@ namespace MorePrecepts
                 float factor = daysFactor( pawn, other );
                 if( factor <= 0 )
                     continue;
-                if( other.IsSlave )
-                    factor /= 2;
+                factor = adjustDaysFactorForStatus( pawn, other, factor );
                 if(hasAnyArmed)
                 {
                     // If there are any armed and this one is not, reduce its weight by the ratio
@@ -115,8 +127,7 @@ namespace MorePrecepts
                     continue; // ignore initial colonists
                 float days = ticks / GenDate.TicksPerDay;
                 float factor = factorCurveExcited.Evaluate( days );
-                if( other.IsSlave )
-                    factor /= 2;
+                factor = NewcomerAttitudeHelper.adjustDaysFactorForStatus( pawn, other, factor );
                 bestFactor = Mathf.Max( bestFactor, factor );
             }
             return bestFactor;
@@ -218,7 +229,9 @@ namespace MorePrecepts
                 return 0;
             if (!Active)
                 return 0;
-            return Mathf.Ceil( CurStage.baseOpinionOffset * NewcomerAttitudeHelper.daysFactor(pawn, otherPawn));
+            float factor = NewcomerAttitudeHelper.daysFactor(pawn, otherPawn);
+            factor = NewcomerAttitudeHelper.adjustDaysFactorForStatus( pawn, otherPawn, factor );
+            return Mathf.Ceil( CurStage.baseOpinionOffset * factor );
         }
     }
 
