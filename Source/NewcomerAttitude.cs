@@ -65,6 +65,8 @@ namespace MorePrecepts
                 factor /= 4;
             else if( developmentalStage.Newborn())
                 factor /= 8;
+            if( other.Downed )
+                factor /= 3;
             return factor;
         }
         public static bool calculateHasArmed(Pawn pawn)
