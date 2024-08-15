@@ -45,9 +45,15 @@ namespace MorePrecepts
                 return FearfulDays;
             return 0;
         }
+        public static float ticksAtColony(Pawn pawn)
+        {
+            return pawn.records.GetAsInt(RecordDefOf.TimeAsColonistOrColonyAnimal)
+                + pawn.records.GetAsInt(RecordDefOf.TimeAsPrisoner)
+                + pawn.records.GetAsInt(RecordDefOf.TimeAsQuestLodger);
+        }
         public static float daysFactor(Pawn pawn, Pawn other)
         {
-            float ticks = other.records.GetAsInt(RecordDefOf.TimeAsColonistOrColonyAnimal);
+            float ticks = ticksAtColony(other);
             if( ticks > Find.TickManager.TicksGame - GenDate.TicksPerHour )
                 return 0; // ignore initial colonists
             float days = ticks / GenDate.TicksPerDay;
@@ -234,6 +240,55 @@ namespace MorePrecepts
             float factor = NewcomerAttitudeHelper.daysFactor(pawn, otherPawn);
             factor = NewcomerAttitudeHelper.adjustDaysFactorForStatus( pawn, otherPawn, factor );
             return Mathf.Ceil( CurStage.baseOpinionOffset * factor );
+        }
+    }
+
+    // Make the colonist banished and denied joining mood debuffs stronger/weaker depending
+    // on the like/dislike of the colonist if it's a newcomer.
+    [HarmonyPatch(typeof(MemoryThoughtHandler))]
+    public static class MemoryThoughtHandler_Patch
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(TryGainMemory))]
+        [HarmonyPatch(new Type[] { typeof( Thought_Memory ), typeof(Pawn) } )]
+        public static void TryGainMemory(Thought_Memory newThought, Pawn otherPawn, Pawn ___pawn)
+        {
+            if( !( newThought is Thought_Banished ))
+                return;
+            if( newThought.def != RimWorld.ThoughtDefOf.ColonistBanished
+                && newThought.def != RimWorld.ThoughtDefOf.ColonistBanishedToDie
+                && newThought.def != RimWorld.ThoughtDefOf.PrisonerBanishedToDie
+                && newThought.def != RimWorld.ThoughtDefOf.DeniedJoining )
+                return;
+            if( ___pawn.Ideo == null || otherPawn == null )
+                return;
+            float daysLimit = NewcomerAttitudeHelper.daysLimit( ___pawn );
+            if( daysLimit == 0 )
+                return;
+            float daysAtColony = NewcomerAttitudeHelper.ticksAtColony( otherPawn ) / GenDate.TicksPerDay;
+            if( daysAtColony >= daysLimit )
+                return;
+            float factor = 1;
+            if( ___pawn.Ideo.HasPrecept(PreceptDefOf.MP_NewcomerAttitude_Excited))
+                factor *= 2; // Make it worse.
+            else
+            {
+                // Make it less bad, depending on precept strength.
+                if( ___pawn.Ideo.HasPrecept(PreceptDefOf.MP_NewcomerAttitude_Careful))
+                    factor /= 1.2f;
+                else if( ___pawn.Ideo.HasPrecept(PreceptDefOf.MP_NewcomerAttitude_Wary))
+                    factor /= 1.5f;
+                else // if( ___pawn.Ideo.HasPrecept(PreceptDefOf.MP_NewcomerAttitude_Fearful))
+                    factor /= 2f;
+                // Small impact if ToDie.
+                if( newThought.def == RimWorld.ThoughtDefOf.ColonistBanishedToDie
+                    || newThought.def == RimWorld.ThoughtDefOf.PrisonerBanishedToDie )
+                {
+                    factor = ( 1 + 1 + factor ) / 3;
+                }
+            }
+            // At max strength when new, at 1 when at the limit.
+            newThought.moodPowerFactor *= Mathf.Lerp( factor, 1, daysAtColony / daysLimit );
         }
     }
 
