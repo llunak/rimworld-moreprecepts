@@ -15,9 +15,14 @@
         <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
         <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
     </li>
+    <li>
+        <packageId>Ludeon.Rimworld.Ideology</packageId>
+        <displayName>Ideology</displayName>
+    </li>
     </modDependencies>
     <loadAfter>
         <li>brrainz.harmony</li>
+        <li>Ludeon.RimWorld.Ideology</li>
     </loadAfter>
     <description>This mod provides additional precepts for ideoligions in the Ideology DLC. This is work in progress, more are planned.
 
