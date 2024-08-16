@@ -25,7 +25,7 @@ namespace MorePrecepts
             // If the pawn joined somewhen after the settlement was created, count only that time,
             // to prevent newcomers from getting immediately unhappy. Note that this is technically
             // incorrect if the pawn leaves and then joins again, but it's probably good enough.
-            int ticksSinceJoined = pawn.records.GetAsInt(RecordDefOf.TimeAsColonistOrColonyAnimal);
+            int ticksSinceJoined = pawn.records.GetAsInt(RimWorld.RecordDefOf.TimeAsColonistOrColonyAnimal);
             return Math.Min( ticksSinceSettlementCreated, ticksSinceJoined );
         }
     }

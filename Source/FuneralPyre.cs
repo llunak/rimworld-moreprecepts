@@ -23,7 +23,7 @@ namespace MorePrecepts
         public override void Notify_HauledTo(Pawn hauler, Thing thing, int count)
         {
             // Count this as burying, but ignore all the other grave things.
-            hauler.records.Increment(RecordDefOf.CorpsesBuried);
+            hauler.records.Increment(RimWorld.RecordDefOf.CorpsesBuried);
         }
 
         public override void DynamicDrawPhaseAt(DrawPhase phase, Vector3 drawLoc, bool flip = false)

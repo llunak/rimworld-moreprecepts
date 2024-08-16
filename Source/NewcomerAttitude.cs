@@ -47,9 +47,12 @@ namespace MorePrecepts
         }
         public static float ticksAtColony(Pawn pawn)
         {
-            return pawn.records.GetAsInt(RecordDefOf.TimeAsColonistOrColonyAnimal)
-                + pawn.records.GetAsInt(RecordDefOf.TimeAsPrisoner)
-                + pawn.records.GetAsInt(RecordDefOf.TimeAsQuestLodger);
+            float ticks = pawn.records.GetAsInt(RimWorld.RecordDefOf.TimeAsColonistOrColonyAnimal)
+                + pawn.records.GetAsInt(RimWorld.RecordDefOf.TimeAsPrisoner)
+                + pawn.records.GetAsInt(RimWorld.RecordDefOf.TimeAsQuestLodger);
+            if(RecordDefOf.TimeAsSlave != null)
+                ticks += pawn.records.GetAsInt(RecordDefOf.TimeAsSlave);
+            return ticks;
         }
         public static float daysFactor(Pawn pawn, Pawn other)
         {
@@ -130,7 +133,8 @@ namespace MorePrecepts
             {
                 if( !other.IsColonist || other == pawn )
                     continue;
-                float ticks = other.records.GetAsInt(RecordDefOf.TimeAsColonistOrColonyAnimal);
+                // Excited cares only about new colonists, not slaves etc.
+                float ticks = other.records.GetAsInt(RimWorld.RecordDefOf.TimeAsColonistOrColonyAnimal);
                 if( ticks > Find.TickManager.TicksGame - GenDate.TicksPerHour )
                     continue; // ignore initial colonists
                 float days = ticks / GenDate.TicksPerDay;

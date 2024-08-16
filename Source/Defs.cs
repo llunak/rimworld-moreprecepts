@@ -209,4 +209,16 @@ namespace MorePrecepts
             DefOfHelper.EnsureInitializedInCtor(typeof(MentalStateDefOf));
         }
     }
+
+    [DefOf]
+    public static class RecordDefOf
+    {
+        [MayRequire("llunak.TimeAsSlave")]
+        public static RecordDef TimeAsSlave;
+
+        static RecordDefOf()
+        {
+            DefOfHelper.EnsureInitializedInCtor(typeof(RecordDefOf));
+        }
+    }
 }
