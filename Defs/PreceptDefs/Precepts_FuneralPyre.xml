@@ -10,6 +10,7 @@
 
   <PreceptDef ParentName="FuneralPyreBase">
     <defName>FuneralPyre</defName>
+    <canGenerateAsSpecialPrecept>false</canGenerateAsSpecialPrecept>
     <label>funeral pyre</label>
     <ritualPatternBase>FuneralPyreStandard</ritualPatternBase>
     <alsoAdds>FuneralPyreNoCorpse</alsoAdds>
