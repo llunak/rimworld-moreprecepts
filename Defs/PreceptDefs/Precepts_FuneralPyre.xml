@@ -14,9 +14,6 @@
     <ritualPatternBase>FuneralPyreStandard</ritualPatternBase>
     <alsoAdds>FuneralPyreNoCorpse</alsoAdds>
     <extraTextPawnDeathLetter>{PAWN_nameDef} should be burned and given a funeral so {PAWN_possessive} friends and family can say farewell.</extraTextPawnDeathLetter>
-    <exclusionTags>
-      <li>Funeral</li>
-    </exclusionTags>
   </PreceptDef>
 
   <PreceptDef ParentName="FuneralPyreBase">

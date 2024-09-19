@@ -197,27 +197,29 @@ namespace MorePrecepts
         }
     }
 
-    [HarmonyPatch(typeof(IdeoUIUtility))]
-    public static class IdeoUIUtility_Patch2
+    // Prevent the pyre to be usable with vanilla grave funeral ritual (Building_Pyre inherits from Building_Grave).
+    [HarmonyPatch(typeof(RitualObligationTargetWorker_GraveWithTarget))]
+    public class RitualObligationTargetWorker_GraveWithTarget_Patch
     {
-        [HarmonyPrefix]
-        [HarmonyPatch(nameof(CanAddPrecept))]
-        public static bool CanAddPrecept(ref AcceptanceReport __result, ref PreceptDef def, RitualPatternDef pat, Ideo ideo)
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(GetTargets))]
+        public static void GetTargets(ref IEnumerable<TargetInfo> __result, RitualObligation obligation, Map map)
         {
-            // Do not allow more than one funeral type. This primarily blocks usage of standard funeral rituals
-            // with our funeral pyres, but it probably doesn't make much sense to have more than one funeral type anyway.
-            // The exclusionTags tag is supported here, but for some reason it blocks duplicates only when
-            // creating an ideology, not when editing it.
-            if( pat != null && pat.defName.Contains("Funeral"))
+            Thing thing = __result.FirstOrDefault().Thing;
+            if( thing != null && thing is Building_FuneralPyre )
+                __result = null;
+            else
+                __result = new TargetInfo[]{ thing };
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CanUseTargetInternal))]
+        public static bool CanUseTargetInternal(ref RitualTargetUseReport __result, TargetInfo target, RitualObligation obligation)
+        {
+            if( target.HasThing && target.Thing is Building_FuneralPyre )
             {
-                foreach (Precept item in ideo.PreceptsListForReading)
-                {
-                    if (item is Precept_Ritual && item.def.defName.Contains("Funeral"))
-                    {
-                        __result = new AcceptanceReport("MorePrecepts.IdeoAlreadyHasFuneral".Translate());
-                        return false;
-                    }
-                }
+                __result = false;
+                return false;
             }
             return true;
         }
