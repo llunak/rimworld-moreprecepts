@@ -9,6 +9,4 @@
   <MorePrecepts.RitualTargetEmptyFuneralPyreInfoAbstract>An empty funeral pyre to mourn {IDEO_memberNameIndef}'s passing.</MorePrecepts.RitualTargetEmptyFuneralPyreInfoAbstract>
   <MorePrecepts.RitualTargetFuneralPyreInfoMustBePlaced>{PAWN_labelShort}'s body must be placed first</MorePrecepts.RitualTargetFuneralPyreInfoMustBePlaced>
 
-  <MorePrecepts.IdeoAlreadyHasFuneral>can only have one funeral type</MorePrecepts.IdeoAlreadyHasFuneral>
-
 </LanguageData>
