@@ -164,7 +164,9 @@ namespace MorePrecepts
             // We patch the BasePawn ThingDef, so the PawnComp should always be there.
             // If not, then unless proven otherwise assume a mod that creates pawns without basing
             // them on the BasePawn ThingDef, and just ignore them.
-            Log.Warning("Pawn " + pawn + " lacks MorePrecepts.PawnComp, not based on BasePawn ThingDef?");
+            // Actually do not log, it appears that there are such broken(?) mods, e.g. the zombies or crystalloid mods.
+            // Do not bother further until somebody actually complains.
+            // Log.Warning("Pawn " + pawn + " lacks MorePrecepts.PawnComp, not based on BasePawn ThingDef?");
             return -99999;
         }
 
