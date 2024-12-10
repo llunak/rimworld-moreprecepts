@@ -112,9 +112,9 @@ namespace MorePrecepts
         public static void Ingested(Thing __instance, Pawn ingester, float nutritionWanted)
         {
             Thing thing = __instance;
-            // Drinking does not bother much to look for a place to sit when drinking water,
-            // so ignore ingestion of fluids.
-            if(( thing.def.ingestible?.foodType & FoodTypeFlags.Fluid ) == FoodTypeFlags.Fluid )
+            // Some ingestibles like psychite tea or Dubs Bad Hygiene water do not search very far
+            // for a place to sit, so ignore. This condition is the same like ate-without-table uses.
+            if(!( thing.def.IsNutritionGivingIngestible && thing.def.ingestible.chairSearchRadius > 10f ))
                 return;
             (float bedMin, float bedOk, float chairMin, float chairOk, QualityCategory tableMin, QualityCategory tableOk,
                 ThoughtDef thoughtDef, Precept precept) = ComfortHelper.GetComfort(ingester);
