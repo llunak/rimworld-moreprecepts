@@ -1,6 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Reflection.Emit;
 using RimWorld;
 using Verse;
@@ -107,11 +108,32 @@ namespace MorePrecepts
     [HarmonyPatch(typeof(Thing))]
     public static class Thing_Patch
     {
+        // Dubs Bad Hygiene does not bother much to look for a place to sit when drinking water,
+        // so ignore ingestion of water.
+        private delegate bool HasWaterExtDelegate( Def thing );
+        private static HasWaterExtDelegate HasModExtensionWaterExt = MakeWaterExt();
+        private static HasWaterExtDelegate MakeWaterExt()
+        {
+            Type waterExt = AccessTools.TypeByName("DubsBadHygiene.WaterExt");
+            if( waterExt == null )
+                return null;
+            MethodInfo method = typeof(Verse.Def).GetMethod("HasModExtension").MakeGenericMethod(waterExt);
+            return AccessTools.MethodDelegate< HasWaterExtDelegate >( method, null, false );
+        }
+        private static bool IsWaterExt(Thing thing)
+        {
+            if( HasModExtensionWaterExt == null )
+                return false;
+            return HasModExtensionWaterExt( thing.def );
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch(nameof(Ingested))]
         public static void Ingested(Thing __instance, Pawn ingester, float nutritionWanted)
         {
             Thing thing = __instance;
+            if( IsWaterExt( thing ))
+                return;
             (float bedMin, float bedOk, float chairMin, float chairOk, QualityCategory tableMin, QualityCategory tableOk,
                 ThoughtDef thoughtDef, Precept precept) = ComfortHelper.GetComfort(ingester);
             if(thoughtDef == null)
