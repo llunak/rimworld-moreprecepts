@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PreceptDef[defName="RoughLiving_Welcomed"]/exclusionTags</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/PreceptDef[defName="RoughLiving_Welcomed"]</xpath>
+      <value>
+        <exclusionTags>
+          <li>ComfortRoughLiving</li>
+        </exclusionTags>
+      </value>
+    </nomatch>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MemeDef[defName="Cannibal"]/exclusionTags</xpath>
+      <value>
+        <li>ComfortRoughLiving</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

@@ -16,6 +16,9 @@
     <conflictingMemes>
       <li>PainIsVirtue</li>
     </conflictingMemes>
+    <exclusionTags>
+      <li>ComfortRoughLiving</li>
+    </exclusionTags>
     <comps>
       <li Class="MorePrecepts.PreceptComp_MemoryThought">
         <thought>Comfort_UsedUncomfortableFurniture_Wanted</thought>
@@ -39,6 +42,9 @@
     <conflictingMemes>
       <li>PainIsVirtue</li>
     </conflictingMemes>
+    <exclusionTags>
+      <li>ComfortRoughLiving</li>
+    </exclusionTags>
     <comps>
       <li Class="MorePrecepts.PreceptComp_MemoryThought">
         <thought>Comfort_UsedUncomfortableFurniture_Important</thought>
@@ -62,6 +68,9 @@
     <conflictingMemes>
       <li>PainIsVirtue</li>
     </conflictingMemes>
+    <exclusionTags>
+      <li>ComfortRoughLiving</li>
+    </exclusionTags>
     <enabledForNPCFactions>false</enabledForNPCFactions>
     <comps>
       <li Class="MorePrecepts.PreceptComp_MemoryThought">
