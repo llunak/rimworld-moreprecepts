@@ -28,6 +28,8 @@
 
   <ThoughtDef>
     <defName>DrugPossession_TradedDrug_Prohibited</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
     <validWhileDespawned>true</validWhileDespawned>
     <durationDays>5</durationDays>
     <stages>
@@ -89,6 +91,8 @@
 
   <ThoughtDef>
     <defName>DrugPossession_TradedDrug_Alcohol</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
     <validWhileDespawned>true</validWhileDespawned>
     <durationDays>5</durationDays>
     <stages>
@@ -150,6 +154,8 @@
 
   <ThoughtDef>
     <defName>DrugPossession_TradedDrug_Social</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
     <validWhileDespawned>true</validWhileDespawned>
     <durationDays>5</durationDays>
     <stages>

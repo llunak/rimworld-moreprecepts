@@ -5,6 +5,8 @@
 
   <ThoughtDef>
     <defName>IngestedAlcohol_Prohibited</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
     <durationDays>3</durationDays>
     <stages>
       <li>
@@ -39,6 +41,8 @@
 
   <ThoughtDef>
     <defName>AdministeredAlcohol_Prohibited</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
     <durationDays>3</durationDays>
     <stages>
       <li>
@@ -75,6 +79,8 @@
 
   <ThoughtDef>
     <defName>IngestedAlcohol_Disapproved</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
     <durationDays>3</durationDays>
     <stages>
       <li>
@@ -109,6 +115,8 @@
 
   <ThoughtDef>
     <defName>AdministeredAlcohol_Disapproved</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
     <durationDays>3</durationDays>
     <stages>
       <li>

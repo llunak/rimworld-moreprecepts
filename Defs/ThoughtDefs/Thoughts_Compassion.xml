@@ -2,6 +2,8 @@
 <Defs>
 
   <ThoughtDef Name="CompassionBase" Abstract="True">
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
     <durationDays>7</durationDays>
     <stackLimit>3</stackLimit>
     <stackedEffectMultiplier>0.8</stackedEffectMultiplier>

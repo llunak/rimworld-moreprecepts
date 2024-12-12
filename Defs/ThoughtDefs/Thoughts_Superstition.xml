@@ -19,6 +19,8 @@
 
   <ThoughtDef>
     <defName>Superstition_Superstitious_Strong_Minus</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
     <durationDays>1</durationDays>
     <stackLimit>3</stackLimit>
     <stackedEffectMultiplier>0.5</stackedEffectMultiplier>
@@ -51,6 +53,8 @@
 
   <ThoughtDef>
     <defName>Superstition_Superstitious_Mild_Minus</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
     <durationDays>1</durationDays>
     <stackLimit>3</stackLimit>
     <stackedEffectMultiplier>0.5</stackedEffectMultiplier>

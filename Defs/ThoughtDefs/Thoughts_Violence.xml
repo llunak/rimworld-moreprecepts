@@ -5,6 +5,8 @@
 
   <ThoughtDef>
     <defName>Violence_Pacifism</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
     <durationDays>7</durationDays>
     <stackLimit>5</stackLimit>
     <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
@@ -44,6 +46,8 @@
 
   <ThoughtDef>
     <defName>Violence_Avoided</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
     <durationDays>7</durationDays>
     <stackLimit>5</stackLimit>
     <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
@@ -64,6 +68,8 @@
 
   <ThoughtDef>
     <defName>Violence_Horrible</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
     <durationDays>7</durationDays>
     <stackLimit>5</stackLimit>
     <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
@@ -103,6 +109,8 @@
 
   <ThoughtDef>
     <defName>Violence_Disapproved</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
     <durationDays>2</durationDays>
     <stackLimit>5</stackLimit>
     <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
@@ -142,6 +150,8 @@
 
   <ThoughtDef>
     <defName>Violence_Defense</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
     <durationDays>7</durationDays>
     <stackLimit>5</stackLimit>
     <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
@@ -181,6 +191,8 @@
 
   <ThoughtDef>
     <defName>Violence_DefenseMild</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
     <durationDays>7</durationDays>
     <stackLimit>5</stackLimit>
     <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
