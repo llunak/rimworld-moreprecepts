@@ -78,11 +78,13 @@ namespace MorePrecepts
                 return -1; // no quality setting, always consider acceptable
         }
 
-        public static void AddThoughtIfNeeded(Pawn pawn, int level, ThoughtDef thoughtDef, Precept precept)
+        public static void AddThoughtIfNeeded(Pawn pawn, int level, ThoughtDef thoughtDef, Precept precept, Thing thing)
         {
             if(level < 0)
                 return;
             Thought_Memory thought = ThoughtMaker.MakeThought(thoughtDef, precept);
+            if( thing != null && thought is Thought_Comfort thoughtComfort )
+                thoughtComfort.SetThing(thing);
             thought.SetForcedStage(level);
             pawn.needs.mood.thoughts.memories.TryGainMemory(thought);
         }
@@ -93,14 +95,14 @@ namespace MorePrecepts
     {
         [HarmonyPostfix]
         [HarmonyPatch(nameof(ApplyBedThoughts))]
-        public static void ApplyBedThoughts(Pawn actor)
+        public static void ApplyBedThoughts(Pawn actor, Building_Bed bed)
         {
             (float bedMin, float bedOk, float chairMin, float chairOk, QualityCategory tableMin, QualityCategory tableOk,
                 ThoughtDef thoughtDef, Precept precept) = ComfortHelper.GetComfort(actor);
             if(thoughtDef == null)
                 return;
             ComfortHelper.AddThoughtIfNeeded(actor, ComfortHelper.GetThoughtLevel(actor.CurrentBed(), bedMin, bedOk),
-                thoughtDef, precept);
+                thoughtDef, precept, bed);
         }
     }
 
@@ -130,7 +132,10 @@ namespace MorePrecepts
                     table = ingester.Map != null ? (ingester.Position + ingester.Rotation.FacingCell).GetEdifice(ingester.Map) : null;
             int chairLevel = ComfortHelper.GetThoughtLevel(chair, chairMin, chairOk);
             int tableLevel = ComfortHelper.GetThoughtLevel(table, tableMin, tableOk);
-            ComfortHelper.AddThoughtIfNeeded(ingester, Math.Max(chairLevel, tableLevel), thoughtDef, precept);
+            if( chairLevel >= tableLevel )
+                ComfortHelper.AddThoughtIfNeeded(ingester, chairLevel, thoughtDef, precept, chair);
+            else
+                ComfortHelper.AddThoughtIfNeeded(ingester, tableLevel, thoughtDef, precept, table);
         }
     }
 
@@ -288,4 +293,18 @@ namespace MorePrecepts
     public class PreceptComp_MemoryThought : PreceptComp_SituationalThought
     {
     }
+
+    // Say also what caused the thought in the tooltip (based on Thought_FoodEaten).
+    public class Thought_Comfort : Thought_Memory
+    {
+        private string foodThoughtDescription;
+
+        public override string Description => base.Description + "\n\n" + foodThoughtDescription;
+
+        public void SetThing(Thing thing)
+        {
+            foodThoughtDescription = "MorePrecepts.ComfortProblemSource".Translate() + ": " + thing.LabelCap;
+        }
+    }
+
 }
