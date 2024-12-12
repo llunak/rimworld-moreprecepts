@@ -52,6 +52,10 @@ namespace MorePrecepts
                 + pawn.records.GetAsInt(RimWorld.RecordDefOf.TimeAsQuestLodger);
             if(RecordDefOf.TimeAsSlave != null)
                 ticks += pawn.records.GetAsInt(RecordDefOf.TimeAsSlave);
+            // Consider visitor time less, since visiting is not as intensive, so pawns
+            // do not get to "know" the pawn as much.
+            if(RecordDefOf.TimeAsVisitor != null)
+                ticks += pawn.records.GetAsInt(RecordDefOf.TimeAsVisitor) / 4;
             return ticks;
         }
         public static float daysFactor(Pawn pawn, Pawn other)

@@ -216,6 +216,9 @@ namespace MorePrecepts
         [MayRequire("llunak.TimeAsSlave")]
         public static RecordDef TimeAsSlave;
 
+        [MayRequire("llunak.TimeAsSlave")]
+        public static RecordDef TimeAsVisitor;
+
         static RecordDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(RecordDefOf));
