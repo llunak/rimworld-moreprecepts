@@ -101,7 +101,7 @@ namespace MorePrecepts
                 ThoughtDef thoughtDef, Precept precept) = ComfortHelper.GetComfort(actor);
             if(thoughtDef == null)
                 return;
-            ComfortHelper.AddThoughtIfNeeded(actor, ComfortHelper.GetThoughtLevel(actor.CurrentBed(), bedMin, bedOk),
+            ComfortHelper.AddThoughtIfNeeded(actor, ComfortHelper.GetThoughtLevel(bed, bedMin, bedOk),
                 thoughtDef, precept, bed);
         }
     }
@@ -122,6 +122,12 @@ namespace MorePrecepts
                 ThoughtDef thoughtDef, Precept precept) = ComfortHelper.GetComfort(ingester);
             if(thoughtDef == null)
                 return;
+            if(ingester.InBed()) // Getting fed while in a (medical) bed?
+            {
+                ComfortHelper.AddThoughtIfNeeded(ingester, ComfortHelper.GetThoughtLevel(ingester.CurrentBed(), bedMin, bedOk),
+                    thoughtDef, precept, ingester.CurrentBed());
+                return;
+            }
             // The comfort+ingest code is in Toils_Ingest, but Thing.Ingested is easier to patch.
             Thing chair = null;
             if(thing.def.ingestible.chairSearchRadius > 0f)
