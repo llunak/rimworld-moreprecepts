@@ -217,14 +217,15 @@ namespace MorePrecepts
         public override TaggedString GetExplanation()
         {
             return "MorePrecepts.AlertDrugsPresentDesc"
-                .Translate(affectedPawns.Select(v => v.NameShortColored.Resolve()).ToLineList(" - "),
-                    affectedThings.Select(v => v.LabelShort).ToLineList(" - "));
+                .Translate(
+                    affectedThings.Select(v => v.LabelShort).ToLineList(" - "),
+                    affectedPawns.Select(v => v.NameShortColored.Resolve()).ToLineList(" - "));
         }
 
         public override AlertReport GetReport()
         {
             Update();
-            return AlertReport.CulpritsAre(affectedPawns.Concat(affectedThings).ToList());
+            return AlertReport.CulpritsAre(affectedThings.Concat(affectedPawns).ToList());
         }
     }
 
