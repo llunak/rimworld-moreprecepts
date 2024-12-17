@@ -8,7 +8,7 @@ namespace MorePrecepts
 
     public class JobGiver_SitAndBeSociallyActive : JobGiver_StandAndBeSociallyActive
     {
-        protected override Job TryGiveJob(Pawn pawn)
+        public override Job TryGiveJob(Pawn pawn)
         {
             Job job = base.TryGiveJob(pawn);
             job.def = JobDefOf.SitAndBeSociallyActive;
@@ -25,7 +25,7 @@ namespace MorePrecepts
             return pawn.ReserveSittableOrSpot(pawn.Position, job, errorOnFailed);
         }
 
-        protected override IEnumerable<Toil> MakeNewToils()
+        public override IEnumerable<Toil> MakeNewToils()
         {
             Toil toil = new Toil();
             toil.tickAction = delegate

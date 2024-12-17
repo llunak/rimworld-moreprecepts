@@ -19,7 +19,7 @@ namespace MorePrecepts
         {
         }
 
-        protected override void ApplyExtraOutcome(Dictionary<Pawn, int> totalPresence, LordJob_Ritual jobRitual,
+        public override void ApplyExtraOutcome(Dictionary<Pawn, int> totalPresence, LordJob_Ritual jobRitual,
             RitualOutcomePossibility outcome, out string extraOutcomeDesc, ref LookTargets letterLookTargets)
         {
             // Outcome adds melee skill, which animals do not have, so filter the animal out.

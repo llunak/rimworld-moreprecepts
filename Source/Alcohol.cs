@@ -730,7 +730,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         protected abstract float DaysMissing_Major();
         protected abstract SimpleCurve MoodOffsetFromDaysSinceLastAlcoholCurve();
 
-        protected override ThoughtState ShouldHaveThought(Pawn p)
+        public override ThoughtState ShouldHaveThought(Pawn p)
         {
             if (!ThoughtUtility.ThoughtNullified(p, def))
             {

@@ -34,7 +34,7 @@ namespace MorePrecepts
             }
         }
 
-        protected override bool CanFireNowSub(IncidentParms parms)
+        public override bool CanFireNowSub(IncidentParms parms)
         {
             if (!base.CanFireNowSub(parms))
             {
@@ -49,7 +49,7 @@ namespace MorePrecepts
             return false;
         }
 
-        protected override bool TryExecuteWorker(IncidentParms parms)
+        public override bool TryExecuteWorker(IncidentParms parms)
         {
             Map map = (Map)parms.target;
             if (!RCellFinder.TryFindRandomPawnEntryCell(out var result, map, CellFinder.EdgeRoadChance_Animal))

@@ -95,8 +95,7 @@ namespace MorePrecepts
         [HarmonyPatch(nameof(SocialFightPossible))]
         public static void SocialFightPossible(ref bool __result, Pawn_InteractionsTracker __instance, Pawn otherPawn)
         {
-            FieldInfo fi = AccessTools.Field(typeof(Pawn_InteractionsTracker),"pawn");
-            Pawn pawn = (Pawn)fi.GetValue(__instance);
+            Pawn pawn = __instance.pawn;
             if( __result && !ViolenceHelper.WillingToAttack(pawn, otherPawn))
                 __result = false;
         }
@@ -107,8 +106,7 @@ namespace MorePrecepts
         {
             if( __result > 0 )
             {
-                FieldInfo fi = AccessTools.Field(typeof(Pawn_InteractionsTracker),"pawn");
-                Pawn pawn = (Pawn)fi.GetValue(__instance);
+                Pawn pawn = __instance.pawn;
                 // Reduce social fight chance for violence-avoiding pawns, but still keep at least a small chance.
                 if(pawn.Ideo != null && pawn.Ideo.HasPrecept(PreceptDefOf.Violence_Pacifism))
                     __result = Mathf.Max( 0.01f, __result / 8 );
@@ -307,7 +305,7 @@ namespace MorePrecepts
         protected abstract float DaysMissing_Major();
         protected abstract SimpleCurve MoodOffsetFromDaysSinceLastAttackCurve();
 
-        protected override ThoughtState ShouldHaveThought(Pawn p)
+        public override ThoughtState ShouldHaveThought(Pawn p)
         {
             if (p.WorkTagIsDisabled(WorkTags.Violent))
                 return false;
@@ -383,7 +381,7 @@ namespace MorePrecepts
         private const float DaysLongWanted = 15f;
         private const float DaysShortEssential = 5f;
         private const float DaysLongEssential = 10f;
-        protected override ThoughtState CurrentSocialStateInternal(Pawn pawn, Pawn other)
+        public override ThoughtState CurrentSocialStateInternal(Pawn pawn, Pawn other)
         {
             if(!pawn.RaceProps.Humanlike || !other.RaceProps.Humanlike)
                 return false;

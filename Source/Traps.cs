@@ -34,7 +34,7 @@ namespace MorePrecepts
 		    needReset = true;
 		}
 
-		protected override ThoughtState ShouldHaveThought(Pawn p)
+		public override ThoughtState ShouldHaveThought(Pawn p)
 		{
 			if (p.Faction == null || p.IsSlave)
 			{

@@ -152,7 +152,7 @@ namespace MorePrecepts
 
     public class ThoughtWorker_Precept_NewcomerAttitude : ThoughtWorker_Precept
     {
-        protected override ThoughtState ShouldHaveThought(Pawn p)
+        public override ThoughtState ShouldHaveThought(Pawn p)
         {
             if(!p.RaceProps.Humanlike)
                 return false;
@@ -189,7 +189,7 @@ namespace MorePrecepts
 
     public class ThoughtWorker_Precept_NewcomerAttitude_Excited : ThoughtWorker_Precept
     {
-        protected override ThoughtState ShouldHaveThought(Pawn p)
+        public override ThoughtState ShouldHaveThought(Pawn p)
         {
             if(!p.RaceProps.Humanlike)
                 return false;
@@ -218,7 +218,7 @@ namespace MorePrecepts
 
     public class ThoughtWorker_Precept_NewcomerAttitude_Social : ThoughtWorker_Precept_Social
     {
-        protected override ThoughtState ShouldHaveThought(Pawn p, Pawn otherPawn)
+        public override ThoughtState ShouldHaveThought(Pawn p, Pawn otherPawn)
         {
             if(!p.RaceProps.Humanlike || !otherPawn.RaceProps.Humanlike)
                 return false;

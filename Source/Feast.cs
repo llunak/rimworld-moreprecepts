@@ -35,7 +35,7 @@ namespace MorePrecepts
         {
         }
 
-        protected override LordJob CreateLordJob(TargetInfo target, Pawn organizer, Precept_Ritual ritual, RitualObligation obligation, RitualRoleAssignments assignments)
+        public override LordJob CreateLordJob(TargetInfo target, Pawn organizer, Precept_Ritual ritual, RitualObligation obligation, RitualRoleAssignments assignments)
         {
             return new LordJob_Ritual_Feast(target, ritual, obligation, def.stages, assignments, organizer);
         }
@@ -108,7 +108,7 @@ namespace MorePrecepts
     // This is JobGiver_EatInGatheringArea, but eats more often.
     public class JobGiver_FeastInGatheringArea : JobGiver_EatInGatheringArea
     {
-        protected override Job TryGiveJob(Pawn pawn)
+        public override Job TryGiveJob(Pawn pawn)
         {
             PawnDuty duty = pawn.mindState.duty;
             if (duty == null)
@@ -120,9 +120,7 @@ namespace MorePrecepts
                 return null;
             }
             IntVec3 cell = duty.focus.Cell;
-            // is private : Thing thing = FindFood(pawn, cell);
-            MethodInfo mi = AccessTools.Method(typeof(JobGiver_EatInGatheringArea),"FindFood");
-            Thing thing = (Thing)mi.Invoke(this, new object[]{ pawn, cell });
+            Thing thing = FindFood(pawn, cell);
             if (thing == null)
             {
                 return null;

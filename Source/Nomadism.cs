@@ -58,7 +58,7 @@ namespace MorePrecepts
         protected abstract float DaysMissing_Major();
         protected abstract SimpleCurve MoodOffsetFromDaysSinceSettledCurve();
 
-        protected override ThoughtState ShouldHaveThought(Pawn p)
+        public override ThoughtState ShouldHaveThought(Pawn p)
         {
             if (!ThoughtUtility.ThoughtNullified(p, def))
             {

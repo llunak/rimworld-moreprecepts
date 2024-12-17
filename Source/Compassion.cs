@@ -89,8 +89,7 @@ namespace MorePrecepts
         [HarmonyPatch(nameof(MakeDowned))]
         public static void MakeDowned(Pawn_HealthTracker __instance)
         {
-            FieldInfo fi = AccessTools.Field(typeof(Pawn_HealthTracker),"pawn");
-            Pawn pawn = (Pawn)fi.GetValue(__instance);
+            Pawn pawn = __instance.pawn;
             if(pawn.RaceProps.Humanlike && !pawn.Dead)
             {
                 PawnComp.SetLastDownedTicks(pawn, Find.TickManager.TicksGame,
@@ -102,8 +101,7 @@ namespace MorePrecepts
         [HarmonyPatch(nameof(MakeUndowned))]
         public static void MakeUndowned(Pawn_HealthTracker __instance)
         {
-            FieldInfo fi = AccessTools.Field(typeof(Pawn_HealthTracker),"pawn");
-            Pawn pawn = (Pawn)fi.GetValue(__instance);
+            Pawn pawn = __instance.pawn;
             if(pawn.RaceProps.Humanlike && !pawn.Dead)
                 PawnComp.SetLastDownedTicks(pawn, -99999, -99999);
         }
