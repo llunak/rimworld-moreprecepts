@@ -91,7 +91,7 @@ namespace MorePrecepts
     }
 
     [HarmonyPatch(typeof(Toils_LayDown))]
-    public static class Toils_LayDown_Patch
+    public static class Toils_LayDown1_Patch
     {
         [HarmonyPostfix]
         [HarmonyPatch(nameof(ApplyBedThoughts))]

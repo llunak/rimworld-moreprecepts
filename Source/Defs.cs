@@ -75,6 +75,10 @@ namespace MorePrecepts
 
         public static PreceptDef MP_NewcomerAttitude_Fearful;
 
+        public static PreceptDef Barracks_Preferred;
+
+        public static PreceptDef Barracks_Despised;
+
         static PreceptDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(PreceptDefOf));
@@ -114,6 +118,12 @@ namespace MorePrecepts
         public static ThoughtDef Comfort_UsedUncomfortableFurniture_Important;
 
         public static ThoughtDef Comfort_UsedUncomfortableFurniture_Essential;
+
+        public static ThoughtDef Barracks_Preferred_SleptInBedroom;
+
+        public static ThoughtDef Barracks_Preferred_SleptInBarracks;
+
+        public static ThoughtDef Barracks_Despised_SleptInBarracks;
 
         static ThoughtDefOf()
         {
