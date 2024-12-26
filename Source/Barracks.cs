@@ -8,8 +8,6 @@ using System;
 // Alter the code that gives the core thoughts about sleeping in a bedroom/barracks.
 namespace MorePrecepts
 {
-
-    [HarmonyDebug]
     [HarmonyPatch(typeof(Toils_LayDown))]
     public static class Toils_LayDown2_Patch
     {
