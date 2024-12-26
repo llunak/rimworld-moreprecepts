@@ -1,10 +1,12 @@
 using RimWorld;
 using Verse;
 using System;
+using HarmonyLib;
 
 namespace MorePrecepts
 {
     // A ThingComp attached to pawns, to contain all pawn extra data for this mod.
+    [HarmonyPatch]
     public class PawnComp : ThingComp
     {
         // For alcohol  precept, alcohol version of lastTakeRecreationalDrugTick.
@@ -189,6 +191,20 @@ namespace MorePrecepts
             Scribe_Values.Look(ref lastDownedTicksUntilDeath, "MorePrecepts.LastDownedTicksUntilDeath", -99999);
             Scribe_Values.Look(ref burnedOnPyre, "MorePrecepts.BurnedOnPyre", false);
             Scribe_Values.Look(ref noticedDrugsTick, "MorePrecepts.NoticedDrugsTick", -99999);
+        }
+
+        [HarmonyPatch(typeof(ThingWithComps))]
+        [HarmonyPatch(nameof(InitializeComps))]
+        [HarmonyPrefix]
+        public static void InitializeComps()
+        {
+        }
+
+        [HarmonyPatch(typeof(Game))]
+        [HarmonyPatch(nameof(ClearCaches))]
+        [HarmonyPostfix]
+        public static void ClearCaches()
+        {
         }
     }
 }
