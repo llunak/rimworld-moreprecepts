@@ -55,27 +55,32 @@ namespace MorePrecepts
             return (bedMin, bedOk, chairMin, chairOk, tableMin, tableOk, thoughtDef, precept);
         }
 
+        public const int ThoughtLevelNoFurniture = 2;
+        public const int ThoughtLevelOk = -1;
+
         public static int GetThoughtLevel(Thing thing, float min, float ok)
         {
-            float comfort = thing?.GetStatValue(StatDefOf.Comfort) ?? 0;
+            if( thing == null ) // min == 0 means no requirements
+                return min == 0 ? ThoughtLevelOk : ThoughtLevelNoFurniture;
+            float comfort = thing.GetStatValue(StatDefOf.Comfort);
             if(comfort >= ok)
-                return -1;
-            return comfort == 0 ? 2 : comfort < min ? 1 : 0;
+                return ThoughtLevelOk;
+            return comfort < min ? 1 : 0;
         }
 
         public static int GetThoughtLevel(Thing thing, QualityCategory min, QualityCategory ok)
         {
+            if( thing == null ) // min == QualityCategory.Awful means no requirement
+                return min == QualityCategory.Awful ? ThoughtLevelOk : ThoughtLevelNoFurniture;
             QualityCategory quality;
-            if(thing == null)
-                return 0;
-            else if(thing.TryGetQuality(out quality))
+            if(thing.TryGetQuality(out quality))
             {
                 if(quality >= ok)
-                    return -1;
+                    return ThoughtLevelOk;
                 return quality < min ? 1 : 0;
             }
             else
-                return -1; // no quality setting, always consider acceptable
+                return ThoughtLevelOk; // no quality setting, always consider acceptable
         }
 
         public static void AddThoughtIfNeeded(Pawn pawn, int level, ThoughtDef thoughtDef, Precept precept, Thing thing)
