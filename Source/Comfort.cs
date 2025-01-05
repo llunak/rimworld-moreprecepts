@@ -143,10 +143,12 @@ namespace MorePrecepts
                     table = ingester.Map != null ? (ingester.Position + ingester.Rotation.FacingCell).GetEdifice(ingester.Map) : null;
             int chairLevel = ComfortHelper.GetThoughtLevel(chair, chairMin, chairOk);
             int tableLevel = ComfortHelper.GetThoughtLevel(table, tableMin, tableOk);
-            if( chairLevel >= tableLevel )
+            if( chair != null && chairLevel >= tableLevel )
                 ComfortHelper.AddThoughtIfNeeded(ingester, chairLevel, thoughtDef, precept, chair);
-            else
+            else if( table != null )
                 ComfortHelper.AddThoughtIfNeeded(ingester, tableLevel, thoughtDef, precept, table);
+            else // record the ingested thing as the thought source
+                ComfortHelper.AddThoughtIfNeeded(ingester, ComfortHelper.ThoughtLevelNoFurniture, thoughtDef, precept, __instance);
         }
     }
 
@@ -310,11 +312,11 @@ namespace MorePrecepts
     {
         private string foodThoughtDescription;
 
-        public override string Description => base.Description + "\n\n" + foodThoughtDescription;
+        public override string Description => base.Description + foodThoughtDescription;
 
         public void SetThing(Thing thing)
         {
-            foodThoughtDescription = "MorePrecepts.ComfortProblemSource".Translate() + ": " + thing.LabelCap;
+            foodThoughtDescription = "\n\n" + "MorePrecepts.ComfortProblemSource".Translate() + ": " + thing.LabelCap;
         }
     }
 
