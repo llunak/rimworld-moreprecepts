@@ -62,7 +62,27 @@ namespace MorePrecepts
                 }
             }
             if(!done)
-                Log.Error("MorePrecepts: Failed to find CarryIngestibleToChewSpot_delegate for patching");
+                Log.Error("MorePrecepts: Failed to find CarryIngestibleToChewSpot delegate for patching");
+
+            // CommonSense mod copy&pastes the Toils_Ingest.CarryIngestibleToChewSpot() code.
+            done = false;
+            Type commonSense = AccessTools.TypeByName("CommonSense.JobDriver_PrepareToIngestToils_ToolUser_CommonSensePatch");
+            if( commonSense != null )
+            {
+                nestedClass = commonSense.GetNestedType("<>c__DisplayClass7_0", BindingFlags.NonPublic);
+                if(nestedClass != null)
+                {
+                    oldMethod = AccessTools.Method(nestedClass, "<ReserveChewSpot>b__0");
+                    newMethod = typeof(Toils_Ingest_Patch).GetMethod("CarryIngestibleToChewSpot_delegate");
+                    if(oldMethod != null)
+                    {
+                        harmony.Patch(oldMethod, transpiler: new HarmonyMethod(newMethod));
+                        done = true;
+                    }
+                }
+                if(!done)
+                    Log.Error("MorePrecepts: Failed to find CommonSense.ReserveChewSpot delegate for patching");
+            }
 
             // JobDriver_Strip.MakeNewToils() needs special handling, see the transpiller.
             done = false;

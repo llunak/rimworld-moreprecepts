@@ -1,6 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Reflection.Emit;
 using RimWorld;
 using Verse;
@@ -245,7 +246,7 @@ namespace MorePrecepts
     public static class Toils_Ingest_Patch
     {
         // Again, the transpiller is set up manually because it's an internal delegate function.
-        public static IEnumerable<CodeInstruction> CarryIngestibleToChewSpot_delegate(IEnumerable<CodeInstruction> instructions)
+        public static IEnumerable<CodeInstruction> CarryIngestibleToChewSpot_delegate(IEnumerable<CodeInstruction> instructions, MethodBase __originalMethod)
         {
             var codes = new List<CodeInstruction>(instructions);
             int foundCount = 0;
@@ -259,15 +260,12 @@ namespace MorePrecepts
                 // Log.Message("T:" + i + ":" + codes[i].opcode + "::" + (codes[i].operand != null ? codes[i].operand.ToString() : codes[i].operand));
                 // T:44:ldloc.0::
                 // T:45:ldfld::Verse.Pawn actor
-                // T:52:ldloc.3::
-                // T:53:ldfld::Verse.ThingDef def
-                // T:54:ldfld::RimWorld.IngestibleProperties ingestible
-                // T:55:ldfld::System.Single chairSearchRadius
                 if(actorLoad == null && codes[i].opcode == OpCodes.Ldloc_0
                     && i+1 < codes.Count && codes[i+1].opcode == OpCodes.Ldfld && codes[i+1].operand.ToString() == "Verse.Pawn actor")
                 {
                     actorLoad = codes[i+1].Clone();
                 }
+                // T:55:ldfld::System.Single chairSearchRadius
                 if(actorLoad != null && codes[i].opcode == OpCodes.Ldfld
                     && codes[i].operand.ToString() == "System.Single chairSearchRadius")
                 {
@@ -278,7 +276,14 @@ namespace MorePrecepts
                 }
             }
             if(foundCount != 3)
-                Log.Error("MorePrecepts: Failed to patch Toils_Ingest.FinalizeIngest() delegate");
+            {
+                if( __originalMethod.ToString().Contains( "<CarryIngestibleToChewSpot>" ))
+                    Log.Error("MorePrecepts: Failed to patch Toils_Ingest.CarryIngestibleToChewSpot() delegate");
+                else if( __originalMethod.ToString().Contains( "<ReserveChewSpot>" ))
+                    Log.Error("MorePrecepts: Failed to patch CommonSense ReserveChewSpot() delegate");
+                else
+                    Log.Error("MorePrecepts: Failed to patch unknown CarryIngestibleToChewSpot() delegate");
+            }
             return codes;
         }
 
