@@ -50,6 +50,8 @@ namespace MorePrecepts
             int stage = stageForLeftToDie(pawn);
             if( stage < 0 )
                 return;
+            if( pawn.Map == null ) // Ignore dying outside of the map.
+                return;
             // All:
             Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.Compassion_IncapacitatedPawnLeftToDie_All,
                 pawn.Named(HistoryEventArgsNames.Victim), stage.Named(HistoryEventArgsNames.ExecutionThoughtStage)));
