@@ -297,6 +297,37 @@ namespace MorePrecepts
         }
     }
 
+    // Apparently enabledForNPCFactions disables only the effects, but not the generation itself,
+    // so e.g. quest lodgers still could get pacifism, which would make the betrayal case broken.
+    // Disable generating violence-avoiding memes and precepts.
+    [HarmonyPatch(typeof(IdeoGenerationParms))]
+    public static class IdeoGenerationParms_Patch
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch(MethodType.Constructor)]
+        [HarmonyPatch(new Type[] { typeof( FactionDef ), typeof( bool ), typeof( List<PreceptDef> ), typeof( List<MemeDef> ),
+            typeof( List<MemeDef> ), typeof( bool ), typeof( bool ), typeof( bool ), typeof( bool ), typeof( string ),
+            typeof( List<StyleCategoryDef> ), typeof( List<DeityPreset> ), typeof( bool ), typeof( string ), typeof( bool ) })]
+        public static void Constructor(ref IdeoGenerationParms __instance)
+        {
+            if( __instance.forFaction.isPlayer )
+                return;
+            if( __instance.disallowedPrecepts != null )
+                __instance.disallowedPrecepts = new List<PreceptDef>(__instance.disallowedPrecepts);
+            else
+                __instance.disallowedPrecepts = new List<PreceptDef>();
+            if( __instance.disallowedMemes != null )
+                __instance.disallowedMemes = new List<MemeDef>(__instance.disallowedMemes);
+            else
+                __instance.disallowedMemes = new List<MemeDef>();
+            __instance.disallowedPrecepts.Add(PreceptDefOf.Violence_Pacifism);
+            __instance.disallowedPrecepts.Add(PreceptDefOf.Violence_Avoided);
+            __instance.disallowedPrecepts.Add(PreceptDefOf.Violence_Horrible);
+            __instance.disallowedPrecepts.Add(PreceptDefOf.Violence_Disapproved);
+            __instance.disallowedMemes.Add(MemeDefOf.Pacifism);
+        }
+    }
+
     public abstract class ThoughtWorker_Precept_Violence_Base : ThoughtWorker_Precept, IPreceptCompDescriptionArgs
     {
         protected abstract float DaysSatisfied();

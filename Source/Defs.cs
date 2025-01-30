@@ -86,6 +86,17 @@ namespace MorePrecepts
     }
 
     [DefOf]
+    public static class MemeDefOf
+    {
+        public static MemeDef Pacifism;
+
+        static MemeDefOf()
+        {
+            DefOfHelper.EnsureInitializedInCtor(typeof(MemeDefOf));
+        }
+    }
+
+    [DefOf]
     public static class TaleDefOf
     {
             public static TaleDef BurnedCorpse;
