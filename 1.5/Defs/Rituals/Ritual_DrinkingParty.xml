@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <RitualBehaviorDef ParentName="DateRitualBehavior">
+    <defName>MP_DrinkingParty</defName>
+    <workerClass>MorePrecepts.RitualBehaviorWorker_DrinkingParty</workerClass>
+    <durationTicks>12500</durationTicks>
+    <roles Inherit="False">
+      <li Class="RitualRoleTag">
+        <label>speaker</label>
+        <tag>Leader</tag>
+        <id>leader</id>
+        <precept>IdeoRole_Leader</precept>
+        <required>True</required>
+        <substitutable>True</substitutable>
+        <maxCount>1</maxCount>
+        <countsAsParticipant>True</countsAsParticipant> <!-- Changed from inherited. -->
+      </li>
+    </roles>
+    <spectatorsLabel>Participants</spectatorsLabel>
+    <spectatorGerund>participate</spectatorGerund>
+    <stages Inherit="False">
+      <li>
+        <defaultDuty>Spectate</defaultDuty>
+        <essential>True</essential>
+        <endTriggers>
+          <li Class="StageEndTrigger_DurationPercentage">
+            <percentage>0.2</percentage> <!-- Changed from inherited. -->
+          </li>
+        </endTriggers>
+        <postAction Class="RitualStageAction_Message">
+            <text>{0}: The speech is over, and the drinking is beginning.</text> <!-- Changed from inherited. -->
+            <messageTypeDef>NeutralEvent</messageTypeDef>
+        </postAction>
+        <roleBehaviors>
+          <li>
+            <roleId>leader</roleId>
+            <dutyDef>SpeakOnCellFacingSpectators</dutyDef>
+            <speakerInteraction>Speech_DateRitual</speakerInteraction>
+            <customPositions>
+              <li Class="RitualPosition_Lectern">
+                <maxDistanceToFocus>5</maxDistanceToFocus>
+              </li>
+              <li Class="RitualPosition_BesideThing" />
+            </customPositions>
+          </li>
+        </roleBehaviors>
+      </li>
+      <li>
+        <defaultDuty>MP_DrinkAtParty</defaultDuty> <!-- Changed from inherited. -->
+        <endTriggers>
+          <li Class="StageEndTrigger_DurationPercentage">
+            <percentage>0.8</percentage> <!-- Changed from inherited. -->
+          </li>
+        </endTriggers>
+      </li>
+    </stages>
+  </RitualBehaviorDef>
+
+  <RitualOutcomeEffectDef>
+    <defName>MP_OutcomeDrinkingParty</defName>
+    <description>Depending on ritual quality, participants will get between {MINMOOD} and {MAXMOOD} mood for {MOODDAYS} days.</description>
+    <workerClass>RitualOutcomeEffectWorker_FromQuality</workerClass>
+    <comps>
+      <li Class="RitualOutcomeComp_RolePresentNotSubstituted">
+        <roleId>leader</roleId>
+        <label>leader present</label>
+        <qualityOffset>0.1</qualityOffset>
+      </li>
+      <li Class="RitualOutcomeComp_ParticipantCount">
+        <label>participant count</label>
+        <curve>
+          <points>
+            <li>(1,  0.0)</li>
+            <li>(5,  0.1)</li>
+            <li>(10, 0.2)</li>
+          </points>
+        </curve>
+      </li>
+      <li Class="RitualOutcomeComp_RoomStat">
+        <label>room impressiveness</label>
+        <statDef>Impressiveness</statDef>
+        <curve>
+          <points>
+            <li>0,  0</li>
+            <li>50,  0.1</li>
+            <li>120, 0.2</li>
+          </points>
+        </curve>
+      </li>
+      <li Class="MorePrecepts.RitualOutcomeComp_DrinkingPartyDrinks">
+        <label>drinks drunk</label>
+        <curve>
+          <points>
+            <!-- First is 0-50, which is sum of joy per pawn (one beer is 17). -->
+            <li>0,  0</li>
+            <li>17, 0.1</li>
+            <li>35, 0.4</li>
+            <li>50, 0.5</li>
+          </points>
+        </curve>
+      </li>
+    </comps>
+    <outcomeChances>
+      <li>
+        <label>Terrible</label>
+        <chance>0.05</chance>
+        <memory>TerribleFestival</memory>
+        <description>The {0} was terrible! The mood was poor and participants did not enjoy their drinks much.</description>
+        <positivityIndex>-2</positivityIndex>
+      </li>
+      <li>
+        <label>Boring</label>
+        <chance>0.15</chance>
+        <memory>BoringFestival</memory>
+        <description>The {0} was boring. Everyone felt too awkward to really enjoy the drinks.</description>
+        <positivityIndex>-1</positivityIndex>
+      </li>
+      <li>
+        <label>Fun</label>
+        <chance>0.6</chance>
+        <memory>FunFestival</memory>
+        <description>The {0} was fun. The drinking was fun and everyone appreciated the chance to relax.</description>
+        <positivityIndex>1</positivityIndex>
+      </li>
+      <li>
+        <label>Unforgettable</label>
+        <chance>0.2</chance>
+        <memory>UnforgettableFestival</memory>
+        <description>The {0} was unforgettable! Everybody really enjoyed the drinks and the great mood.</description>
+        <positivityIndex>2</positivityIndex>
+      </li>
+    </outcomeChances>
+  </RitualOutcomeEffectDef>
+
+</Defs>

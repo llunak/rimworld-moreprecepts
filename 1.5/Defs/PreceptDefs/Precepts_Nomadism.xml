@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Issue -->
+
+  <IssueDef>
+    <defName>Nomadism</defName>
+    <label>nomadism</label>
+    <iconPath>UI/Issues/Nomadism</iconPath>
+  </IssueDef>
+
+  <!-- Precepts -->
+
+  <PreceptDef>
+    <defName>Nomadism_Horrible</defName>
+    <issue>Nomadism</issue>
+    <label>horrible</label>
+    <description>Moving from one place to another is a terrible idea. We need a stable home.</description>
+    <impact>Medium</impact>
+    <displayOrderInIssue>70</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <comps>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Nomadism_AbandonedSettlement</eventDef>
+        <thought>Nomadism_AbandonedSettlement_Horrible</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Nomadism_Disapproved</defName>
+    <issue>Nomadism</issue>
+    <label>disapproved</label>
+    <description>Moving from one place to another is a bad idea. We should stay in one place.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>60</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <comps>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Nomadism_AbandonedSettlement</eventDef>
+        <thought>Nomadism_AbandonedSettlement_Disapproved</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Nomadism_Wanted</defName>
+    <issue>Nomadism</issue>
+    <label>wanted</label>
+    <description>Staying in one place for too long would make us lazy and complacent.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>50</displayOrderInIssue>
+    <displayOrderInImpact>1000</displayOrderInImpact>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Nomadism_Wanted</thought>
+        <description>Settlement changed every {DAYSCHANGED} days</description>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Nomadism_AbandonedSettlement</eventDef>
+        <thought>Nomadism_AbandonedSettlement_Wanted</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Nomadism_Important</defName>
+    <issue>Nomadism</issue>
+    <label>important</label>
+    <description>We need to keep moving to take advantage of the changing conditions.</description>
+    <impact>Medium</impact>
+    <displayOrderInIssue>40</displayOrderInIssue>
+    <displayOrderInImpact>1000</displayOrderInImpact>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Nomadism_Important</thought>
+        <description>Settlement changed every {DAYSCHANGED} days</description>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Nomadism_AbandonedSettlement</eventDef>
+        <thought>Nomadism_AbandonedSettlement_Important</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Nomadism_Essential</defName>
+    <issue>Nomadism</issue>
+    <label>essential</label>
+    <description>We need to keep moving, staying in one place is against our way of life.</description>
+    <impact>Medium</impact>
+    <displayOrderInIssue>30</displayOrderInIssue>
+    <displayOrderInImpact>1000</displayOrderInImpact>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Nomadism_Essential</thought>
+        <description>Settlement changed every {DAYSCHANGED} days</description>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SelfTookMemoryThought">
+        <eventDef>Nomadism_AbandonedSettlement</eventDef>
+        <thought>Nomadism_AbandonedSettlement_Essential</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+</Defs>

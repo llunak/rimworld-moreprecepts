@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <RulePackDef>
+    <defName>NamerFuneralPyre</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>buildingName->pyre</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <RulePackDef>
+    <defName>NamerRitualFuneralPyre</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>r_ritualName(p=2)->[memeAdjective] [funeralpyre]</li>
+        <li>r_ritualName->[funeralpyre] of [chosenTheme]</li>
+        <li>r_ritualName->[chosenAdjective] [funeralpyre]</li>
+        <li>r_ritualName->[keyDeity]'s [funeralpyre]</li>
+        <li>r_ritualName->[funeralpyre] of [keyDeity]</li>
+        <li>r_ritualName->[funeralpyre] of [memeConcept]</li>
+        <li>r_ritualName->[funeralpyre] of [chosenIdeoName]</li>
+
+        <li>funeralpyre->funeral</li>
+        <li>funeralpyre->mourning</li>
+        <li>funeralpyre->eulogy</li>
+        <li>funeralpyre->burning</li>
+        <li>funeralpyre->requiem</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+</Defs>

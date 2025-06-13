@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Issue -->
+
+  <IssueDef>
+    <defName>Barracks</defName>
+    <label>barracks</label>
+    <iconPath>UI/Issues/Barracks</iconPath>
+  </IssueDef>
+
+  <!-- Precepts -->
+
+  <PreceptDef>
+    <defName>Barracks_Preferred</defName>
+    <issue>Barracks</issue>
+    <label>preferred</label>
+    <description>Sleeping in a dedicated bedroom is wasteful, barracks is preferred.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>20</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <requiredMemes>
+      <li>Collectivist</li>
+    </requiredMemes>
+    <conflictingMemes>
+      <li>Individualist</li>
+    </conflictingMemes>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Barracks_Despised</defName>
+    <issue>Barracks</issue>
+    <label>despised</label>
+    <description>Sharing a sleeping space is demeaning. It is important to get a good night's sleep.</description>
+    <impact>Medium</impact>
+    <displayOrderInIssue>30</displayOrderInIssue>
+    <displayOrderInImpact>100</displayOrderInImpact>
+    <conflictingMemes>
+      <li>Collectivist</li>
+    </conflictingMemes>
+    <exclusionTags>
+      <li>ComfortRoughLiving</li>
+    </exclusionTags>
+  </PreceptDef>
+
+</Defs>

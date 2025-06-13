@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <PreceptDef ParentName="FestivalBase">
+    <defName>MP_DrinkingParty</defName>
+    <label>drinking party</label>
+    <description>A celebratory gathering for your colonists to have fun and drink. A leader will give an encouraging speech, then everyone will socialize and drink drinks prepared for the party.</description>
+    <preceptClass>Precept_Ritual</preceptClass>
+    <ritualPatternBase>MP_DrinkingParty</ritualPatternBase>
+    <iconPath>UI/Icons/DrinkingParty</iconPath>
+    <countsTowardsPreceptLimit>true</countsTowardsPreceptLimit>
+    <conflictingMemes>
+      <li>Guilty</li>
+      <li>PainIsVirtue</li>
+      <li>Cannibal</li>
+    </conflictingMemes>
+  </PreceptDef>
+
+  <RitualPatternDef>
+    <defName>MP_DrinkingParty</defName>
+    <shortDescOverride>drinking party</shortDescOverride>
+    <descOverride>A celebratory gathering for your colonists to have fun and drink. A leader will give an encouraging speech, then everyone will socialize and drink drinks prepared for the party.</descOverride>
+    <nameMaker>MP_NamerRitualDrinkingParty</nameMaker>
+    <ritualExpectedDesc>Every year on {DATE}, {MEMBERS} drink and celebrate {RITUAL_labelDef}.</ritualExpectedDesc>
+    <iconPathOverride>UI/Icons/DrinkingParty</iconPathOverride>
+    <canStartAnytime>true</canStartAnytime>
+    <ritualObligationTriggers>
+      <li Class="RitualObligationTrigger_DateProperties">
+        <mustBePlayerIdeo>true</mustBePlayerIdeo>
+      </li>
+    </ritualObligationTriggers>
+    <ritualObligationTargetFilter>GatheringSpot</ritualObligationTargetFilter>
+    <ritualBehavior>MP_DrinkingParty</ritualBehavior>
+    <ritualOutcomeEffect>MP_OutcomeDrinkingParty</ritualOutcomeEffect>
+    <tags>
+      <li>CelebratedDate</li>
+    </tags>
+    <patternGroupTag>CelebratedDate</patternGroupTag>
+  </RitualPatternDef>
+
+</Defs>

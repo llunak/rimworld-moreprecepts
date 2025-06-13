@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <DutyDef>
+    <defName>SpectateFuneralPyre</defName>
+    <hook>HighPriority</hook>
+    <socialModeMax>Off</socialModeMax>
+    <ritualSpectateTarget>true</ritualSpectateTarget>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="JobGiver_SpectateInCircleDuty" />
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+
+</Defs>

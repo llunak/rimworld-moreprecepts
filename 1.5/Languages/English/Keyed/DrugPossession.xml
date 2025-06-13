@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <MorePrecepts.AlertDrugsPresent>Drugs present</MorePrecepts.AlertDrugsPresent>
+  <MorePrecepts.AlertDrugsPresentDesc>Drugs that some pawns dislike are present.\n\nSome colonists dislike possession of drugs. They will be unhappy as long as those drugs are present in the colony or carried by colonists.\n\nDrugs causing the problem:\n\n{0}\n\nThese colonists are affected:\n\n{1}</MorePrecepts.AlertDrugsPresentDesc>
+
+</LanguageData>

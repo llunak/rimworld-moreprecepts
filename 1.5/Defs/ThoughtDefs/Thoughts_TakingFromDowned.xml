@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ThoughtDef Name="TakingFromDownedBase" Abstract="True">
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/GenericBad</icon>
+    <durationDays>7</durationDays>
+    <stackLimit>3</stackLimit>
+    <stackedEffectMultiplier>0.8</stackedEffectMultiplier>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
+  <ThoughtDef Name="TakingFromDownedBase_Know" Abstract="True">
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+    <durationDays>7</durationDays>
+    <stackLimit>100</stackLimit>
+    <stackLimitForSameOtherPawn>3</stackLimitForSameOtherPawn>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+  </ThoughtDef>
+
+  <!-- Abhorrent -->
+
+  <ThoughtDef ParentName="TakingFromDownedBase">
+    <defName>TakingFromDowned_DownedStripped_Abhorrent</defName>
+    <stages>
+      <li>
+        <label>took from a downed person</label>
+        <description>We took things from somebody incapacitated.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef ParentName="TakingFromDownedBase">
+    <defName>TakingFromDowned_DownedStripped_Abhorrent_Self</defName>
+    <stages>
+      <li>
+        <label>took from a downed person</label>
+        <description>I took things from somebody incapacitated.</description>
+        <baseMoodEffect>-20</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef ParentName="TakingFromDownedBase_Know">
+    <defName>TakingFromDowned_DownedStripped_Know_Abhorrent</defName>
+    <stages>
+      <li>
+        <label>took from a downed person</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Horrible -->
+
+  <ThoughtDef ParentName="TakingFromDownedBase">
+    <defName>TakingFromDowned_DownedStripped_Horrible</defName>
+    <stages>
+      <li>
+        <label>took from a downed person</label>
+        <description>We took things from somebody incapacitated.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef ParentName="TakingFromDownedBase">
+    <defName>TakingFromDowned_DownedStripped_Horrible_Self</defName>
+    <stages>
+      <li>
+        <label>took from a downed person</label>
+        <description>I took things from somebody incapacitated.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef ParentName="TakingFromDownedBase_Know">
+    <defName>TakingFromDowned_DownedStripped_Know_Horrible</defName>
+    <stages>
+      <li>
+        <label>took from a downed person</label>
+        <baseOpinionOffset>-10</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Disapproved -->
+
+  <ThoughtDef ParentName="TakingFromDownedBase">
+    <defName>TakingFromDowned_DownedStripped_Disapproved</defName>
+    <stages>
+      <li>
+        <label>took from a downed person</label>
+        <description>We took things from somebody incapacitated.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef ParentName="TakingFromDownedBase">
+    <defName>TakingFromDowned_DownedStripped_Disapproved_Self</defName>
+    <stages>
+      <li>
+        <label>took from a downed person</label>
+        <description>I took things from somebody incapacitated.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef ParentName="TakingFromDownedBase_Know">
+    <defName>TakingFromDowned_DownedStripped_Know_Disapproved</defName>
+    <stages>
+      <li>
+        <label>took from a downed person</label>
+        <baseOpinionOffset>-5</baseOpinionOffset>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

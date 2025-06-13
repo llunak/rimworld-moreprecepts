@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Issue -->
+
+  <IssueDef>
+    <defName>Elderly</defName>
+    <label>Elderly</label>
+    <iconPath>UI/Issues/Elderly</iconPath>
+  </IssueDef>
+
+  <!-- Precepts -->
+
+  <PreceptDef>
+    <defName>Elderly_Revered</defName>
+    <issue>Elderly</issue>
+    <label>revered</label>
+    <description>Elders have life-long wisdom. We should heed their words and treat them with utmost respect.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>60</displayOrderInIssue>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Revered</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Revered_Self</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Revered_Social</thought>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Revered_NoYoung</thought>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Revered_Role</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Revered_Role_Self</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Revered_Social_Young</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Elderly_Respected</defName>
+    <issue>Elderly</issue>
+    <label>respected</label>
+    <description>Elderly are wise, we should respect them.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>50</displayOrderInIssue>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Respected</thought>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Respected_Self</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Respected_Social</thought>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Revered_NoYoung</thought>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Revered_Role</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Revered_Role_Self</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Elderly_Disrespected</defName>
+    <issue>Elderly</issue>
+    <label>disrespected</label>
+    <description>Old people can no longer be fully-respected members of our society.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>20</displayOrderInIssue>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Disrespected</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Disrespected_Self</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Disrespected_Social</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>Elderly_Abhorred</defName>
+    <issue>Elderly</issue>
+    <label>abhorred</label>
+    <description>Old people are useless and we should not waste our resources on them.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>10</displayOrderInIssue>
+    <enabledForNPCFactions>false</enabledForNPCFactions>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Abhorred</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Abhorred_Self</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>Elderly_Abhorred_Social</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+</Defs>

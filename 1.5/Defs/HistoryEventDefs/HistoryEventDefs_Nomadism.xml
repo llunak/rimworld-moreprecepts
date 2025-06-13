@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <HistoryEventDef>
+    <defName>Nomadism_AbandonedSettlement</defName>
+    <label>abandoned a settlement</label>
+  </HistoryEventDef>
+
+</Defs>

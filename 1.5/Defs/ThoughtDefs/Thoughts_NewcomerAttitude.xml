@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Excited -->
+
+  <ThoughtDef>
+    <defName>MP_NewcomerAttitude_Excited</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_NewcomerAttitude_Excited</workerClass>
+    <thoughtClass>MorePrecepts.Thought_NewcomerAttitude_Excited</thoughtClass>
+    <stages>
+      <li>
+        <label>A recent newcomer</label>
+        <description>There is somebody new in the colony. How interesting.</description>
+        <baseMoodEffect>5</baseMoodEffect>
+      </li>
+      <li>
+        <label>Nobody new in the colony</label>
+        <description>It's been quite a while since somebody new interesting stayed at the colony.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifiedIfNotColonist>true</nullifiedIfNotColonist>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>MP_NewcomerAttitude_Excited_Social</defName>
+    <thoughtClass>MorePrecepts.Thought_NewcomerAttitude_Social</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_NewcomerAttitude_Social</workerClass>
+    <stages>
+      <li>
+        <label>Newcomer</label>
+        <baseOpinionOffset>10</baseOpinionOffset>
+      </li>
+      <li>
+        <label>Newcomer</label>
+        <baseOpinionOffset>10</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifiedIfNotColonist>true</nullifiedIfNotColonist>
+  </ThoughtDef>
+
+  <!-- Careful -->
+
+  <ThoughtDef>
+    <defName>MP_NewcomerAttitude_Careful</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_NewcomerAttitude</workerClass>
+    <thoughtClass>MorePrecepts.Thought_NewcomerAttitude</thoughtClass>
+    <stages>
+      <li>
+        <label>Armed recent newcomer</label>
+        <description>There is somebody new in the colony and is armed.</description>
+        <baseMoodEffect>-8</baseMoodEffect> <!-- these have full value at 4 such pawns -->
+      </li>
+      <li>
+        <label>unarmed</label>
+        <visible>false</visible>
+        <baseMoodEffect>0</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifiedIfNotColonist>true</nullifiedIfNotColonist>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>MP_NewcomerAttitude_Careful_Social</defName>
+    <thoughtClass>MorePrecepts.Thought_NewcomerAttitude_Social</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_NewcomerAttitude_Social</workerClass>
+    <stages>
+      <li>
+        <label>Armed newcomer</label>
+        <baseOpinionOffset>-10</baseOpinionOffset>
+      </li>
+      <li>
+        <label>Unarmed newcomer</label>
+        <visible>false</visible> <!-- doesn't work :( -->
+        <baseOpinionOffset>0</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifiedIfNotColonist>true</nullifiedIfNotColonist>
+  </ThoughtDef>
+
+  <!-- Wary -->
+
+  <ThoughtDef>
+    <defName>MP_NewcomerAttitude_Wary</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_NewcomerAttitude</workerClass>
+    <thoughtClass>MorePrecepts.Thought_NewcomerAttitude</thoughtClass>
+    <stages>
+      <li>
+        <label>Armed recent newcomer</label>
+        <description>There is somebody new in the colony and is armed.</description>
+        <baseMoodEffect>-20</baseMoodEffect>
+      </li>
+      <li>
+        <label>A recent newcomer</label>
+        <description>There is somebody new we don't know well yet.</description>
+        <baseMoodEffect>-8</baseMoodEffect>
+      </li>
+      <li>
+        <label>dummyforui</label>
+        <visible>false</visible>
+        <baseMoodEffect>0</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifiedIfNotColonist>true</nullifiedIfNotColonist>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>MP_NewcomerAttitude_Wary_Social</defName>
+    <thoughtClass>MorePrecepts.Thought_NewcomerAttitude_Social</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_NewcomerAttitude_Social</workerClass>
+    <stages>
+      <li>
+        <label>Armed newcomer</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+      <li>
+        <label>Newcomer</label>
+        <baseOpinionOffset>-10</baseOpinionOffset>
+      </li>
+    </stages>
+    <nullifiedIfNotColonist>true</nullifiedIfNotColonist>
+  </ThoughtDef>
+
+  <!-- Fearful -->
+
+  <ThoughtDef>
+    <defName>MP_NewcomerAttitude_Fearful</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_NewcomerAttitude</workerClass>
+    <thoughtClass>MorePrecepts.Thought_NewcomerAttitude</thoughtClass>
+    <stages>
+      <li>
+        <label>Armed recent newcomer</label>
+        <description>There is somebody new in the colony and is armed.</description>
+        <baseMoodEffect>-40</baseMoodEffect>
+      </li>
+      <li>
+        <label>A recent newcomer</label>
+        <description>There is somebody new we don't know well yet.</description>
+        <baseMoodEffect>-20</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifiedIfNotColonist>true</nullifiedIfNotColonist>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>MP_NewcomerAttitude_Fearful_Social</defName>
+    <thoughtClass>MorePrecepts.Thought_NewcomerAttitude_Social</thoughtClass>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_NewcomerAttitude_Social</workerClass>
+    <stages>
+      <li>
+        <label>Armed newcomer</label>
+        <baseOpinionOffset>-50</baseOpinionOffset>
+      </li>
+      <li>
+        <label>Newcomer</label>
+        <baseOpinionOffset>-20</baseOpinionOffset>
+      </li>
+      <li>
+        <label>dummyforui</label>
+        <visible>false</visible>
+        <baseMoodEffect>0</baseMoodEffect>
+      </li>
+    </stages>
+    <nullifiedIfNotColonist>true</nullifiedIfNotColonist>
+  </ThoughtDef>
+
+</Defs>

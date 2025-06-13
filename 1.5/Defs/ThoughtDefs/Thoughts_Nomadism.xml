@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Horrible -->
+
+  <ThoughtDef>
+    <defName>Nomadism_AbandonedSettlement_Horrible</defName>
+    <durationDays>7</durationDays>
+    <stages>
+      <li>
+        <label>abandoned settlement</label>
+        <description>We abandoned a settlement. I hate leaving a place.</description>
+        <baseMoodEffect>-15</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Disapproved -->
+
+  <ThoughtDef>
+    <defName>Nomadism_AbandonedSettlement_Disapproved</defName>
+    <durationDays>5</durationDays>
+    <stages>
+      <li>
+        <label>abandoned settlement</label>
+        <description>We abandoned a settlement. That makes me sad.</description>
+        <baseMoodEffect>-5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Wanted -->
+
+  <ThoughtDef>
+    <defName>Nomadism_Wanted</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Nomadism_Wanted</workerClass>
+    <minExpectationForNegativeThought>Low</minExpectationForNegativeThought>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>new settlement</label>
+        <description>I like being in a new place.</description>
+        <baseMoodEffect>5</baseMoodEffect>
+      </li>
+      <li>
+        <label>settlement</label>
+        <visible>false</visible>
+        <baseMoodEffect>0</baseMoodEffect>
+      </li>
+      <li>
+        <label>nomadic life missing</label>
+        <description>We have been in this place for a while. We should start moving again.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+      <li>
+        <visible>false</visible> <!-- Only for precept tooltip to show range. -->
+        <label>nomadic life missing</label>
+        <description>We have been in this place for too long. We must move again.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Nomadism_AbandonedSettlement_Wanted</defName>
+    <durationDays>5</durationDays>
+    <thoughtClass>MorePrecepts.Thought_Nomadism_BlockInSettlement</thoughtClass>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>abandoned settlement</label>
+        <description>We abandoned a settlement. I like moving from place to place.</description>
+        <baseMoodEffect>5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Important -->
+
+  <ThoughtDef>
+    <defName>Nomadism_Important</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Nomadism_Important</workerClass>
+    <minExpectationForNegativeThought>Low</minExpectationForNegativeThought>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>new settlement</label>
+        <description>I'm excited to be in a new place.</description>
+        <baseMoodEffect>7</baseMoodEffect>
+      </li>
+      <li>
+        <label>settlement</label>
+        <visible>false</visible>
+        <baseMoodEffect>0</baseMoodEffect>
+      </li>
+      <li>
+        <label>nomadic life missing</label>
+        <description>We have been in this place for a while. We should start moving again.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+      <li>
+        <visible>false</visible> <!-- Only for precept tooltip to show range. -->
+        <label>nomadic life missing</label>
+        <description>We have been in this place for too long. We must move again.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Nomadism_AbandonedSettlement_Important</defName>
+    <durationDays>5</durationDays>
+    <thoughtClass>MorePrecepts.Thought_Nomadism_BlockInSettlement</thoughtClass>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>abandoned settlement</label>
+        <description>We abandoned a settlement. I'm excited to be moving from place to place.</description>
+        <baseMoodEffect>7</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Essential -->
+
+  <ThoughtDef>
+    <defName>Nomadism_Essential</defName>
+    <workerClass>MorePrecepts.ThoughtWorker_Precept_Nomadism_Essential</workerClass>
+    <minExpectationForNegativeThought>Low</minExpectationForNegativeThought>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>new settlement</label>
+        <description>I love being in a new place.</description>
+        <baseMoodEffect>10</baseMoodEffect>
+      </li>
+      <li>
+        <label>settlement</label>
+        <visible>false</visible>
+        <baseMoodEffect>0</baseMoodEffect>
+      </li>
+      <li>
+        <label>nomadic life missing</label>
+        <description>We have been in this place for a while. We should start moving again.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+      <li>
+        <visible>false</visible> <!-- Only for precept tooltip to show range. -->
+        <label>nomadic life missing</label>
+        <description>We have been in this place for too long. We must move again.</description>
+        <baseMoodEffect>-10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Nomadism_AbandonedSettlement_Essential</defName>
+    <durationDays>5</durationDays>
+    <thoughtClass>MorePrecepts.Thought_Nomadism_BlockInSettlement</thoughtClass>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>abandoned settlement</label>
+        <description>We abandoned a settlement. I love moving from place to place.</description>
+        <baseMoodEffect>10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

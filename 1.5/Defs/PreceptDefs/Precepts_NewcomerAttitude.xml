@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- Issue -->
+
+  <IssueDef>
+    <defName>MP_NewcomerAttitude</defName>
+    <label>Newcomer attitude</label>
+    <iconPath>UI/Issues/NewcomerAttitude</iconPath>
+  </IssueDef>
+
+  <!-- Precepts -->
+
+  <PreceptDef>
+    <defName>MP_NewcomerAttitude_Excited</defName>
+    <issue>MP_NewcomerAttitude</issue>
+    <label>excited</label>
+    <description>It is exciting to have somebody new around. It is boring if the people are always the same.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>60</displayOrderInIssue>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>MP_NewcomerAttitude_Excited</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>MP_NewcomerAttitude_Excited_Social</thought>
+      </li>
+    </comps>
+    <conflictingMemes>
+      <li>Loyalist</li>
+      <li>Supremacist</li>
+      <li>Collectivist</li>
+    </conflictingMemes>
+    <associatedMemes>
+      <li>Pacifism</li>
+    </associatedMemes>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>MP_NewcomerAttitude_Careful</defName>
+    <issue>MP_NewcomerAttitude</issue>
+    <label>careful</label>
+    <description>New people are fine, as long as they are not armed.</description>
+    <impact>Low</impact>
+    <displayOrderInIssue>50</displayOrderInIssue>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>MP_NewcomerAttitude_Careful</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>MP_NewcomerAttitude_Careful_Social</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>MP_NewcomerAttitude_Wary</defName>
+    <issue>MP_NewcomerAttitude</issue>
+    <label>wary</label>
+    <description>We should not really trust people who have not yet proven themselves.</description>
+    <impact>Medium</impact>
+    <displayOrderInIssue>40</displayOrderInIssue>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>MP_NewcomerAttitude_Wary</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>MP_NewcomerAttitude_Wary_Social</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+  <PreceptDef>
+    <defName>MP_NewcomerAttitude_Fearful</defName>
+    <issue>MP_NewcomerAttitude</issue>
+    <label>fearful</label>
+    <description>We should not take in new people, they could be dangerous.</description>
+    <impact>High</impact>
+    <displayOrderInIssue>30</displayOrderInIssue>
+    <comps>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>MP_NewcomerAttitude_Fearful</thought>
+        <tooltipShowMoodRange>true</tooltipShowMoodRange>
+      </li>
+      <li Class="PreceptComp_SituationalThought">
+        <thought>MP_NewcomerAttitude_Fearful_Social</thought>
+      </li>
+    </comps>
+  </PreceptDef>
+
+</Defs>

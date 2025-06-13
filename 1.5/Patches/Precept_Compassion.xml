@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/MemeDef[defName="Guilty"]/requireOne</xpath>
+    <value>
+      <li>
+        <li>Compassion_All</li>
+        <li>Compassion_NonGuiltyEnemies</li>
+        <li>Compassion_NonHostile</li>
+        <li>Compassion_Allies</li>
+      </li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/MemeDef[defName="Pacifism"]/requireOne</xpath>
+    <value>
+      <li>
+        <li>Compassion_All</li>
+        <li>Compassion_NonGuiltyEnemies</li>
+        <li>Compassion_NonHostile</li>
+      </li>
+    </value>
+  </Operation>
+
+</Patch>
