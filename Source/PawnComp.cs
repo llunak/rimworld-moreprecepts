@@ -7,7 +7,7 @@ namespace MorePrecepts
 {
     // A ThingComp attached to pawns, to contain all pawn extra data for this mod.
     [HarmonyPatch]
-    public class PawnComp : ThingComp
+    public sealed class PawnComp : ThingComp
     {
         // For alcohol  precept, alcohol version of lastTakeRecreationalDrugTick.
         private int lastTakeAlcoholTick;
