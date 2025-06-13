@@ -197,7 +197,7 @@ namespace MorePrecepts
         {
             affectedPawns.Clear();
             affectedThings.Clear();
-            foreach(Pawn pawn in PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_FreeColonists)
+            foreach(Pawn pawn in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_FreeColonists_NoLodgers)
             {
                 DrugPossessionHelper.IsRelevantDrug isRelevantDrug = DrugPossessionHelper.GetDrugTestDelegate(pawn);
                 if(isRelevantDrug == null)

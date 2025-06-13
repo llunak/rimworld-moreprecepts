@@ -27,12 +27,14 @@ namespace MorePrecepts
 
         public override IEnumerable<Toil> MakeNewToils()
         {
+            if (base.TargetLocA.IsValid)
+                yield return Toils_Goto.GotoCell(base.TargetLocA, PathEndMode.OnCell);
             Toil toil = new Toil();
-            toil.tickAction = delegate
+            toil.tickIntervalAction = delegate(int delta)
             {
                 if (job.lookDirection != Direction8Way.Invalid)
                     base.pawn.rotationTracker.Face(base.pawn.Position.ToVector3() + job.lookDirection.AsVector());
-                base.pawn.GainComfortFromCellIfPossible();
+                base.pawn.GainComfortFromCellIfPossible(delta);
             };
             toil.socialMode = RandomSocialMode.SuperActive;
             toil.defaultCompleteMode = ToilCompleteMode.Never;

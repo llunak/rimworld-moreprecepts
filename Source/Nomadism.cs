@@ -39,7 +39,7 @@ namespace MorePrecepts
         {
             if(__instance.Faction == Faction.OfPlayer)
             {
-                foreach(Pawn pawn in PawnsFinder.AllMapsCaravansAndTravelingTransportPods_Alive_Colonists)
+                foreach(Pawn pawn in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_Colonists)
                 {
                     Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.Nomadism_AbandonedSettlement,
                         pawn.Named(HistoryEventArgsNames.Doer)));
