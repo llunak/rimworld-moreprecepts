@@ -18,7 +18,7 @@
             </li>
             <!-- Stand where you are and be socially active -->
             <li Class="MorePrecepts.JobGiver_SitAndBeSociallyActive">
-              <lookDirection>Invalid</lookDirection>
+              <maintainFacing>true</maintainFacing>
               <ticksRange>450~750</ticksRange>
             </li>
           </subNodes>
