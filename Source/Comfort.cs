@@ -197,8 +197,9 @@ namespace MorePrecepts
         }
 
         [HarmonyPrefix]
-        [HarmonyPatch(nameof(CanReserveSittableOrSpot_NewTemp))]
-        public static bool CanReserveSittableOrSpot_NewTemp(ref bool __result, Pawn pawn, IntVec3 exactSittingPos,
+        [HarmonyPatch(nameof(CanReserveSittableOrSpot))]
+        [HarmonyPatch(new Type[] { typeof( Pawn ), typeof( IntVec3 ), typeof( Thing ), typeof( bool ) } )]
+        public static bool CanReserveSittableOrSpot(ref bool __result, Pawn pawn, IntVec3 exactSittingPos,
             Thing ignoreThing, bool ignoreOtherReservations)
         {
             if(!IsAcceptableSittableOrSpot(pawn, exactSittingPos))
