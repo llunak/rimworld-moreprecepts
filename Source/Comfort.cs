@@ -94,6 +94,24 @@ namespace MorePrecepts
             thought.SetForcedStage(level);
             pawn.needs.mood.thoughts.memories.TryGainMemory(thought);
         }
+
+        public static float AdjustChairSearchRadius(float chairSearchRadius, Pawn pawn)
+        {
+            if(chairSearchRadius == 0)
+                return chairSearchRadius;
+            (float bedMin, float bedOk, float chairMin, float chairOk, QualityCategory tableMin, QualityCategory tableOk,
+                ThoughtDef thoughtDef, Precept precept) = ComfortHelper.GetComfort(pawn);
+            if(thoughtDef == null)
+                return chairSearchRadius;
+            float factor = 1;
+            if( precept.def == PreceptDefOf.Comfort_Wanted)
+                factor = 2;
+            if( precept.def == PreceptDefOf.Comfort_Important)
+                factor = 3;
+            if( precept.def == PreceptDefOf.Comfort_Essential)
+                factor = 5;
+            return chairSearchRadius * factor;
+        }
     }
 
     [HarmonyPatch(typeof(Toils_LayDown))]
@@ -246,65 +264,89 @@ namespace MorePrecepts
     [HarmonyPatch(typeof(Toils_Ingest))]
     public static class Toils_Ingest_Patch
     {
-        // Again, the transpiller is set up manually because it's an internal delegate function.
-        public static IEnumerable<CodeInstruction> CarryIngestibleToChewSpot_delegate(IEnumerable<CodeInstruction> instructions, MethodBase __originalMethod)
+        [HarmonyTranspiler]
+        [HarmonyPatch(nameof(TryFindChairOrSpot))]
+        public static IEnumerable<CodeInstruction> TryFindChairOrSpot(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
             int foundCount = 0;
-            CodeInstruction actorLoad = null;
             for( int i = 0; i < codes.Count; ++i )
             {
-                // The function has code:
-                // .. thing2.def.ingestible.chairSearchRadius ..
+                // The function refers several times to:
+                // .. ingestibleProperties.chairSearchRadius ..
                 // Replace it with:
-                // .. CarryIngestibleToChewSpot_Hook(thing2.def.ingestible.chairSearchRadius, actor) ..
+                // .. TryFindChairOrSpot_Hook(ingestibleProperties.chairSearchRadius, pawn) ..
                 // Log.Message("T:" + i + ":" + codes[i].opcode + "::" + (codes[i].operand != null ? codes[i].operand.ToString() : codes[i].operand));
-                // T:44:ldloc.0::
-                // T:45:ldfld::Verse.Pawn actor
-                if(actorLoad == null && codes[i].opcode == OpCodes.Ldloc_0
-                    && i+1 < codes.Count && codes[i+1].opcode == OpCodes.Ldfld && codes[i+1].operand.ToString() == "Verse.Pawn actor")
+                if(codes[i].opcode == OpCodes.Ldfld && codes[i].operand.ToString() == "System.Single chairSearchRadius")
                 {
-                    actorLoad = codes[i+1].Clone();
-                }
-                // T:55:ldfld::System.Single chairSearchRadius
-                if(actorLoad != null && codes[i].opcode == OpCodes.Ldfld
-                    && codes[i].operand.ToString() == "System.Single chairSearchRadius")
-                {
-                    codes.Insert(i+1, new CodeInstruction(OpCodes.Ldloc_0));
-                    codes.Insert(i+2, actorLoad.Clone());
-                    codes.Insert(i+3, new CodeInstruction(OpCodes.Call, typeof(Toils_Ingest_Patch).GetMethod(nameof(CarryIngestibleToChewSpot_Hook))));
+                    codes.Insert(i+1, new CodeInstruction(OpCodes.Ldarg_0));
+                    codes.Insert(i+2, new CodeInstruction(OpCodes.Call, typeof(Toils_Ingest_Patch).GetMethod(nameof(TryFindChairOrSpot_Hook))));
                     ++foundCount;
                 }
             }
-            if(foundCount != 3)
+            if(foundCount != 2)
+                Log.Error("MorePrecepts: Failed to patch Toils_Ingest.TryFindChairOrSpot()");
+            return codes;
+        }
+
+        // Multiply chair search radius, i.e. comfortable pawns try harder when searching for a place to sit.
+        public static float TryFindChairOrSpot_Hook(float chairSearchRadius, Pawn pawn)
+        {
+            return ComfortHelper.AdjustChairSearchRadius( chairSearchRadius, pawn );
+        }
+    }
+
+    // JobDriver_FeedBaby and JobDriver_Reading have both 32 hardcoded.
+    [HarmonyPatch]
+    public static class JobDriver_FeedBaby_Reading_Patch
+    {
+        [HarmonyTargetMethods]
+        private static IEnumerable<MethodBase> TargetMethod()
+        {
+            Type nestedClass = typeof(JobDriver_FeedBaby).GetNestedType("<>c__DisplayClass14_0", BindingFlags.NonPublic);
+            yield return AccessTools.Method(nestedClass, "<GoToChair>b__0");
+            yield return AccessTools.Method(typeof(JobDriver_Reading), nameof(JobDriver_Reading.TryGetClosestChairFreeSittingSpot));
+        }
+
+        [HarmonyTranspiler]
+        public static IEnumerable<CodeInstruction> Transpiller(IEnumerable<CodeInstruction> instructions, MethodBase __originalMethod)
+        {
+            var codes = new List<CodeInstruction>(instructions);
+            bool found = false;
+            for( int i = 0; i < codes.Count; ++i )
             {
-                if( __originalMethod.ToString().Contains( "<CarryIngestibleToChewSpot>" ))
-                    Log.Error("MorePrecepts: Failed to patch Toils_Ingest.CarryIngestibleToChewSpot() delegate");
-                else if( __originalMethod.ToString().Contains( "<ReserveChewSpot>" ))
-                    Log.Error("MorePrecepts: Failed to patch CommonSense ReserveChewSpot() delegate");
+                // The function has code:
+                // GenClosest.ClosestThingReachable(..., 32f, ...)
+                // Replace it with:
+                // GenClosest.ClosestThingReachable(..., Transpiller_Hook(32f, this), ...)
+                // Log.Message("T:" + i + ":" + codes[i].opcode + "::" + (codes[i].operand != null ? codes[i].operand.ToString() : codes[i].operand));
+                if(codes[i].opcode == OpCodes.Ldc_R4 && codes[i].operand.ToString() == "32"
+                    && i + 11 < codes.Count
+                    && codes[ i + 11 ].opcode == OpCodes.Call
+                    && codes[ i + 11 ].operand.ToString().StartsWith( "Verse.Thing ClosestThingReachable(" ))
+                {
+                    codes.Insert(i+1, new CodeInstruction(OpCodes.Ldarg_0));
+                    codes.Insert(i+2, new CodeInstruction(OpCodes.Call, typeof(JobDriver_FeedBaby_Reading_Patch).GetMethod(nameof(Transpiller_Hook))));
+                    found = true;
+                    break;
+                }
+            }
+            if(!found)
+            {
+                if( __originalMethod.ToString().Contains( "<GoToChair>" ))
+                    Log.Error("MorePrecepts: Failed to patch JobDriver_FeedBaby.GoToChair() delegate");
+                else if( __originalMethod.ToString().Contains( "TryGetClosestChairFreeSittingSpot" ))
+                    Log.Error("MorePrecepts: Failed to patch JobDriver_Reading.TryGetClosestChairFreeSittingSpot()");
                 else
-                    Log.Error("MorePrecepts: Failed to patch unknown CarryIngestibleToChewSpot() delegate");
+                    Log.Error("MorePrecepts: Failed to patch unknown comfort delegate");
             }
             return codes;
         }
 
         // Multiply chair search radius, i.e. comfortable pawns try harder when searching for a place to sit.
-        public static float CarryIngestibleToChewSpot_Hook(float chairSearchRadius, Pawn pawn)
+        public static float Transpiller_Hook(float chairSearchRadius, JobDriver jobDriver)
         {
-            if(chairSearchRadius == 0)
-                return chairSearchRadius;
-            (float bedMin, float bedOk, float chairMin, float chairOk, QualityCategory tableMin, QualityCategory tableOk,
-                ThoughtDef thoughtDef, Precept precept) = ComfortHelper.GetComfort(pawn);
-            if(thoughtDef == null)
-                return chairSearchRadius;
-            float factor = 1;
-            if( precept.def == PreceptDefOf.Comfort_Wanted)
-                factor = 2;
-            if( precept.def == PreceptDefOf.Comfort_Important)
-                factor = 3;
-            if( precept.def == PreceptDefOf.Comfort_Essential)
-                factor = 5;
-            return chairSearchRadius * factor;
+            return ComfortHelper.AdjustChairSearchRadius( chairSearchRadius, jobDriver.pawn );
         }
     }
 
