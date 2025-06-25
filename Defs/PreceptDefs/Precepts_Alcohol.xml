@@ -79,6 +79,14 @@
     </conflictingMemes>
     <selectionWeight>0.2</selectionWeight>
     <comps>
+      <li Class="PreceptComp_UnwillingToDo">
+        <eventDef>IngestedAlcohol</eventDef>
+        <description>Ingest alcohol</description>
+        <nullifyingTraits>
+          <DrugDesire>2</DrugDesire>
+          <DrugDesire>1</DrugDesire>
+        </nullifyingTraits>
+      </li>
       <li Class="PreceptComp_SelfTookMemoryThought">
         <eventDef>IngestedAlcohol</eventDef>
         <thought>IngestedAlcohol_Disapproved</thought>
@@ -94,6 +102,14 @@
       <li Class="PreceptComp_KnowsMemoryThought">
         <eventDef>AdministeredAlcohol</eventDef>
         <thought>AdministeredAlcohol_Know_Disapproved</thought>
+      </li>
+      <li Class="PreceptComp_UnwillingToDo">
+        <eventDef>AdministeredAlcohol</eventDef>
+        <description>Administer alcohol</description>
+        <nullifyingTraits>
+          <DrugDesire>2</DrugDesire>
+          <DrugDesire>1</DrugDesire>
+        </nullifyingTraits>
       </li>
     </comps>
     <defaultDrugPolicyOverride>NoDrugs</defaultDrugPolicyOverride>
