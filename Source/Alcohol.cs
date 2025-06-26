@@ -17,11 +17,13 @@ A big complication of a separate precept for alcohol is that the game treats alc
 drug, so it gets handled by the druguse precept. That means that having DrugUse:MedicalOnly together
 with Alcohol:Wanted would normally conflict, as core game would forbid alcohol based on the first precept.
 
-So the most code here tries to disable core from including alcohol in recreational drugs, which is not
+So most of the code here tries to prevent core from including alcohol in recreational drugs, which is not
 trivial, as even IsTeetotaler() returns true if DrugUse:MedicalOnly is set, thus normally blocking beer use.
 So patch all drug-related code to follow the alcohol precept instead of the drug use one. This includes
 avoiding drug HistoryEventDef events and sending alcohol ones, otherwise pawns would get thoughts
 from both alcohol and drugs precepts. That may possibly break mods that react to those events, but oh well.
+
+Note that the teetotaler trait (DrugDesire < 0) still prevents alcohol.
 */
 
     public static class AlcoholHelper
@@ -34,6 +36,11 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                 return false;
             return true;
         }
+        public static bool WillingToIngestAlcohol(Pawn pawn)
+        {
+            return ( pawn.story == null || pawn.story.traits.DegreeOfTrait(TraitDefOf.DrugDesire) >= 0 )
+                && new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo();
+        }
         public static bool HasAlcoholPrecept(Pawn pawn)
         {
             // Override DrugUse only if Alcohol precept is actually active.
@@ -44,13 +51,6 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                 || pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Neutral)
                 || pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Wanted)
                 || pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Essential);
-        }
-        public static bool HasDislikingAlcoholPrecept(Pawn pawn)
-        {
-            if(pawn.Ideo == null )
-                return false;
-            return pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Prohibited)
-                || pawn.Ideo.HasPrecept(PreceptDefOf.Alcohol_Disapproved);
         }
         // This only checks if the thing is alcohol, normally we need to call NeedsAlcoholOverride()
         // to also check if alcohol should be treated specially.
@@ -99,11 +99,161 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             if(AlcoholHelper.overrideCounter == 0)
                 return true; // proceed normally
             // Our functionality that ignores drug settings.
-            if (!new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
+            if(!AlcoholHelper.WillingToIngestAlcohol(pawn))
                 __result = true;
-            if (pawn.story != null)
-                __result = pawn.story.traits.DegreeOfTrait(TraitDefOf.DrugDesire) < 0;
             return false;
+        }
+
+        // Handle the IsTeetotaler() call in CanTakeDrug() (teetotalerCanConsume is never used, so it's always false).
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CanTakeDrug))]
+        public static void CanTakeDrug(out bool __state, Pawn pawn, ThingDef drug)
+        {
+            __state = AlcoholHelper.NeedsAlcoholOverride(drug, pawn);
+            AlcoholHelper.AddOverride( __state );
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(CanTakeDrug))]
+        public static void CanTakeDrug(bool __state)
+        {
+            AlcoholHelper.RemoveOverride( __state );
+        }
+
+        [HarmonyTranspiler]
+        [HarmonyPatch(nameof(CanTakeDrug))]
+        public static IEnumerable<CodeInstruction> CanTakeDrug(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            var codes = new List<CodeInstruction>(instructions);
+            bool found = false;
+            for( int i = 0; i < codes.Count; ++i )
+            {
+                // The function has code:
+                // if (ModsConfig.IdeologyActive)
+                // As the first code in the block, insert:
+                // int code = CanTakeDrug_Hook(pawn, drug);
+                // if(code == 0)
+                //     return false;
+                // if(code != 1) // before the (whole) original body of the if statement
+                // Log.Message("T:" + i + ":" + codes[i].opcode + "::" + (codes[i].operand != null ? codes[i].operand.ToString() : codes[i].operand));
+                if(codes[i].opcode == OpCodes.Call && codes[i].operand.ToString() == "Boolean get_IdeologyActive()"
+                    && i + 1 < codes.Count && codes[i+1].opcode == OpCodes.Brfalse_S)
+                {
+                    codes.Insert(i + 2, new CodeInstruction(OpCodes.Ldarg_0)); // load 'pawn'
+                    codes.Insert(i + 3, new CodeInstruction(OpCodes.Ldarg_1)); // load 'drug'
+                    codes.Insert(i + 4, new CodeInstruction(OpCodes.Call, typeof(PawnUtility_Patch).GetMethod(nameof(CanTakeDrug_Hook))));
+                    codes.Insert(i + 5, new CodeInstruction(OpCodes.Dup)); // duplicate the return value
+                    Label label = generator.DefineLabel();
+                    codes.Insert(i + 6, new CodeInstruction(OpCodes.Brtrue_S, label)); // jump after if(code == 0) if false (==0), i.e. it's !=0
+                    codes.Insert(i + 7, new CodeInstruction(OpCodes.Ret)); // return false, use the duped 0 value as false
+                    // These two convert the duped value on the stack so that the condition changes from code!=1 to code!=0.
+                    codes.Insert(i + 8, new CodeInstruction(OpCodes.Ldc_I4_1));
+                    codes.Insert(i + 9, new CodeInstruction(OpCodes.Sub));
+                    codes.Insert(i + 10, codes[ i + 1 ].Clone()); // skip the original block if code!=0 (originally code!=1)
+                    codes[ i + 8 ].labels.Add( label ); // add label for the false part of the if(code == 0)
+                    found = true;
+                    break;
+                }
+            }
+
+            if(!found)
+                Log.Error("MorePrecepts: Failed to patch PawnUtility.CanTakeDrug");
+            return codes;
+        }
+        public static int CanTakeDrug_Hook(Pawn pawn, ThingDef drug)
+        {
+            if(!AlcoholHelper.NeedsAlcoholOverride(drug, pawn))
+                return 2; // Normal execution.
+            if(AlcoholHelper.WillingToIngestAlcohol(pawn))
+                return 1; // Skip the rest of execution, allow taking.
+            return 0; // Make return false.
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(PawnWouldBeUnhappyTakingDrug))]
+        public static bool PawnWouldBeUnhappyTakingDrug(bool result, Pawn pawn, ThingDef drug)
+        {
+            if(AlcoholHelper.NeedsAlcoholOverride(drug, pawn))
+                return !AlcoholHelper.WillingToIngestAlcohol(pawn);
+            return result;
+        }
+    }
+
+    // This class needs adjusting in a very way that's very similar to CanTakeDrug() (although the same thing is written in different way).
+    [HarmonyPatch(typeof(FloatMenuOptionProvider_Ingest))]
+    public static class FloatMenuOptionProvider_Ingest_Patch
+    {
+        [HarmonyTranspiler]
+        [HarmonyPatch(nameof(GetSingleOptionFor))]
+        public static IEnumerable<CodeInstruction> GetSingleOptionFor(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            var codes = new List<CodeInstruction>(instructions);
+            int textLoad = -1;
+            bool found = false;
+            for( int i = 0; i < codes.Count; ++i )
+            {
+                // The function has code:
+                // ... text + ": " ...
+                // Save the load instruction of 'text'.
+                if(codes[i].IsLdloc() && i + 1 < codes.Count
+                    && codes[ i + 1 ].opcode == OpCodes.Ldstr && codes[ i + 1 ].operand.ToString() == ": ")
+                {
+                    textLoad = i;
+                }
+                // The function has code:
+                // if (ModsConfig.IdeologyActive)
+                // As the first code in the block, insert:
+                // int code = GetSingleOptionFor_Hook1(clickedThing, context);
+                // if(code == 0)
+                //     return GetSingleOptionFor_Hook2(clickedThing, context, text);
+                // if(code != 1) // before the (whole) original body of the if statement
+                // Log.Message("T:" + i + ":" + codes[i].opcode + "::" + (codes[i].operand != null ? codes[i].operand.ToString() : codes[i].operand));
+                if(textLoad != -1 && codes[i].opcode == OpCodes.Call && codes[i].operand.ToString() == "Boolean get_IdeologyActive()"
+                    && i + 1 < codes.Count && codes[i+1].opcode == OpCodes.Brfalse)
+                {
+                    codes.Insert(i + 2, new CodeInstruction(OpCodes.Ldarg_1)); // load 'clickedThing'
+                    codes.Insert(i + 3, new CodeInstruction(OpCodes.Ldarg_2)); // load 'context'
+                    codes.Insert(i + 4, new CodeInstruction(OpCodes.Call,
+                        typeof(FloatMenuOptionProvider_Ingest_Patch).GetMethod(nameof(GetSingleOptionFor_Hook1))));
+                    codes.Insert(i + 5, new CodeInstruction(OpCodes.Dup)); // duplicate the return value
+                    Label label = generator.DefineLabel();
+                    codes.Insert(i + 6, new CodeInstruction(OpCodes.Brtrue_S, label)); // jump after if(code == 0) if false (==0), i.e. it's !=0
+                    codes.Insert(i + 7, new CodeInstruction(OpCodes.Pop)); // pop the dupped return value
+                    codes.Insert(i + 8, new CodeInstruction(OpCodes.Ldarg_1)); // load 'clickedThing'
+                    codes.Insert(i + 9, new CodeInstruction(OpCodes.Ldarg_2)); // load 'context'
+                    codes.Insert(i + 10, codes[ textLoad ].Clone()); // load 'text'
+                    codes.Insert(i + 11, new CodeInstruction(OpCodes.Call,
+                        typeof(FloatMenuOptionProvider_Ingest_Patch).GetMethod(nameof(GetSingleOptionFor_Hook2))));
+                    codes.Insert(i + 12, new CodeInstruction(OpCodes.Ret)); // return 'opt'
+                    // These two convert the duped value on the stack so that the condition changes from code!=1 to code!=0.
+                    codes.Insert(i + 13, new CodeInstruction(OpCodes.Ldc_I4_1));
+                    codes.Insert(i + 14, new CodeInstruction(OpCodes.Sub));
+                    codes.Insert(i + 15, codes[ i + 1 ].Clone()); // skip the original block if code!=0 (originally code!=1)
+                    codes[ i + 13 ].labels.Add( label ); // add label for the false part of the if(code == 0)
+                    found = true;
+                    break;
+                }
+            }
+
+            if(!found)
+                Log.Error("MorePrecepts: Failed to patch FloatMenuOptionProvider_Ingest.GetSingleOptionFor");
+            return codes;
+        }
+        public static int GetSingleOptionFor_Hook1(Thing drug, FloatMenuContext context)
+        {
+            Pawn pawn = context.FirstSelectedPawn;
+            if(!AlcoholHelper.NeedsAlcoholOverride(drug.def, pawn))
+                return 2; // Normal execution.
+            if(!AlcoholHelper.WillingToIngestAlcohol(pawn) && !PawnUtility.CanTakeDrugForDependency(pawn, drug.def))
+                return 0; // Make return 'opt' (created by the second hook).
+            return 1; // Skip the rest of execution, allow taking.
+        }
+
+        public static FloatMenuOption GetSingleOptionFor_Hook2(Thing drug, FloatMenuContext context, string text)
+        {
+            Pawn pawn = context.FirstSelectedPawn;
+            new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).Notify_PawnAboutToDo(out var opt, text);
+            return opt;
         }
     }
 
@@ -147,17 +297,21 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         }
     }
 
-// These places to patch are those that have 'IngestedDrug', 'AdministeredDrug' or 'IsTeetotaler'.
+// These places to patch are those that have 'IngestedDrug', 'IngestedRecreationalDrug', 'AdministeredDrug' or 'IsTeetotaler'.
+
+    // PawnUtility.CanTakeDrug() is already done above.
 
     [HarmonyPatch(typeof(Recipe_AdministerIngestible))]
     public static class Recipe_AdministerIngestible_Patch
     {
         [HarmonyPrefix]
         [HarmonyPatch(nameof(ApplyOnPawn))]
-        public static void ApplyOnPawn(Pawn pawn, BodyPartRecord part, ref Pawn billDoer, List<Thing> ingredients, Bill bill)
+        public static void ApplyOnPawn(out bool __state, Pawn pawn, BodyPartRecord part, ref Pawn billDoer, List<Thing> ingredients, Bill bill)
         {
-            if (AlcoholHelper.NeedsAlcoholOverride(ingredients[0].def, billDoer))
+            __state = AlcoholHelper.NeedsAlcoholOverride(ingredients[0].def, billDoer);
+            if (__state )
             {
+                AlcoholHelper.AddOverride(); // For the IsTeetotaler() check.
                 // If alcohol, send alcohol event.
                 if(billDoer != null)
                     Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.AdministeredAlcohol,
@@ -166,18 +320,9 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                 billDoer = null;
             }
         }
-
-        [HarmonyPrefix]
-        [HarmonyPatch(nameof(ApplyOnPawn))]
-        public static void GetLabelWhenUsedOn(out bool __state, Recipe_AdministerIngestible __instance, Pawn pawn, BodyPartRecord part)
-        {
-            ThingDef singleDef = __instance.recipe.ingredients[0].filter.BestThingRequest.singleDef;
-            __state = AlcoholHelper.NeedsAlcoholOverride(singleDef, pawn);
-            AlcoholHelper.AddOverride( __state );
-        }
         [HarmonyPostfix]
         [HarmonyPatch(nameof(ApplyOnPawn))]
-        public static void GetLabelWhenUsedOn(bool __state, Pawn pawn, BodyPartRecord part)
+        public static void ApplyOnPawn(bool __state)
         {
             AlcoholHelper.RemoveOverride( __state );
         }
@@ -197,7 +342,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                 if (food.IsNutritionGivingIngestible && pawn.WillEat(food, null, careIfNotAcceptableForTitle: false)
                     && (int)food.ingestible.preferability > 1 && !pawn.IsTeetotaler() && food.ingestible.canAutoSelectAsFoodForCaravan)
                 {
-                    __result = new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo();
+                    __result = AlcoholHelper.WillingToIngestAlcohol(pawn);
                 }
                 AlcoholHelper.RemoveOverride();
             }
@@ -207,158 +352,56 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
     [HarmonyPatch(typeof(CompDrug))]
     public static class CompDrug_Patch
     {
-        [HarmonyPrefix]
+        [HarmonyTranspiler]
         [HarmonyPatch(nameof(PostIngested))]
-        public static bool PostIngested(CompDrug __instance, Pawn ingester)
+        public static IEnumerable<CodeInstruction> PostIngested(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if(AlcoholHelper.IsAlcohol(__instance.parent.def))
+            var codes = new List<CodeInstruction>(instructions);
+            bool found1 = false;
+            bool found2 = false;
+            int lastSkip = -1;
+            Label label = generator.DefineLabel();
+            for( int i = 0; i < codes.Count; ++i )
             {
-                // Do unconditionally alcohol-only things.
-                if (!ingester.Dead)
-                    PawnComp.SetLastTakeAlcoholTickToNow(ingester);
-                Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, ingester.Named(HistoryEventArgsNames.Doer)));
-            }
-            if(!AlcoholHelper.NeedsAlcoholOverride(__instance.parent.def, ingester))
-                return true; // original processing
-            // Big scary copy&paste&modify to remove drug events and use alcohol event instead.
-			if (__instance.Props.Addictive && ingester.RaceProps.IsFlesh)
-			{
-				float num = 1f;
-				if (ModsConfig.BiotechActive && ingester.genes != null)
-				{
-					foreach (Gene item in ingester.genes.GenesListForReading)
-					{
-						num *= item.def.overdoseChanceFactor;
-					}
-				}
-				if (Rand.Chance(num))
-				{
-					float num2 = ingester.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.DrugOverdose)?.Severity ?? 0f;
-					bool flag = false;
-					if (ModsConfig.BiotechActive && ingester.genes != null)
-					{
-						foreach (Gene item2 in ingester.genes.GenesListForReading)
-						{
-							Gene_ChemicalDependency gene_ChemicalDependency;
-							if ((gene_ChemicalDependency = item2 as Gene_ChemicalDependency) != null && gene_ChemicalDependency.def.chemical == __instance.Props.chemical)
-							{
-								flag = true;
-								break;
-							}
-						}
-					}
-					if (num2 < 0.9f && !flag && Rand.Value < __instance.Props.largeOverdoseChance)
-					{
-						float num3 = Rand.Range(0.85f, 0.99f);
-						HealthUtility.AdjustSeverity(ingester, HediffDefOf.DrugOverdose, num3 - num2);
-						if (ingester.Faction == Faction.OfPlayer)
-						{
-							Messages.Message("MessageAccidentalOverdose".Translate(ingester.Named("INGESTER"), __instance.parent.LabelNoCount, __instance.parent.Named("DRUG")), ingester, MessageTypeDefOf.NegativeHealthEvent);
-						}
-					}
-					else
-					{
-						float num4 = __instance.Props.overdoseSeverityOffset.RandomInRange / ingester.BodySize;
-						if (num4 > 0f)
-						{
-							HealthUtility.AdjustSeverity(ingester, HediffDefOf.DrugOverdose, num4);
-						}
-					}
-				}
-			}
-			if (ingester.drugs != null)
-			{
-				ingester.drugs.Notify_DrugIngested(__instance.parent);
-			}
-            // End of big scary copy&paste&modify.
-            return false; // no original processing
-        }
-    }
-
-    [HarmonyPatch(typeof(FloatMenuMakerMap))]
-    public static class FloatMenuMakerMap_Patch
-    {
-        [HarmonyPostfix]
-        [HarmonyPatch(nameof(AddHumanlikeOrders))]
-        public static void AddHumanlikeOrders(Vector3 clickPos, Pawn pawn, List<FloatMenuOption> opts)
-        {
-            // The functions may block the menu entry for drinking alcohol. It's quite nested in the function, making it hard(?)
-            // to replace, so just post-process the menu entries.
-            List<Pair<string,Thing>> alcoholItems = new List<Pair<string,Thing>>();
-            IntVec3 c = IntVec3.FromVector3(clickPos);
-            foreach (Thing thing7 in c.GetThingList(pawn.Map))
-            {
-                Thing t2 = thing7;
-                if(!AlcoholHelper.NeedsAlcoholOverride(t2.def, pawn))
-                    continue; // not alcohol, ignore
-                if (t2.def.ingestible == null || !pawn.RaceProps.CanEverEat(t2) || !t2.IngestibleNow)
-                    continue;
-                string text = ((!t2.def.ingestible.ingestCommandString.NullOrEmpty()) ? string.Format(t2.def.ingestible.ingestCommandString, t2.LabelShort) : ((string)"ConsumeThing".Translate(t2.LabelShort, t2)));
-                alcoholItems.Add(new Pair<String,Thing>(text, t2));
-            }
-            if(alcoholItems.Count == 0)
-                return;
-            AlcoholHelper.AddOverride();
-            for( int i = 0; i < opts.Count; ++i )
-            {
-                for( int j = 0; j < alcoholItems.Count; ++j )
+                // The function has code starting with:
+                // Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.IngestedDrug, ingester.Named(HistoryEventArgsNames.Doer)));
+                // In front of the entire code remaining, add:
+                // if(!PostIngested_Hook(this, ingester))
+                //      { ... the block ... }
+                // Log.Message("T:" + i + ":" + codes[i].opcode + "::" + (codes[i].operand != null ? codes[i].operand.ToString() : codes[i].operand));
+                if(codes[i].opcode == OpCodes.Call && codes[i].operand.ToString() == "Void Notify_DrugIngested(Verse.Thing)"
+                    && i + 1 < codes.Count
+                    && codes[i + 1].opcode == OpCodes.Call
+                    && codes[i + 1].operand.ToString() == "RimWorld.HistoryEventsManager get_HistoryEventsManager()")
                 {
-                    string text = alcoholItems[j].First;
-                    if(opts[i].Label == text || opts[i].Label.StartsWith(text + ":"))
-                    {
-                        Thing t2 = alcoholItems[j].Second;
-                        // Big scary copy&paste&modify from the function. Only the one if statement is modified and the alcohol block is added.
-                        // Some of the code is useless, because we know the thing is a drug.
-				if (!t2.IsSociallyProper(pawn))
-				{
-					text = text + ": " + "ReservedForPrisoners".Translate().CapitalizeFirst();
-				}
-				else if (FoodUtility.MoodFromIngesting(pawn, t2, t2.def) < 0f)
-				{
-					text = string.Format("{0}: ({1})", text, "WarningFoodDisliked".Translate());
-				}
-				if (!t2.def.IsDrug || !ModsConfig.IdeologyActive || new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, pawn.Named(HistoryEventArgsNames.Doer)).Notify_PawnAboutToDo(out var opt, text) || PawnUtility.CanTakeDrugForDependency(pawn, t2.def))
-				{
-					if (t2.def.IsNonMedicalDrug && !pawn.CanTakeDrug(t2.def))
-					{
-						opt = new FloatMenuOption(text + ": " + TraitDefOf.DrugDesire.DataAtDegree(-1).GetLabelCapFor(pawn), null);
-					}
-					else if (FoodUtility.InappropriateForTitle(t2.def, pawn, allowIfStarving: true))
-					{
-						opt = new FloatMenuOption(text + ": " + "FoodBelowTitleRequirements".Translate(pawn.royalty.MostSeniorTitle.def.GetLabelFor(pawn).CapitalizeFirst()).CapitalizeFirst(), null);
-					}
-					else if (!pawn.CanReach(t2, PathEndMode.OnCell, Danger.Deadly))
-					{
-						opt = new FloatMenuOption(text + ": " + "NoPath".Translate().CapitalizeFirst(), null);
-					}
-					else
-					{
-						MenuOptionPriority priority = ((t2 is Corpse) ? MenuOptionPriority.Low : MenuOptionPriority.Default);
-						int maxAmountToPickup = FoodUtility.GetMaxAmountToPickup(t2, pawn, FoodUtility.WillIngestStackCountOf(pawn, t2.def, FoodUtility.NutritionForEater(pawn, t2)));
-						opt = FloatMenuUtility.DecoratePrioritizedTask(new FloatMenuOption(text, delegate
-						{
-							int maxAmountToPickup2 = FoodUtility.GetMaxAmountToPickup(t2, pawn, FoodUtility.WillIngestStackCountOf(pawn, t2.def, FoodUtility.NutritionForEater(pawn, t2)));
-							if (maxAmountToPickup2 != 0)
-							{
-								t2.SetForbidden(value: false);
-								Job job30 = JobMaker.MakeJob(RimWorld.JobDefOf.Ingest, t2);
-								job30.count = maxAmountToPickup2;
-								pawn.jobs.TryTakeOrderedJob(job30, JobTag.Misc);
-							}
-						}, priority), pawn, t2);
-						if (maxAmountToPickup == 0)
-						{
-							opt.action = null;
-						}
-					}
-				}
-                        // End of big scary copy&paste&modify from the function.
-                        // Now replace the menu option.
-                        opts[i] = opt;
-                    }
+                    codes.Insert(i + 1, new CodeInstruction(OpCodes.Ldarg_0)); // load 'this'
+                    codes.Insert(i + 2, new CodeInstruction(OpCodes.Ldarg_0)); // load 'ingester'
+                    codes.Insert(i + 3, new CodeInstruction(OpCodes.Call,
+                        typeof(CompDrug_Patch).GetMethod(nameof(PostIngested_Hook))));
+                    codes.Insert(i + 4, new CodeInstruction(OpCodes.Brtrue_S, label));
+                    found1 = true;
                 }
+                if(found1 && codes[i].opcode == OpCodes.Callvirt && codes[i].operand.ToString() == "Void RecordEvent(RimWorld.HistoryEvent, Boolean)")
+                    lastSkip = i;
             }
-            AlcoholHelper.RemoveOverride();
+
+            // Add label to the first instruction after the block (the last 'ret' as of now).
+            if(found1 && lastSkip != -1 && lastSkip + 1 < codes.Count)
+            {
+                codes[ lastSkip + 1 ].labels.Add( label );
+                found2 = true;
+            }
+
+            if(!found1 || !found2)
+                Log.Error("MorePrecepts: Failed to patch CompDrug.PostIngested()");
+            return codes;
+        }
+        public static bool PostIngested_Hook(CompDrug comp, Pawn ingester)
+        {
+            if(!AlcoholHelper.NeedsAlcoholOverride(comp.parent.def, ingester))
+                return false;
+            Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, ingester.Named(HistoryEventArgsNames.Doer)));
+            return true;
         }
     }
 
@@ -374,7 +417,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         }
         [HarmonyPostfix]
         [HarmonyPatch(nameof(AllowedToTakeScheduledEver))]
-        public static void AllowedToTakeScheduledEver(bool __state, ThingDef thingDef)
+        public static void AllowedToTakeScheduledEver(bool __state)
         {
             AlcoholHelper.RemoveOverride( __state );
         }
@@ -388,7 +431,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         }
         [HarmonyPostfix]
         [HarmonyPatch(nameof(AllowedToTakeToInventory))]
-        public static void AllowedToTakeToInventory(bool __state, ThingDef thingDef)
+        public static void AllowedToTakeToInventory(bool __state)
         {
             AlcoholHelper.RemoveOverride( __state );
         }
@@ -407,7 +450,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
         }
         [HarmonyPostfix]
         [HarmonyPatch(nameof(CurrentSocialStateInternal))]
-        public static void CurrentSocialStateInternal(bool __state, Pawn p, Pawn other)
+        public static void CurrentSocialStateInternal(bool __state)
         {
             AlcoholHelper.RemoveOverride( __state );
         }
@@ -426,7 +469,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             // Mostly copy&paste&modify from the original function.
             if (!p.RaceProps.Humanlike)
                 return;
-            if( !AlcoholHelper.HasDislikingAlcoholPrecept(p))   // (!p.IsTeetotaler())
+            if( AlcoholHelper.WillingToIngestAlcohol(p))   // (!p.IsTeetotaler()) - TODO core now only checks trait, why?
                 return;
             if (!other.RaceProps.Humanlike)
                 return;
@@ -502,7 +545,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             // If this returns true, the thing will not be used.
             if(AlcoholHelper.NeedsAlcoholOverride(thing, eater))
             {
-                if(AlcoholHelper.HasDislikingAlcoholPrecept(eater))
+                if(AlcoholHelper.WillingToIngestAlcohol(eater))
                     return true; // block
                 else
                     return false; // allow
@@ -538,7 +581,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
                     && codes[i+2].opcode == OpCodes.Brtrue_S
                     && codes[i+5].opcode == OpCodes.Callvirt && codes[i+5].operand.ToString() == "Boolean get_IsDrug()")
                 {
-                    Type nestedClass = typeof(FoodUtility).GetNestedType("<>c__DisplayClass14_0", BindingFlags.NonPublic);
+                    Type nestedClass = typeof(FoodUtility).GetNestedType("<>c__DisplayClass16_0", BindingFlags.NonPublic);
                     if(nestedClass != null)
                     {
                         FieldInfo eaterField = AccessTools.Field(nestedClass, "eater");
@@ -563,7 +606,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             // If this returns true, the thing will not be used.
             if(AlcoholHelper.NeedsAlcoholOverride(thing, eater))
             {
-                if(AlcoholHelper.HasDislikingAlcoholPrecept(eater))
+                if(AlcoholHelper.WillingToIngestAlcohol(eater))
                     return true; // block
                 else
                     return false; // allow
@@ -571,41 +614,6 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             // The original case.
             bool allowDrug = !eater.IsTeetotaler();
             return !allowDrug && thing.IsDrug;
-        }
-    }
-
-    [HarmonyPatch(typeof(PawnAddictionHediffsGenerator))]
-    public static class PawnAddictionHediffsGenerator_Patch
-    {
-        [HarmonyTranspiler]
-        [HarmonyPatch(nameof(GenerateAddictionsAndTolerancesFor))]
-        public static IEnumerable<CodeInstruction> GenerateAddictionsAndTolerancesFor(IEnumerable<CodeInstruction> instructions)
-        {
-            var codes = new List<CodeInstruction>(instructions);
-            bool found = false;
-            for( int i = 0; i < codes.Count; ++i )
-            {
-                // The function has code:
-                // if(.. || pawn.IsTeetotaler()) return;
-                // Patch out the return for the IsTeetotaler() case.
-                // Log.Message("T:" + i + ":" + codes[i].opcode + "::" + (codes[i].operand != null ? codes[i].operand.ToString() : codes[i].operand));
-                // T:16:ldloc.0::
-                // T:17:ldfld::Verse.Pawn pawn
-                // T:18:call::Boolean IsTeetotaler(Verse.Pawn)
-                // T:19:brfalse.s::System.Reflection.Emit.Label
-                // T:20:ret::
-                if(i + 4 < codes.Count && codes[i+2].opcode == OpCodes.Call
-                    && codes[i+2].operand.ToString() == "Boolean IsTeetotaler(Verse.Pawn)"
-                    && codes[i+4].opcode == OpCodes.Ret)
-                {
-                    codes[i+4] = new CodeInstruction(OpCodes.Nop);
-                    found = true;
-                    break;
-                }
-            }
-            if(!found)
-                Log.Error("MorePrecepts: Failed to patch PawnAddictionHediffsGenerator.GenerateAddictionsAndTolerancesFor()");
-            return codes;
         }
     }
 
@@ -703,11 +711,7 @@ from both alcohol and drugs precepts. That may possibly break mods that react to
             if(AlcoholHelper.NeedsAlcoholOverride(thing.def, ingester))
             {
                 AlcoholHelper.AddOverride();
-                bool block = false;
-                if(ingester.IsTeetotaler())
-                    block = true;
-                if (!new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, ingester.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
-                    block = true;
+                bool block = !AlcoholHelper.WillingToIngestAlcohol(ingester);
                 AlcoholHelper.RemoveOverride();
                 return block;
             }

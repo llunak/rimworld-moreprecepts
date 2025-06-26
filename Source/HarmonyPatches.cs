@@ -18,7 +18,7 @@ namespace MorePrecepts
             bool done = false;
             MethodInfo oldMethod;
             MethodInfo newMethod;
-            Type nestedClass = typeof(FoodUtility).GetNestedType("<>c__DisplayClass14_0", BindingFlags.NonPublic);
+            Type nestedClass = typeof(FoodUtility).GetNestedType("<>c__DisplayClass16_0", BindingFlags.NonPublic);
             if(nestedClass != null)
             {
                 oldMethod = AccessTools.Method(nestedClass, "<BestFoodSourceOnMap>b__0");
@@ -37,7 +37,7 @@ namespace MorePrecepts
             nestedClass = typeof(JoyGiver_SocialRelax).GetNestedType("<>c__DisplayClass8_0", BindingFlags.NonPublic);
             if(nestedClass != null)
             {
-                oldMethod = AccessTools.Method(nestedClass, "<TryFindIngestibleToNurse>b__0");
+                oldMethod = AccessTools.Method(nestedClass, "<TryFindIngestibleToNurse>g__Validator|0");
                 newMethod = typeof(JoyGiver_SocialRelax_Patch).GetMethod("TryFindIngestibleToNurse_validator");
                 if(oldMethod != null)
                 {
