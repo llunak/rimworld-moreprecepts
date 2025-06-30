@@ -35,7 +35,7 @@
     <defName>Comfort_Important</defName>
     <issue>Comfort</issue>
     <label>important</label>
-    <description>It is important to sleep in and sit on comfortable furniture. Not using furniture is unpleasant.</description>
+    <description>It is important to sleep in and sit on comfortable furniture. Not using furniture is unacceptable.</description>
     <impact>Medium</impact>
     <displayOrderInIssue>30</displayOrderInIssue>
     <displayOrderInImpact>100</displayOrderInImpact>
@@ -61,7 +61,7 @@
     <defName>Comfort_Essential</defName>
     <issue>Comfort</issue>
     <label>essential</label>
-    <description>It is an outrage to sleep in and sit on anything but very comfortable furniture. Not using furniture is unthinkable.</description>
+    <description>It is an outrage to sleep in and sit on anything but very comfortable furniture. It is unthinkable.</description>
     <impact>High</impact>
     <displayOrderInIssue>40</displayOrderInIssue>
     <displayOrderInImpact>100</displayOrderInImpact>
