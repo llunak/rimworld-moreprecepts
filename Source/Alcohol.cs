@@ -375,7 +375,7 @@ Note that the teetotaler trait (DrugDesire < 0) still prevents alcohol.
                     && codes[i + 1].operand.ToString() == "RimWorld.HistoryEventsManager get_HistoryEventsManager()")
                 {
                     codes.Insert(i + 1, new CodeInstruction(OpCodes.Ldarg_0)); // load 'this'
-                    codes.Insert(i + 2, new CodeInstruction(OpCodes.Ldarg_0)); // load 'ingester'
+                    codes.Insert(i + 2, new CodeInstruction(OpCodes.Ldarg_1)); // load 'ingester'
                     codes.Insert(i + 3, new CodeInstruction(OpCodes.Call,
                         typeof(CompDrug_Patch).GetMethod(nameof(PostIngested_Hook))));
                     codes.Insert(i + 4, new CodeInstruction(OpCodes.Brtrue_S, label));
