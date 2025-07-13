@@ -400,6 +400,8 @@ Note that the teetotaler trait (DrugDesire < 0) still prevents alcohol.
         {
             if(!AlcoholHelper.NeedsAlcoholOverride(comp.parent.def, ingester))
                 return false;
+            if (!ingester.Dead)
+                PawnComp.SetLastTakeAlcoholTickToNow(ingester);
             Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.IngestedAlcohol, ingester.Named(HistoryEventArgsNames.Doer)));
             return true;
         }
