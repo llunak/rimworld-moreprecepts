@@ -1,190 +1,118 @@
 using RimWorld;
 using Verse;
 using System;
+using System.Collections.Generic;
 using HarmonyLib;
 
 namespace MorePrecepts
 {
-    // A ThingComp attached to pawns, to contain all pawn extra data for this mod.
-    [HarmonyPatch]
-    public sealed class PawnComp : ThingComp
+    // Store mod's per-pawn data.
+    // This used to be a ThingComp, but those need to be patched into game's XML
+    // in order to be added to pawn, which does not work with some mods that create custom pawns,
+    // so instead this is a custom class that loads/saves them by patching Pawn class.
+    public class PawnComp
     {
         // For alcohol  precept, alcohol version of lastTakeRecreationalDrugTick.
-        private int lastTakeAlcoholTick;
+        private int lastTakeAlcoholTick = -99999;
 
         // For violence precept.
-        private int lastViolenceTick;
+        private int lastViolenceTick = -99999;
 
         // For compassion precept.
-        private int lastDownedTick;
-        private int lastDownedTicksUntilDeath;
+        private int lastDownedTick = -99999;
+        private int lastDownedTicksUntilDeath = -99999;
 
         // For funeral pyre.
-        private bool burnedOnPyre;
+        private bool burnedOnPyre = false;
 
         // For drugpossession, the first tick the pawn became aware of drugs present.
-        private int noticedDrugsTick;
+        private int noticedDrugsTick = -99999;
+
+        private static Dictionary< Pawn, PawnComp > dict = new Dictionary< Pawn, PawnComp >();
+
+        public static PawnComp GetComp( Pawn pawn )
+        {
+            PawnComp comp;
+            if( dict.TryGetValue( pawn, out comp ))
+                return comp;
+            comp = new PawnComp();
+            dict[ pawn ] = comp;
+            return comp;
+        }
 
         public static int GetLastTakeAlcoholTick(Pawn pawn)
         {
-            PawnComp comp = pawn.GetComp<PawnComp>();
-            if(comp == null)
-                return WarnBrokenPawn(pawn);
-            return comp.lastTakeAlcoholTick;
+            return GetComp( pawn ).lastTakeAlcoholTick;
         }
 
         public static void SetLastTakeAlcoholTickToNow(Pawn pawn)
         {
-            PawnComp comp = pawn.GetComp<PawnComp>();
-            if(comp == null)
-            {
-                WarnBrokenPawn(pawn);
-                return;
-            }
-            comp.lastTakeAlcoholTick = Find.TickManager.TicksGame;
+            GetComp( pawn ).lastTakeAlcoholTick = Find.TickManager.TicksGame;
         }
 
         public static int GetLastViolenceTick(Pawn pawn)
         {
-            PawnComp comp = pawn.GetComp<PawnComp>();
-            if(comp == null)
-                return WarnBrokenPawn(pawn);
-            return comp.lastViolenceTick;
+            return GetComp( pawn ).lastViolenceTick;
         }
 
         public static void SetLastViolenceTickToNow(Pawn pawn)
         {
-            PawnComp comp = pawn.GetComp<PawnComp>();
-            if(comp == null)
-            {
-                WarnBrokenPawn(pawn);
-                return;
-            }
-            comp.lastViolenceTick = Find.TickManager.TicksGame;
+            GetComp( pawn ).lastViolenceTick = Find.TickManager.TicksGame;
         }
 
         public static void AddToLastViolenceTick(Pawn pawn, int add)
         {
-            PawnComp comp = pawn.GetComp<PawnComp>();
-            if(comp == null)
-            {
-                WarnBrokenPawn(pawn);
-                return;
-            }
+            PawnComp comp = GetComp( pawn );
             comp.lastViolenceTick = Math.Min(comp.lastViolenceTick + add, Find.TickManager.TicksGame);
         }
 
         public static ( int, int ) GetLastDownedTicks(Pawn pawn)
         {
-            PawnComp comp = pawn.GetComp<PawnComp>();
-            if(comp == null)
-            {
-                WarnBrokenPawn(pawn);
-                return (-99999, -99999);
-            }
+            PawnComp comp = GetComp( pawn );
             return ( comp.lastDownedTick, comp.lastDownedTicksUntilDeath );
         }
 
         public static void SetLastDownedTicks(Pawn pawn, int lastDownedTick, int lastDownedTickUntilDeath)
         {
-            PawnComp comp = pawn.GetComp<PawnComp>();
-            if(comp == null)
-            {
-                WarnBrokenPawn(pawn);
-                return;
-            }
+            PawnComp comp = GetComp( pawn );
             comp.lastDownedTick = lastDownedTick;
             comp.lastDownedTicksUntilDeath = lastDownedTickUntilDeath;
         }
 
         public static void ResetOnlyLastDownedTick(Pawn pawn)
         {
-            PawnComp comp = pawn.GetComp<PawnComp>();
-            if(comp == null)
-            {
-                WarnBrokenPawn(pawn);
-                return;
-            }
-            comp.lastDownedTick = -99999;
+            GetComp( pawn ).lastDownedTick = -99999;
         }
 
         public static void SetBurnedOnPyre(Pawn pawn)
         {
-            PawnComp comp = pawn.GetComp<PawnComp>();
-            if(comp == null)
-            {
-                WarnBrokenPawn(pawn);
-                return;
-            }
-            comp.burnedOnPyre = true;
+            GetComp( pawn ).burnedOnPyre = true;
         }
 
         public static bool GetBurnedOnPyre(Pawn pawn)
         {
-            PawnComp comp = pawn.GetComp<PawnComp>();
-            if(comp == null)
-            {
-                WarnBrokenPawn(pawn);
-                return false;
-            }
-            return comp.burnedOnPyre;
+            return GetComp( pawn ).burnedOnPyre;
         }
 
         public static int GetNoticedDrugsTick(Pawn pawn)
         {
-            PawnComp comp = pawn.GetComp<PawnComp>();
-            if(comp == null)
-                return WarnBrokenPawn(pawn);
-            return comp.noticedDrugsTick;
+            return GetComp( pawn ).noticedDrugsTick;
         }
 
         public static void SetNoticedDrugsTick(Pawn pawn, int tick)
         {
-            PawnComp comp = pawn.GetComp<PawnComp>();
-            if(comp == null)
-            {
-                WarnBrokenPawn(pawn);
-                return;
-            }
-            comp.noticedDrugsTick = tick;
+            GetComp( pawn ).noticedDrugsTick = tick;
         }
 
         public static void SetNoticedDrugsTickIfNotSet(Pawn pawn, int tick)
         {
-            PawnComp comp = pawn.GetComp<PawnComp>();
-            if(comp == null)
-            {
-                WarnBrokenPawn(pawn);
-                return;
-            }
+            PawnComp comp = GetComp( pawn );
             if(comp.noticedDrugsTick < 0)
                 comp.noticedDrugsTick = tick;
         }
 
-        private static int WarnBrokenPawn(Pawn pawn)
+        public void ExposeData()
         {
-            // We patch the BasePawn ThingDef, so the PawnComp should always be there.
-            // If not, then unless proven otherwise assume a mod that creates pawns without basing
-            // them on the BasePawn ThingDef, and just ignore them.
-            // Actually do not log, it appears that there are such broken(?) mods, e.g. the zombies or crystalloid mods.
-            // Do not bother further until somebody actually complains.
-            // Log.Warning("Pawn " + pawn + " lacks MorePrecepts.PawnComp, not based on BasePawn ThingDef?");
-            return -99999;
-        }
-
-        public override void Initialize(CompProperties props)
-        {
-            lastTakeAlcoholTick = -99999;
-            lastViolenceTick = -99999;
-            lastDownedTick = -99999;
-            lastDownedTicksUntilDeath = -99999;
-            burnedOnPyre = false;
-            noticedDrugsTick = -99999;
-        }
-
-        public override void PostExposeData()
-        {
-            base.PostExposeData();
             Scribe_Values.Look(ref lastTakeAlcoholTick, "MorePrecepts.LastTakeAlcoholTick", -99999);
             Scribe_Values.Look(ref lastViolenceTick, "MorePrecepts.LastViolenceTick", -99999);
             Scribe_Values.Look(ref lastDownedTick, "MorePrecepts.LastDownedTick", -99999);
@@ -193,18 +121,41 @@ namespace MorePrecepts
             Scribe_Values.Look(ref noticedDrugsTick, "MorePrecepts.NoticedDrugsTick", -99999);
         }
 
-        [HarmonyPatch(typeof(ThingWithComps))]
-        [HarmonyPatch(nameof(InitializeComps))]
-        [HarmonyPrefix]
-        public static void InitializeComps()
+        public static void ClearAll()
         {
+            dict.Clear();
+        }
+    }
+
+    // Patching Pawn.ExposeData() makes the data to be saved per-pawn, and that also makes
+    // this backwards compatible with old saves that used ThingComp-based PawnComp,
+    // as that's where those were saving.
+    [HarmonyPatch(typeof(Pawn))]
+    public static class Pawn_Patch
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(ExposeData))]
+        public static void ExposeData( Pawn __instance )
+        {
+            PawnComp.GetComp( __instance ).ExposeData();
+        }
+    }
+
+    [HarmonyPatch(typeof(Game))]
+    public static class Game_Patch
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(InitNewGame))]
+        public static void InitNewGame()
+        {
+            PawnComp.ClearAll();
         }
 
-        [HarmonyPatch(typeof(Game))]
-        [HarmonyPatch(nameof(ClearCaches))]
-        [HarmonyPostfix]
-        public static void ClearCaches()
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(LoadGame))]
+        public static void LoadGame()
         {
+            PawnComp.ClearAll();
         }
     }
 }

@@ -214,7 +214,7 @@ namespace MorePrecepts
     }
 
     [HarmonyPatch(typeof(Pawn))]
-    public static class Pawn_Patch
+    public static class Pawn3_Patch
     {
         [HarmonyPrefix]
         [HarmonyPatch(nameof(TryStartAttack))]
