@@ -68,7 +68,10 @@ namespace MorePrecepts
                     pawn.Named(HistoryEventArgsNames.Victim), stage.Named(HistoryEventArgsNames.ExecutionThoughtStage)));
             }
             // Allies:
-            if(pawn.Faction != null && pawn.Faction.RelationKindWith(Faction.OfPlayer) == FactionRelationKind.Ally)
+            // (Consider player faction to count too and check separately, because the RelationKindWith()
+            // call doesn't like that case.)
+            if(pawn.Faction != null
+                && (pawn.Faction == Faction.OfPlayer || pawn.Faction.RelationKindWith(Faction.OfPlayer) == FactionRelationKind.Ally))
             {
                 Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.Compassion_IncapacitatedPawnLeftToDie_Allies,
                     pawn.Named(HistoryEventArgsNames.Victim), stage.Named(HistoryEventArgsNames.ExecutionThoughtStage)));
