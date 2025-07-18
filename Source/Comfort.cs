@@ -296,19 +296,72 @@ namespace MorePrecepts
         }
     }
 
-    // JobDriver_FeedBaby and JobDriver_Reading have both 32 hardcoded.
+    // JobDriver_FeedBaby has 32 hardcoded.
     [HarmonyPatch]
-    public static class JobDriver_FeedBaby_Reading_Patch
+    public static class JobDriver_FeedBaby_Patch
     {
-        [HarmonyTargetMethods]
-        private static IEnumerable<MethodBase> TargetMethod()
+        [HarmonyTargetMethod]
+        private static MethodBase TargetMethod()
         {
             Type nestedClass = typeof(JobDriver_FeedBaby).GetNestedType("<>c__DisplayClass14_0", BindingFlags.NonPublic);
-            yield return AccessTools.Method(nestedClass, "<GoToChair>b__0");
-            yield return AccessTools.Method(typeof(JobDriver_Reading), nameof(JobDriver_Reading.TryGetClosestChairFreeSittingSpot));
+            return AccessTools.Method(nestedClass, "<GoToChair>b__0");
         }
 
         [HarmonyTranspiler]
+        public static IEnumerable<CodeInstruction> Transpiller(IEnumerable<CodeInstruction> instructions, MethodBase __originalMethod)
+        {
+            var codes = new List<CodeInstruction>(instructions);
+            bool found = false;
+            int pawnLoad = -1;
+            for( int i = 0; i < codes.Count; ++i )
+            {
+                // Log.Message("T:" + i + ":" + codes[i].opcode + "::" + (codes[i].operand != null ? codes[i].operand.ToString() : codes[i].operand));
+                // An additional problem here is that 'this' is the internal class, so it is necessary to get the Pawn.
+                // The variable is loaded several times in the function, so just find one case.
+                if(pawnLoad == -1 && codes[ i ].opcode == OpCodes.Ldarg_0
+                    && i + 2 < codes.Count
+                    && codes[ i + 1 ].opcode == OpCodes.Ldfld && codes[ i + 1 ].operand.ToString().EndsWith( "__this" )
+                    && codes[ i + 2 ].opcode == OpCodes.Ldfld && codes[ i + 2 ].operand.ToString() == "Verse.Pawn pawn" )
+                {
+                    pawnLoad = i;
+                }
+
+                // The function has code:
+                // GenClosest.ClosestThingReachable(..., 32f, ...)
+                // Replace it with:
+                // GenClosest.ClosestThingReachable(..., Transpiller_Hook(32f, pawn), ...)
+                if(pawnLoad != -1 && codes[i].opcode == OpCodes.Ldc_R4 && codes[i].operand.ToString() == "32"
+                    && i + 11 < codes.Count
+                    && codes[ i + 11 ].opcode == OpCodes.Call
+                    && codes[ i + 11 ].operand.ToString().StartsWith( "Verse.Thing ClosestThingReachable(" ))
+                {
+                    // 32f is already on the stack, load 'pawn'.
+                    codes.Insert( i + 1, codes[ pawnLoad ].Clone());
+                    codes.Insert( i + 2, codes[ pawnLoad + 1 ].Clone());
+                    codes.Insert( i + 3, codes[ pawnLoad + 2 ].Clone());
+                    codes.Insert( i + 4, new CodeInstruction(OpCodes.Call, typeof(JobDriver_FeedBaby_Patch).GetMethod(nameof(Transpiller_Hook))));
+                    found = true;
+                    break;
+                }
+            }
+            if(!found)
+                Log.Error("MorePrecepts: Failed to patch JobDriver_FeedBaby.GoToChair() delegate");
+            return codes;
+        }
+
+        // Multiply chair search radius, i.e. comfortable pawns try harder when searching for a place to sit.
+        public static float Transpiller_Hook(float chairSearchRadius, Pawn pawn)
+        {
+            return ComfortHelper.AdjustChairSearchRadius( chairSearchRadius, pawn );
+        }
+    }
+
+    // JobDriver_Reading has 32 hardcoded.
+    [HarmonyPatch(typeof(JobDriver_Reading))]
+    public static class JobDriver_Reading_Patch
+    {
+        [HarmonyTranspiler]
+        [HarmonyPatch(nameof(JobDriver_Reading.TryGetClosestChairFreeSittingSpot))]
         public static IEnumerable<CodeInstruction> Transpiller(IEnumerable<CodeInstruction> instructions, MethodBase __originalMethod)
         {
             var codes = new List<CodeInstruction>(instructions);
@@ -326,25 +379,18 @@ namespace MorePrecepts
                     && codes[ i + 11 ].operand.ToString().StartsWith( "Verse.Thing ClosestThingReachable(" ))
                 {
                     codes.Insert(i+1, new CodeInstruction(OpCodes.Ldarg_0));
-                    codes.Insert(i+2, new CodeInstruction(OpCodes.Call, typeof(JobDriver_FeedBaby_Reading_Patch).GetMethod(nameof(Transpiller_Hook))));
+                    codes.Insert(i+2, new CodeInstruction(OpCodes.Call, typeof(JobDriver_Reading_Patch).GetMethod(nameof(Transpiller_Hook))));
                     found = true;
                     break;
                 }
             }
             if(!found)
-            {
-                if( __originalMethod.ToString().Contains( "<GoToChair>" ))
-                    Log.Error("MorePrecepts: Failed to patch JobDriver_FeedBaby.GoToChair() delegate");
-                else if( __originalMethod.ToString().Contains( "TryGetClosestChairFreeSittingSpot" ))
-                    Log.Error("MorePrecepts: Failed to patch JobDriver_Reading.TryGetClosestChairFreeSittingSpot()");
-                else
-                    Log.Error("MorePrecepts: Failed to patch unknown comfort delegate");
-            }
+                Log.Error("MorePrecepts: Failed to patch JobDriver_Reading.TryGetClosestChairFreeSittingSpot()");
             return codes;
         }
 
         // Multiply chair search radius, i.e. comfortable pawns try harder when searching for a place to sit.
-        public static float Transpiller_Hook(float chairSearchRadius, JobDriver jobDriver)
+        public static float Transpiller_Hook(float chairSearchRadius, JobDriver_Reading jobDriver)
         {
             return ComfortHelper.AdjustChairSearchRadius( chairSearchRadius, jobDriver.pawn );
         }
