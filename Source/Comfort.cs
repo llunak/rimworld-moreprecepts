@@ -308,7 +308,7 @@ namespace MorePrecepts
         }
 
         [HarmonyTranspiler]
-        public static IEnumerable<CodeInstruction> Transpiller(IEnumerable<CodeInstruction> instructions, MethodBase __originalMethod)
+        public static IEnumerable<CodeInstruction> Transpiller(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
             bool found = false;
@@ -362,7 +362,7 @@ namespace MorePrecepts
     {
         [HarmonyTranspiler]
         [HarmonyPatch(nameof(JobDriver_Reading.TryGetClosestChairFreeSittingSpot))]
-        public static IEnumerable<CodeInstruction> Transpiller(IEnumerable<CodeInstruction> instructions, MethodBase __originalMethod)
+        public static IEnumerable<CodeInstruction> Transpiller(IEnumerable<CodeInstruction> instructions)
         {
             var codes = new List<CodeInstruction>(instructions);
             bool found = false;
