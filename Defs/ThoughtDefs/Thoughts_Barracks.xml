@@ -13,23 +13,20 @@
       <li>
         <label>awful bedroom</label>
         <description>I had to sleep in an awful room. Not only was it a horrible room, but I also was alone there.</description>
-        <baseMoodEffect>-5</baseMoodEffect>
+        <baseMoodEffect>-4</baseMoodEffect>
       </li>
       <li>
         <label>dull bedroom</label>
         <description>I had to sleep in a dull room. Not only that, but also missed others around me.</description>
-        <baseMoodEffect>-3</baseMoodEffect>
+        <baseMoodEffect>-2</baseMoodEffect>
       </li>
       <li>
         <label>mediocre bedroom</label>
         <description>I had to sleep in a mediocre bedroom, alone. I don't like this.</description>
-        <baseMoodEffect>-2</baseMoodEffect>
-      </li>
-      <li>
-        <label>decent bedroom</label>
-        <description>I got to sleep in a decent bedroom, but I would prefer to a shared sleeping place.</description>
         <baseMoodEffect>-1</baseMoodEffect>
       </li>
+      <li IsNull="True" />
+      <!-- decent -->
       <li IsNull="True" />
       <!-- slightly impressive -->
       <li>
@@ -68,13 +65,10 @@
       <li>
         <label>awful barracks</label>
         <description>I had to sleep in an awful barracks.</description>
-        <baseMoodEffect>-4</baseMoodEffect>
+        <baseMoodEffect>-2</baseMoodEffect>
       </li>
-      <li>
-        <label>dull barracks</label>
-        <description>I had to sleep in a dull barracks.</description>
-        <baseMoodEffect>-1</baseMoodEffect>
-      </li>
+      <li IsNull="True" />
+      <!-- dull -->
       <li IsNull="True" />
       <!-- mediocre -->
       <li IsNull="True" />
