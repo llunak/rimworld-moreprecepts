@@ -12,7 +12,7 @@
     <stages>
       <li>
         <label>awful bedroom</label>
-        <description>I had to sleep in an awful room. Not only was it a horrible room, but I also was alone there.</description>
+        <description>I had to sleep in an awful room. Not only was the room horrible, but I was also alone there.</description>
         <baseMoodEffect>-4</baseMoodEffect>
       </li>
       <li>
