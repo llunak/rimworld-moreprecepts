@@ -82,7 +82,7 @@ namespace MorePrecepts
                 yield return thing;
         }
 
-        public override RitualTargetUseReport CanUseTargetInternal(TargetInfo target, RitualObligation obligation)
+        protected override RitualTargetUseReport CanUseTargetInternal(TargetInfo target, RitualObligation obligation)
         {
             Building_FuneralPyre building_FuneralPyre;
             return target.HasThing && (building_FuneralPyre = target.Thing as Building_FuneralPyre) != null && (building_FuneralPyre.Corpse == obligation.targetA.Thing || building_FuneralPyre.Corpse?.InnerPawn == obligation.targetA.Thing);
@@ -149,7 +149,7 @@ namespace MorePrecepts
             return false;
         }
 
-        public override RitualTargetUseReport CanUseTargetInternal(TargetInfo target, RitualObligation obligation)
+        protected override RitualTargetUseReport CanUseTargetInternal(TargetInfo target, RitualObligation obligation)
         {
             Building_FuneralPyre building_FuneralPyre;
             return target.HasThing && (building_FuneralPyre = target.Thing as Building_FuneralPyre) != null && building_FuneralPyre.Corpse == null;

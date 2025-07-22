@@ -35,7 +35,7 @@ namespace MorePrecepts
         {
         }
 
-        public override LordJob CreateLordJob(TargetInfo target, Pawn organizer, Precept_Ritual ritual, RitualObligation obligation, RitualRoleAssignments assignments)
+        protected override LordJob CreateLordJob(TargetInfo target, Pawn organizer, Precept_Ritual ritual, RitualObligation obligation, RitualRoleAssignments assignments)
         {
             return new LordJob_Ritual_DrinkingParty(target, ritual, obligation, def.stages, assignments, organizer);
         }
@@ -110,7 +110,7 @@ namespace MorePrecepts
     {
         private static List<ThingDef> nurseableDrugs = new List<ThingDef>();
 
-        public override Job TryGiveJob(Pawn pawn)
+        protected override Job TryGiveJob(Pawn pawn)
         {
             PawnDuty duty = pawn.mindState.duty;
             if (duty == null)

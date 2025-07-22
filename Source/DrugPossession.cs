@@ -121,7 +121,7 @@ namespace MorePrecepts
             new CurvePoint(HoursUntilFull, 10f)
         };
 
-        public override ThoughtState ShouldHaveThought(Pawn pawn)
+        protected override ThoughtState ShouldHaveThought(Pawn pawn)
         {
             if (!ThoughtUtility.ThoughtNullified(pawn, def))
             {
@@ -167,7 +167,7 @@ namespace MorePrecepts
 
     public class ThoughtWorker_Precept_DrugPossession_HasDrugs : ThoughtWorker
     {
-        public override ThoughtState CurrentSocialStateInternal(Pawn pawn, Pawn other)
+        protected override ThoughtState CurrentSocialStateInternal(Pawn pawn, Pawn other)
         {
             if (!pawn.RaceProps.Humanlike || !other.RaceProps.Humanlike)
                 return false;

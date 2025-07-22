@@ -78,7 +78,7 @@ namespace MorePrecepts
             return num;
         }
 
-        public override ThoughtState ShouldHaveThought(Pawn pawn)
+        protected override ThoughtState ShouldHaveThought(Pawn pawn)
         {
             int num = countOld(pawn);
             if( num < 0 )
@@ -100,7 +100,7 @@ namespace MorePrecepts
     // For respected, which has only 1 stage.
     public class ThoughtWorker_Precept_Elderly_Respected : ThoughtWorker_Precept_Elderly_Plus
     {
-        public override ThoughtState ShouldHaveThought(Pawn pawn)
+        protected override ThoughtState ShouldHaveThought(Pawn pawn)
         {
             int num = countOld(pawn);
             if( num < 0 )
@@ -113,7 +113,7 @@ namespace MorePrecepts
 
     public class ThoughtWorker_Precept_Elderly_Self_Plus : ThoughtWorker_Precept
     {
-        public override ThoughtState ShouldHaveThought(Pawn pawn)
+        protected override ThoughtState ShouldHaveThought(Pawn pawn)
         {
             if( Ages.IsVeryOld(pawn))
                 return ThoughtState.ActiveAtStage( 1 );
@@ -125,7 +125,7 @@ namespace MorePrecepts
 
     public class ThoughtWorker_Precept_Elderly_Social_Plus : ThoughtWorker_Precept_Social
     {
-        public override ThoughtState ShouldHaveThought(Pawn pawn, Pawn otherPawn)
+        protected override ThoughtState ShouldHaveThought(Pawn pawn, Pawn otherPawn)
         {
             if( otherPawn.ageTracker.AgeBiologicalYears < pawn.ageTracker.AgeBiologicalYears )
                 return ThoughtState.Inactive; // give social bonus only to older than the pawn
@@ -139,7 +139,7 @@ namespace MorePrecepts
 
     public class ThoughtWorker_Precept_Elderly_NoYoung : ThoughtWorker_Precept
     {
-        public override ThoughtState ShouldHaveThought(Pawn pawn)
+        protected override ThoughtState ShouldHaveThought(Pawn pawn)
         {
             if (pawn.Faction == null || !pawn.IsColonist)
                 return false;
@@ -183,7 +183,7 @@ namespace MorePrecepts
             }
             return YoungType.NoYoung;
         }
-        public override ThoughtState ShouldHaveThought(Pawn pawn)
+        protected override ThoughtState ShouldHaveThought(Pawn pawn)
         {
             YoungType young = hasYoungWithRole( pawn );
             if( young == YoungType.NoYoung )
@@ -194,7 +194,7 @@ namespace MorePrecepts
 
     public class ThoughtWorker_Precept_Elderly_Role_Single : ThoughtWorker_Precept_Elderly_Role
     {
-        public override ThoughtState ShouldHaveThought(Pawn pawn)
+        protected override ThoughtState ShouldHaveThought(Pawn pawn)
         {
             YoungType young = hasYoungWithRole( pawn );
             if( young == YoungType.NoYoung )
@@ -206,7 +206,7 @@ namespace MorePrecepts
     // "I feel too young for the role"
     public class ThoughtWorker_Precept_Elderly_Role_Self : ThoughtWorker_Precept
     {
-        public override ThoughtState ShouldHaveThought(Pawn pawn)
+        protected override ThoughtState ShouldHaveThought(Pawn pawn)
         {
             if (pawn.Faction == null || !pawn.IsColonist || !ModsConfig.IdeologyActive || pawn.Ideo == null || pawn.Ideo.GetRole(pawn) == null)
                 return false;
@@ -220,7 +220,7 @@ namespace MorePrecepts
 
     public class ThoughtWorker_Precept_Elderly_Role_Self_Single : ThoughtWorker_Precept
     {
-        public override ThoughtState ShouldHaveThought(Pawn pawn)
+        protected override ThoughtState ShouldHaveThought(Pawn pawn)
         {
             if (pawn.Faction == null || !pawn.IsColonist || !ModsConfig.IdeologyActive || pawn.Ideo == null || pawn.Ideo.GetRole(pawn) == null)
                 return false;
@@ -233,7 +233,7 @@ namespace MorePrecepts
     // Disrespect young people a bit, teenagers more.
     public class ThoughtWorker_Precept_Elderly_Social_Young : ThoughtWorker_Precept_Social
     {
-        public override ThoughtState ShouldHaveThought(Pawn pawn, Pawn otherPawn)
+        protected override ThoughtState ShouldHaveThought(Pawn pawn, Pawn otherPawn)
         {
             if( !Ages.IsOld(pawn)) // only elders view young ones a bit poorly
                 return ThoughtState.Inactive;
@@ -248,7 +248,7 @@ namespace MorePrecepts
     // Generic bad-opinion class.
     public class ThoughtWorker_Precept_Elderly_Minus : ThoughtWorker_Precept
     {
-        public override ThoughtState ShouldHaveThought(Pawn pawn)
+        protected override ThoughtState ShouldHaveThought(Pawn pawn)
         {
             if (pawn.Faction == null || !pawn.IsColonist)
                 return false;
@@ -276,7 +276,7 @@ namespace MorePrecepts
 
     public class ThoughtWorker_Precept_Elderly_Self_Minus : ThoughtWorker_Precept
     {
-        public override ThoughtState ShouldHaveThought(Pawn pawn)
+        protected override ThoughtState ShouldHaveThought(Pawn pawn)
         {
             if( Ages.IsVeryOldMinus(pawn))
                 return ThoughtState.ActiveAtStage( 1 );
@@ -288,7 +288,7 @@ namespace MorePrecepts
 
     public class ThoughtWorker_Precept_Elderly_Social_Minus : ThoughtWorker_Precept_Social
     {
-        public override ThoughtState ShouldHaveThought(Pawn pawn, Pawn otherPawn)
+        protected override ThoughtState ShouldHaveThought(Pawn pawn, Pawn otherPawn)
         {
             if( otherPawn.ageTracker.AgeBiologicalYears < pawn.ageTracker.AgeBiologicalYears )
                 return ThoughtState.Inactive; // give social penaly only to older than the pawn

@@ -35,7 +35,7 @@ namespace MorePrecepts
         {
         }
 
-        public override LordJob CreateLordJob(TargetInfo target, Pawn organizer, Precept_Ritual ritual, RitualObligation obligation, RitualRoleAssignments assignments)
+        protected override LordJob CreateLordJob(TargetInfo target, Pawn organizer, Precept_Ritual ritual, RitualObligation obligation, RitualRoleAssignments assignments)
         {
             return new LordJob_Ritual_Feast(target, ritual, obligation, def.stages, assignments, organizer);
         }
@@ -108,7 +108,7 @@ namespace MorePrecepts
     // This is JobGiver_EatInGatheringArea, but eats more often.
     public class JobGiver_FeastInGatheringArea : JobGiver_EatInGatheringArea
     {
-        public override Job TryGiveJob(Pawn pawn)
+        protected override Job TryGiveJob(Pawn pawn)
         {
             PawnDuty duty = pawn.mindState.duty;
             if (duty == null)

@@ -336,7 +336,7 @@ namespace MorePrecepts
         protected abstract float DaysMissing_Major();
         protected abstract SimpleCurve MoodOffsetFromDaysSinceLastAttackCurve();
 
-        public override ThoughtState ShouldHaveThought(Pawn p)
+        protected override ThoughtState ShouldHaveThought(Pawn p)
         {
             if (p.WorkTagIsDisabled(WorkTags.Violent))
                 return false;
@@ -412,7 +412,7 @@ namespace MorePrecepts
         private const float DaysLongWanted = 15f;
         private const float DaysShortEssential = 5f;
         private const float DaysLongEssential = 10f;
-        public override ThoughtState CurrentSocialStateInternal(Pawn pawn, Pawn other)
+        protected override ThoughtState CurrentSocialStateInternal(Pawn pawn, Pawn other)
         {
             if(!pawn.RaceProps.Humanlike || !other.RaceProps.Humanlike)
                 return false;

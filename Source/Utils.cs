@@ -8,7 +8,7 @@ namespace MorePrecepts
 
     public class JobGiver_SitAndBeSociallyActive : JobGiver_StandAndBeSociallyActive
     {
-        public override Job TryGiveJob(Pawn pawn)
+        protected override Job TryGiveJob(Pawn pawn)
         {
             Job job = base.TryGiveJob(pawn);
             job.def = JobDefOf.SitAndBeSociallyActive;

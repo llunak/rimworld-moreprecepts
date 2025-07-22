@@ -736,7 +736,7 @@ Note that the teetotaler trait (DrugDesire < 0) still prevents alcohol.
         protected abstract float DaysMissing_Major();
         protected abstract SimpleCurve MoodOffsetFromDaysSinceLastAlcoholCurve();
 
-        public override ThoughtState ShouldHaveThought(Pawn p)
+        protected override ThoughtState ShouldHaveThought(Pawn p)
         {
             if (!ThoughtUtility.ThoughtNullified(p, def))
             {
