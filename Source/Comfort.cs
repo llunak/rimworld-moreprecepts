@@ -61,7 +61,7 @@ namespace MorePrecepts
         {
             if( thing == null ) // min == 0 means no requirements
                 return min == 0 ? ThoughtLevelOk : ThoughtLevelNoFurniture;
-            float comfort = thing.GetStatValue(StatDefOf.Comfort);
+            float comfort = thing.GetStatValue(StatDefOf.Comfort, cacheStaleAfterTicks : GenDate.TicksPerHour);
             if(comfort >= ok)
                 return ThoughtLevelOk;
             return comfort < min ? 1 : 0;
@@ -182,7 +182,7 @@ namespace MorePrecepts
                 return true;
             if(preceptDef == PreceptDefOf.Comfort_Wanted)
                 return true; // Wanted allows all.
-            float comfort = __instance.parent.GetStatValue(StatDefOf.Comfort);
+            float comfort = __instance.parent.GetStatValue(StatDefOf.Comfort, cacheStaleAfterTicks : GenDate.TicksPerHour);
             // Important and Essential require at least minimal comfort.
             if(comfort >= bedMin)
                 return true;
@@ -207,7 +207,7 @@ namespace MorePrecepts
             if(edifice == null)
                 return false;
             if(preceptDef == PreceptDefOf.Comfort_Essential)
-                if(edifice.GetStatValue(StatDefOf.Comfort) < chairMin)
+                if(edifice.GetStatValue(StatDefOf.Comfort, cacheStaleAfterTicks : GenDate.TicksPerHour) < chairMin)
                     return false;
             return true;
         }
