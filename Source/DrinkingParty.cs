@@ -137,7 +137,7 @@ namespace MorePrecepts
             if (thing == null)
                 return null;
             Job job = JobMaker.MakeJob(RimWorld.JobDefOf.Ingest, thing);
-            job.count = FoodUtility.WillIngestStackCountOf(pawn, thing.def, thing.def.GetStatValueAbstract(StatDefOf.Nutrition));
+            job.count = FoodUtility.WillIngestStackCountOf(pawn, thing.def, FoodUtility.NutritionForEater(pawn, thing));
             return job;
         }
 

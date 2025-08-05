@@ -115,6 +115,10 @@ namespace MorePrecepts
             {
                 return null;
             }
+            if (pawn.needs?.food == null)
+            {
+                return null;
+            }
             if ((double)pawn.needs.food.CurLevelPercentage > 0.95)
             {
                 return null;
@@ -126,7 +130,7 @@ namespace MorePrecepts
                 return null;
             }
             Job job = JobMaker.MakeJob(RimWorld.JobDefOf.Ingest, thing);
-            job.count = FoodUtility.WillIngestStackCountOf(pawn, thing.def, thing.def.GetStatValueAbstract(StatDefOf.Nutrition));
+            job.count = FoodUtility.WillIngestStackCountOf(pawn, thing.def, FoodUtility.NutritionForEater(pawn, thing));
             return job;
         }
     }
