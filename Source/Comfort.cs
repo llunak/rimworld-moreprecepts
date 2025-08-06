@@ -18,40 +18,58 @@ using System;
 // life-threatening).
 namespace MorePrecepts
 {
+    public class ComfortInfo
+    {
+        public float bedMin;
+        public float bedOk;
+        public float chairMin;
+        public float chairOk;
+        public QualityCategory tableMin;
+        public QualityCategory tableOk;
+        public ThoughtDef thoughtDef;
+        public PreceptDef preceptDef;
+    };
+
     public static class ComfortHelper
     {
-        private static (float bedMin,float bedOk,float chairMin, float chairOk, QualityCategory tableMin, QualityCategory tableOk,
-            ThoughtDef thoughtDef, PreceptDef preceptDef) GetComfortInternal(Pawn pawn)
+        private static readonly ComfortInfo infoNone = new ComfortInfo{ bedMin = 0, bedOk = 0, chairMin = 0, chairOk = 0,
+            tableMin = QualityCategory.Awful, tableOk = QualityCategory.Awful, thoughtDef = null, preceptDef = null };
+        // normal bedroll, normal bed+extra, normal stool(awful chair), normal chair, poor/normal table
+        private static readonly ComfortInfo infoWanted = new ComfortInfo{ bedMin = 0.68f, bedOk = 0.85f, chairMin = 0.5f, chairOk = 0.7f,
+            tableMin = QualityCategory.Poor, tableOk = QualityCategory.Normal,
+            thoughtDef =  ThoughtDefOf.Comfort_UsedUncomfortableFurniture_Wanted, preceptDef = PreceptDefOf.Comfort_Wanted };
+        // good bedroll, good bed+extra, good stool(poor chair), good chair, normal/good table
+        private static readonly ComfortInfo infoImportant = new ComfortInfo{ bedMin = 0.76f, bedOk = 0.95f, chairMin = 0.56f, chairOk = 0.78f,
+            tableMin = QualityCategory.Normal, tableOk = QualityCategory.Good,
+            thoughtDef = ThoughtDefOf.Comfort_UsedUncomfortableFurniture_Important, preceptDef = PreceptDefOf.Comfort_Important };
+        // excellent bedroll, excellent bed+extra, normal chair (masterwork stool,poor armchair), excellent chair, good/excellent table
+        private static readonly ComfortInfo infoEssential = new ComfortInfo{ bedMin = 0.84f, bedOk = 1.05f, chairMin = 0.7f, chairOk = 0.87f,
+            tableMin = QualityCategory.Good, tableOk = QualityCategory.Excellent,
+            thoughtDef = ThoughtDefOf.Comfort_UsedUncomfortableFurniture_Essential, preceptDef = PreceptDefOf.Comfort_Essential };
+
+        private static ComfortInfo GetComfortInternal(Pawn pawn)
         {
             if(pawn.Ideo == null || pawn.needs == null || pawn.needs.mood == null || pawn.IsSlave)
-                return (0,0,0,0,QualityCategory.Awful,QualityCategory.Awful,null,null);
+                return infoNone;
             if(pawn.Ideo.HasPrecept(PreceptDefOf.Comfort_Wanted))
-                // normal bedroll, normal bed+extra, normal stool(awful chair), normal chair, poor/normal table
-                return (0.68f,0.85f,0.5f,0.7f,QualityCategory.Poor,QualityCategory.Normal,
-                    ThoughtDefOf.Comfort_UsedUncomfortableFurniture_Wanted, PreceptDefOf.Comfort_Wanted);
+                return infoWanted;
             if(pawn.Ideo.HasPrecept(PreceptDefOf.Comfort_Important))
-                // good bedroll, good bed+extra, good stool(poor chair), good chair, normal/good table
-                return (0.76f,0.95f,0.56f,0.78f,QualityCategory.Normal,QualityCategory.Good,
-                    ThoughtDefOf.Comfort_UsedUncomfortableFurniture_Important, PreceptDefOf.Comfort_Important);
+                return infoImportant;
             if(pawn.Ideo.HasPrecept(PreceptDefOf.Comfort_Essential))
-                // excellent bedroll, excellent bed+extra, normal chair (masterwork stool,poor armchair), excellent chair, good/excellent table
-                return (0.84f,1.05f,0.7f,0.87f,QualityCategory.Good,QualityCategory.Excellent,
-                    ThoughtDefOf.Comfort_UsedUncomfortableFurniture_Essential, PreceptDefOf.Comfort_Essential);
-            return (0,0,0,0,QualityCategory.Awful,QualityCategory.Awful,null,null);
+                return infoEssential;
+            return infoNone;
         }
 
-        public static (float bedMin, float bedOk, float chairMin, float chairOk, QualityCategory tableMin, QualityCategory tableOk,
-            ThoughtDef thoughtDef, PreceptDef preceptDef) GetComfort(Pawn pawn)
+        public static ComfortInfo GetComfort(Pawn pawn)
         {
-            (float bedMin, float bedOk, float chairMin, float chairOk, QualityCategory tableMin, QualityCategory tableOk,
-                ThoughtDef thoughtDef, PreceptDef preceptDef) = GetComfortInternal(pawn);
+            ComfortInfo info = GetComfortInternal(pawn);
             // Check also minimal expectations.
-            if (thoughtDef != null && thoughtDef.minExpectationForNegativeThought != null && pawn.MapHeld != null
-                && ExpectationsUtility.CurrentExpectationFor(pawn.MapHeld).order < thoughtDef.minExpectationForNegativeThought.order)
+            if (info.thoughtDef != null && info.thoughtDef.minExpectationForNegativeThought != null && pawn.MapHeld != null
+                && ExpectationsUtility.CurrentExpectationFor(pawn.MapHeld).order < info.thoughtDef.minExpectationForNegativeThought.order)
             {
-                return (0,0,0,0,QualityCategory.Awful,QualityCategory.Awful,null,null);
+                return infoNone;
             }
-            return (bedMin, bedOk, chairMin, chairOk, tableMin, tableOk, thoughtDef, preceptDef);
+            return info;
         }
 
         public const int ThoughtLevelNoFurniture = 2;
@@ -97,16 +115,15 @@ namespace MorePrecepts
         {
             if(chairSearchRadius == 0)
                 return chairSearchRadius;
-            (float bedMin, float bedOk, float chairMin, float chairOk, QualityCategory tableMin, QualityCategory tableOk,
-                ThoughtDef thoughtDef, PreceptDef preceptDef) = ComfortHelper.GetComfort(pawn);
-            if(thoughtDef == null)
+            ComfortInfo info = ComfortHelper.GetComfort(pawn);
+            if(info.thoughtDef == null)
                 return chairSearchRadius;
             float factor = 1;
-            if( preceptDef == PreceptDefOf.Comfort_Wanted)
+            if( info.preceptDef == PreceptDefOf.Comfort_Wanted)
                 factor = 2;
-            if( preceptDef == PreceptDefOf.Comfort_Important)
+            if( info.preceptDef == PreceptDefOf.Comfort_Important)
                 factor = 3;
-            if( preceptDef == PreceptDefOf.Comfort_Essential)
+            if( info.preceptDef == PreceptDefOf.Comfort_Essential)
                 factor = 5;
             return chairSearchRadius * factor;
         }
@@ -119,12 +136,11 @@ namespace MorePrecepts
         [HarmonyPatch(nameof(ApplyBedThoughts))]
         public static void ApplyBedThoughts(Pawn actor, Building_Bed bed)
         {
-            (float bedMin, float bedOk, float chairMin, float chairOk, QualityCategory tableMin, QualityCategory tableOk,
-                ThoughtDef thoughtDef, PreceptDef preceptDef) = ComfortHelper.GetComfort(actor);
-            if(thoughtDef == null)
+            ComfortInfo info = ComfortHelper.GetComfort(actor);
+            if(info.thoughtDef == null)
                 return;
-            ComfortHelper.AddThoughtIfNeeded(actor, ComfortHelper.GetThoughtLevel(bed, bedMin, bedOk),
-                thoughtDef, preceptDef, bed);
+            ComfortHelper.AddThoughtIfNeeded(actor, ComfortHelper.GetThoughtLevel(bed, info.bedMin, info.bedOk),
+                info.thoughtDef, info.preceptDef, bed);
         }
     }
 
@@ -140,14 +156,13 @@ namespace MorePrecepts
             // for a place to sit, so ignore. This condition is the same like ate-without-table uses.
             if(!( thing.def.IsNutritionGivingIngestible && thing.def.ingestible.chairSearchRadius > 10f ))
                 return;
-            (float bedMin, float bedOk, float chairMin, float chairOk, QualityCategory tableMin, QualityCategory tableOk,
-                ThoughtDef thoughtDef, PreceptDef preceptDef) = ComfortHelper.GetComfort(ingester);
-            if(thoughtDef == null)
+            ComfortInfo info = ComfortHelper.GetComfort(ingester);
+            if(info.thoughtDef == null)
                 return;
             if(ingester.InBed()) // Getting fed while in a (medical) bed?
             {
-                ComfortHelper.AddThoughtIfNeeded(ingester, ComfortHelper.GetThoughtLevel(ingester.CurrentBed(), bedMin, bedOk),
-                    thoughtDef, preceptDef, ingester.CurrentBed());
+                ComfortHelper.AddThoughtIfNeeded(ingester, ComfortHelper.GetThoughtLevel(ingester.CurrentBed(), info.bedMin, info.bedOk),
+                    info.thoughtDef, info.preceptDef, ingester.CurrentBed());
                 return;
             }
             // The comfort+ingest code is in Toils_Ingest, but Thing.Ingested is easier to patch.
@@ -158,14 +173,14 @@ namespace MorePrecepts
             if (ingester.needs.mood != null && thing.def.IsNutritionGivingIngestible && thing.def.ingestible.chairSearchRadius > 10f)
                 if (ingester.GetPosture() == PawnPosture.Standing && !ingester.IsWildMan() && thing.def.ingestible.tableDesired)
                     table = ingester.Map != null ? (ingester.Position + ingester.Rotation.FacingCell).GetEdifice(ingester.Map) : null;
-            int chairLevel = ComfortHelper.GetThoughtLevel(chair, chairMin, chairOk);
-            int tableLevel = ComfortHelper.GetThoughtLevel(table, tableMin, tableOk);
+            int chairLevel = ComfortHelper.GetThoughtLevel(chair, info.chairMin, info.chairOk);
+            int tableLevel = ComfortHelper.GetThoughtLevel(table, info.tableMin, info.tableOk);
             if( chair != null && chairLevel >= tableLevel )
-                ComfortHelper.AddThoughtIfNeeded(ingester, chairLevel, thoughtDef, preceptDef, chair);
+                ComfortHelper.AddThoughtIfNeeded(ingester, chairLevel, info.thoughtDef, info.preceptDef, chair);
             else if( table != null )
-                ComfortHelper.AddThoughtIfNeeded(ingester, tableLevel, thoughtDef, preceptDef, table);
+                ComfortHelper.AddThoughtIfNeeded(ingester, tableLevel, info.thoughtDef, info.preceptDef, table);
             else // record the ingested thing as the thought source
-                ComfortHelper.AddThoughtIfNeeded(ingester, ComfortHelper.ThoughtLevelNoFurniture, thoughtDef, preceptDef, __instance);
+                ComfortHelper.AddThoughtIfNeeded(ingester, ComfortHelper.ThoughtLevelNoFurniture, info.thoughtDef, info.preceptDef, __instance);
         }
     }
 
@@ -176,15 +191,14 @@ namespace MorePrecepts
         [HarmonyPatch(nameof(IdeoligionForbids))]
         public static bool IdeoligionForbids(ref bool __result, CompAssignableToPawn_Bed __instance, Pawn pawn)
         {
-            (float bedMin, float bedOk, float chairMin, float chairOk, QualityCategory tableMin, QualityCategory tableOk,
-                ThoughtDef thoughtDef, PreceptDef preceptDef) = ComfortHelper.GetComfort(pawn);
-            if(thoughtDef == null)
+            ComfortInfo info = ComfortHelper.GetComfort(pawn);
+            if(info.thoughtDef == null)
                 return true;
-            if(preceptDef == PreceptDefOf.Comfort_Wanted)
+            if(info.preceptDef == PreceptDefOf.Comfort_Wanted)
                 return true; // Wanted allows all.
             float comfort = __instance.parent.GetStatValue(StatDefOf.Comfort, cacheStaleAfterTicks : GenDate.TicksPerHour);
             // Important and Essential require at least minimal comfort.
-            if(comfort >= bedMin)
+            if(comfort >= info.bedMin)
                 return true;
             if(pawn.Downed)
                 return true;
@@ -198,16 +212,15 @@ namespace MorePrecepts
     {
         private static bool IsAcceptableSittableOrSpot(Pawn pawn, IntVec3 exactSittingPos)
         {
-            (float bedMin, float bedOk, float chairMin, float chairOk, QualityCategory tableMin, QualityCategory tableOk,
-                ThoughtDef thoughtDef, PreceptDef preceptDef) = ComfortHelper.GetComfort(pawn);
+            ComfortInfo info = ComfortHelper.GetComfort(pawn);
             // Wanted don't refuse, Important refuse no furniture, Essential refuse furniture below minimal comfort.
-            if(thoughtDef == null || preceptDef == PreceptDefOf.Comfort_Wanted)
+            if(info.thoughtDef == null || info.preceptDef == PreceptDefOf.Comfort_Wanted)
                 return true;
             Building edifice = exactSittingPos.GetEdifice(pawn.Map);
             if(edifice == null)
                 return false;
-            if(preceptDef == PreceptDefOf.Comfort_Essential)
-                if(edifice.GetStatValue(StatDefOf.Comfort, cacheStaleAfterTicks : GenDate.TicksPerHour) < chairMin)
+            if(info.preceptDef == PreceptDefOf.Comfort_Essential)
+                if(edifice.GetStatValue(StatDefOf.Comfort, cacheStaleAfterTicks : GenDate.TicksPerHour) < info.chairMin)
                     return false;
             return true;
         }
@@ -249,9 +262,8 @@ namespace MorePrecepts
         public static void TryGiveJob(ref Job __result, Pawn pawn)
         {
             // Essential pawns refuse to sleep on the ground (until they faint).
-            (float bedMin, float bedOk, float chairMin, float chairOk, QualityCategory tableMin, QualityCategory tableOk,
-                ThoughtDef thoughtDef, PreceptDef preceptDef) = ComfortHelper.GetComfort(pawn);
-            if(thoughtDef == null || preceptDef != PreceptDefOf.Comfort_Essential)
+            ComfortInfo info = ComfortHelper.GetComfort(pawn);
+            if(info.thoughtDef == null || info.preceptDef != PreceptDefOf.Comfort_Essential)
                 return;
             Job job = __result;
             if(job.def == RimWorld.JobDefOf.LayDown && !job.targetA.HasThing)
