@@ -3,7 +3,7 @@
     <OutputPath>..\Assemblies</OutputPath>
     <TargetFramework>net472</TargetFramework>
     <AssemblyTitle>More Precepts</AssemblyTitle>
-    <AssemblyVersion>2025.0805.1</AssemblyVersion>
+    <AssemblyVersion>2025.0806.1</AssemblyVersion>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <LangVersion>latest</LangVersion>
