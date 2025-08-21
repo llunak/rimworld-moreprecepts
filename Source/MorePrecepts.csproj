@@ -19,7 +19,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Lib.Harmony">
-      <Version>2.1.0</Version>
+      <Version>*</Version>
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="Krafs.Publicizer" Version="*">
