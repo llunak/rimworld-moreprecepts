@@ -1,5 +1,6 @@
 using RimWorld;
 using Verse;
+using Verse.Profile;
 using System;
 using System.Collections.Generic;
 using HarmonyLib;
@@ -121,6 +122,11 @@ namespace MorePrecepts
             Scribe_Values.Look(ref noticedDrugsTick, "MorePrecepts.NoticedDrugsTick", -99999);
         }
 
+        public static void Remove( Pawn pawn )
+        {
+            dict.Remove( pawn );
+        }
+
         public static void ClearAll()
         {
             dict.Clear();
@@ -139,21 +145,21 @@ namespace MorePrecepts
         {
             PawnComp.GetComp( __instance ).ExposeData();
         }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(Destroy))]
+        public static void Destroy( Pawn __instance )
+        {
+            PawnComp.Remove( __instance );
+        }
     }
 
-    [HarmonyPatch(typeof(Game))]
-    public static class Game_Patch
+    [HarmonyPatch(typeof(MemoryUtility))]
+    public static class MemoryUtility_Patch
     {
-        [HarmonyPrefix]
-        [HarmonyPatch(nameof(InitNewGame))]
-        public static void InitNewGame()
-        {
-            PawnComp.ClearAll();
-        }
-
-        [HarmonyPrefix]
-        [HarmonyPatch(nameof(LoadGame))]
-        public static void LoadGame()
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(ClearAllMapsAndWorld))]
+        public static void ClearAllMapsAndWorld()
         {
             PawnComp.ClearAll();
         }
